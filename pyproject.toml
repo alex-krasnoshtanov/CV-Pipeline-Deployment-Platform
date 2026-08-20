@@ -1,0 +1,81 @@
+[project]
+name = "cv-platform-workspace"
+version = "0.1.0"
+description = "Monorepo for CV pipeline deployment across local, server, and cloud"
+requires-python = ">=3.11"
+dependencies = [
+    "cv-pipeline",
+    "cv-backend",
+    "azure-ai-ml>=1.33.0",
+    "azure-identity>=1.25.3",
+]
+
+[tool.uv.sources]
+cv-pipeline = { workspace = true }
+cv-backend = { workspace = true }
+torch = { index = "pytorch-cu124" }
+torchvision = { index = "pytorch-cu124" }
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[dependency-groups]
+training = [
+  "mlflow>=2.18",
+  "matplotlib>=3.7",
+  "azure-ai-ml>=1.20",
+  "azure-identity>=1.17",
+]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.15.10",
+  "mypy>=1.11.0",
+  "pre-commit>=4.5.1",
+  "commitizen>=4.8.0",
+]
+docs = [
+  "sphinx>=7.3",
+  "sphinx-autoapi>=3.6",
+  "furo>=2024.8",
+  "myst-parser>=4.0",
+  "sphinx-copybutton>=0.5",
+  "sphinx-autobuild>=2024.10",
+]
+
+[tool.uv.workspace]
+members = [
+  "packages/cv-pipeline",
+  "apps/backend",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]  # pycodestyle errors, pyflakes, warnings, isort
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = [
+  "packages/cv-pipeline/tests",
+  "apps/backend/tests",
+]
+pythonpath = ["packages/cv-pipeline/src", "apps/backend/src"]
+markers = [
+  "unit: unit tests (fast, no external deps)",
+  "integration: integration tests",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version = "0.1.0"
+commit_parser = "conventional_commits"

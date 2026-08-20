@@ -1,0 +1,6 @@
+model:
+  name: baseline
+  version: v0
+inference:
+  preserve_input_resolution: true
+  confidence_threshold: 0.5
