@@ -33,11 +33,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # The backend and frontend Dockerfiles COPY from repository-root
+          # paths (pyproject.toml, packages/cv-pipeline, apps/frontend/...),
+          # because the Python workspace spans the monorepo. Their build
+          # context has to be the repository root; the root .dockerignore keeps
+          # the context small. Prometheus copies only files sitting beside it,
+          # so it takes its own directory.
           - image: backend
-            context: apps/backend
+            context: .
             dockerfile: apps/backend/Dockerfile
           - image: frontend
-            context: apps/frontend
+            context: .
             dockerfile: apps/frontend/Dockerfile
           - image: prometheus
             context: infra/monitoring/prometheus

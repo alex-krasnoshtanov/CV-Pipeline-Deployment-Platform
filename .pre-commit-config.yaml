@@ -1,4 +1,4 @@
-default_install_hook_types: [pre-commit, commit-msg]
+default_install_hook_types: [pre-commit]
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -8,8 +8,11 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.8.3
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
+# The commitizen commit-msg hook was removed. pre-commit builds it from source,
+# which needs poetry-core>=2.0, and the pip seeded into its isolated
+# environment is too old to see those releases - so `pre-commit install` fails
+# outright and blocks every commit.
+#
+# Conventional commit messages are still enforced where it matters: PR titles
+# are checked by .github/workflows/pr-title.yml, and commitizen itself stays in
+# the dev dependency group, so `uv run cz commit` still works.
