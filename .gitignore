@@ -1,0 +1,78 @@
+# --- Secrets: never commit ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*_credentials.json
+service-principal*.json
+azure-credentials*
+configs/env/*
+!configs/env/*.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# --- Build + coverage ---
+dist/
+build/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Data (keep the folders, not the contents) ---
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+artifacts/
+checkpoints/
+
+# --- Model weights: ship via GitHub Releases, not git ---
+*.pth
+*.pt
+*.onnx
+*.ckpt
+models/**/*.pth
+._model_check/
+
+# --- Airflow runtime ---
+infra/airflow/logs/
+infra/airflow/plugins/
+*.log
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Scratch ---
+response.json
+tmp_*/
+PLAN.md
+
+# NOTE: the group repo ignored *.png globally. Deliberately not copied here —
+# this repo will want architecture diagrams and result images committed.
+# Large raster data is covered by the data/ rules above instead.
