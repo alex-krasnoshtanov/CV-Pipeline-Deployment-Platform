@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cv-pipeline"
+version = "0.1.0"
+description = "NPEC plant organ segmentation and root tip detection pipeline"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "segmentation-models-pytorch>=0.3.3",
+    "opencv-python-headless>=4.8.0",
+    "numpy>=1.24.0",
+    "Pillow>=10.0.0",
+    "requests>=2.31",
+]
+
+[project.scripts]
+cv-pipeline = "cv_pipeline.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cv_pipeline"]
