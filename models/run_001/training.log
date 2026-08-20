@@ -1,0 +1,114 @@
+2026-05-04 08:53:41,229 cv_pipeline.train WARNING CUDA not available — falling back to CPU.
+2026-05-04 08:53:41,229 cv_pipeline.train INFO Starting training run '20260504-085341' — epochs=50, batch_size=8, lr=0.0001, device=cpu.
+2026-05-04 08:53:41,232 cv_pipeline.train INFO Dataset loaded: 88 pairs from 'data/prepared/train'.
+2026-05-04 08:53:41,233 cv_pipeline.train INFO Dataset loaded: 27 pairs from 'data/prepared/val'.
+2026-05-04 08:53:41,233 cv_pipeline.train INFO Data loaded — 88 training pairs, 27 validation pairs.
+2026-05-04 08:53:41,621 httpx INFO HTTP Request: HEAD https://huggingface.co/smp-hub/resnet34.imagenet/resolve/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-05-04 08:53:41,622 huggingface_hub.utils._http WARNING Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-05-04 08:53:41,630 httpx INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/smp-hub/resnet34.imagenet/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 200 OK"
+2026-05-04 08:53:41,639 httpx INFO HTTP Request: GET https://huggingface.co/api/resolve-cache/models/smp-hub/resnet34.imagenet/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 200 OK"
+2026-05-04 08:53:41,771 httpx INFO HTTP Request: HEAD https://huggingface.co/smp-hub/resnet34.imagenet/resolve/7a57b34f723329ff020b3f8bc41771163c519d0c/model.safetensors "HTTP/1.1 302 Found"
+2026-05-04 08:53:41,877 httpx INFO HTTP Request: GET https://huggingface.co/api/models/smp-hub/resnet34.imagenet/xet-read-token/7a57b34f723329ff020b3f8bc41771163c519d0c "HTTP/1.1 200 OK"
+2026-05-04 08:53:44,768 cv_pipeline.train INFO Model created — 24,430,097 parameters.
+2026-05-04 10:53:03,435 cv_pipeline.train WARNING CUDA not available — falling back to CPU.
+2026-05-04 10:53:03,435 cv_pipeline.train INFO Starting training run '20260504-105303' — epochs=50, batch_size=8, lr=0.0001, device=cpu.
+2026-05-04 10:53:03,441 cv_pipeline.train INFO Dataset loaded: 88 pairs from 'data/prepared/train'.
+2026-05-04 10:53:03,443 cv_pipeline.train INFO Dataset loaded: 27 pairs from 'data/prepared/val'.
+2026-05-04 10:53:03,444 cv_pipeline.train INFO Data loaded — 88 training pairs, 27 validation pairs.
+2026-05-04 10:53:03,877 httpx INFO HTTP Request: HEAD https://huggingface.co/smp-hub/resnet34.imagenet/resolve/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-05-04 10:53:03,887 httpx INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/smp-hub/resnet34.imagenet/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 200 OK"
+2026-05-04 10:53:03,896 httpx INFO HTTP Request: GET https://huggingface.co/api/resolve-cache/models/smp-hub/resnet34.imagenet/7a57b34f723329ff020b3f8bc41771163c519d0c/config.json "HTTP/1.1 200 OK"
+2026-05-04 10:53:04,009 httpx INFO HTTP Request: HEAD https://huggingface.co/smp-hub/resnet34.imagenet/resolve/7a57b34f723329ff020b3f8bc41771163c519d0c/model.safetensors "HTTP/1.1 302 Found"
+2026-05-04 10:53:04,115 httpx INFO HTTP Request: GET https://huggingface.co/api/models/smp-hub/resnet34.imagenet/xet-read-token/7a57b34f723329ff020b3f8bc41771163c519d0c "HTTP/1.1 200 OK"
+2026-05-04 10:53:07,092 cv_pipeline.train INFO Model created — 24,430,097 parameters.
+2026-05-04 11:01:28,922 cv_pipeline.train INFO Starting training run '20260504-110128' — epochs=50, batch_size=8, lr=0.0001, device=cuda.
+2026-05-04 11:01:28,927 cv_pipeline.train INFO Dataset loaded: 88 pairs from 'data/prepared/train'.
+2026-05-04 11:01:28,928 cv_pipeline.train INFO Dataset loaded: 27 pairs from 'data/prepared/val'.
+2026-05-04 11:01:28,929 cv_pipeline.train INFO Data loaded — 88 training pairs, 27 validation pairs.
+2026-05-04 11:01:32,711 cv_pipeline.train INFO Model created — 24,430,097 parameters.
+2026-05-04 11:02:06,344 cv_pipeline.train INFO Epoch 1/50 — loss=0.8992, val_f1=0.0176, val_iou=0.0089 (33.6s)
+2026-05-04 11:02:06,648 cv_pipeline.train INFO New best model at epoch 1 — val_f1=0.0176.
+2026-05-04 11:02:40,124 cv_pipeline.train INFO Epoch 2/50 — loss=0.8121, val_f1=0.0271, val_iou=0.0138 (33.5s)
+2026-05-04 11:02:40,397 cv_pipeline.train INFO New best model at epoch 2 — val_f1=0.0271.
+2026-05-04 11:03:12,574 cv_pipeline.train INFO Epoch 3/50 — loss=0.7613, val_f1=0.0454, val_iou=0.0233 (32.2s)
+2026-05-04 11:03:12,847 cv_pipeline.train INFO New best model at epoch 3 — val_f1=0.0454.
+2026-05-04 11:03:39,826 cv_pipeline.train INFO Epoch 4/50 — loss=0.7316, val_f1=0.1129, val_iou=0.0603 (27.0s)
+2026-05-04 11:03:39,870 cv_pipeline.train INFO New best model at epoch 4 — val_f1=0.1129.
+2026-05-04 11:04:10,623 cv_pipeline.train INFO Epoch 5/50 — loss=0.7079, val_f1=0.2139, val_iou=0.1204 (30.8s)
+2026-05-04 11:04:11,063 cv_pipeline.train INFO New best model at epoch 5 — val_f1=0.2139.
+2026-05-04 11:04:43,238 cv_pipeline.train INFO Epoch 6/50 — loss=0.6885, val_f1=0.2969, val_iou=0.1752 (32.2s)
+2026-05-04 11:04:43,462 cv_pipeline.train INFO New best model at epoch 6 — val_f1=0.2969.
+2026-05-04 11:05:15,441 cv_pipeline.train INFO Epoch 7/50 — loss=0.6750, val_f1=0.3379, val_iou=0.2041 (32.0s)
+2026-05-04 11:05:15,759 cv_pipeline.train INFO New best model at epoch 7 — val_f1=0.3379.
+2026-05-04 11:05:47,865 cv_pipeline.train INFO Epoch 8/50 — loss=0.6635, val_f1=0.3591, val_iou=0.2195 (32.1s)
+2026-05-04 11:05:48,148 cv_pipeline.train INFO New best model at epoch 8 — val_f1=0.3591.
+2026-05-04 11:06:20,289 cv_pipeline.train INFO Epoch 9/50 — loss=0.6553, val_f1=0.3835, val_iou=0.2379 (32.1s)
+2026-05-04 11:06:20,651 cv_pipeline.train INFO New best model at epoch 9 — val_f1=0.3835.
+2026-05-04 11:06:53,537 cv_pipeline.train INFO Epoch 10/50 — loss=0.6489, val_f1=0.3881, val_iou=0.2414 (32.9s)
+2026-05-04 11:06:53,790 cv_pipeline.train INFO New best model at epoch 10 — val_f1=0.3881.
+2026-05-04 11:07:26,193 cv_pipeline.train INFO Epoch 11/50 — loss=0.6413, val_f1=0.4090, val_iou=0.2577 (32.4s)
+2026-05-04 11:07:26,489 cv_pipeline.train INFO New best model at epoch 11 — val_f1=0.4090.
+2026-05-04 11:07:59,300 cv_pipeline.train INFO Epoch 12/50 — loss=0.6349, val_f1=0.4076, val_iou=0.2566 (32.8s)
+2026-05-04 11:08:32,123 cv_pipeline.train INFO Epoch 13/50 — loss=0.6287, val_f1=0.4067, val_iou=0.2559 (32.8s)
+2026-05-04 11:09:04,698 cv_pipeline.train INFO Epoch 14/50 — loss=0.6233, val_f1=0.4092, val_iou=0.2579 (32.6s)
+2026-05-04 11:09:05,185 cv_pipeline.train INFO New best model at epoch 14 — val_f1=0.4092.
+2026-05-04 11:09:38,140 cv_pipeline.train INFO Epoch 15/50 — loss=0.6177, val_f1=0.4234, val_iou=0.2693 (33.0s)
+2026-05-04 11:09:38,662 cv_pipeline.train INFO New best model at epoch 15 — val_f1=0.4234.
+2026-05-04 11:10:11,509 cv_pipeline.train INFO Epoch 16/50 — loss=0.6126, val_f1=0.4124, val_iou=0.2605 (32.8s)
+2026-05-04 11:10:44,309 cv_pipeline.train INFO Epoch 17/50 — loss=0.6074, val_f1=0.4240, val_iou=0.2698 (32.8s)
+2026-05-04 11:10:44,722 cv_pipeline.train INFO New best model at epoch 17 — val_f1=0.4240.
+2026-05-04 11:11:17,077 cv_pipeline.train INFO Epoch 18/50 — loss=0.6023, val_f1=0.4276, val_iou=0.2726 (32.4s)
+2026-05-04 11:11:17,557 cv_pipeline.train INFO New best model at epoch 18 — val_f1=0.4276.
+2026-05-04 11:11:50,575 cv_pipeline.train INFO Epoch 19/50 — loss=0.5977, val_f1=0.4286, val_iou=0.2735 (33.0s)
+2026-05-04 11:11:50,914 cv_pipeline.train INFO New best model at epoch 19 — val_f1=0.4286.
+2026-05-04 11:12:23,789 cv_pipeline.train INFO Epoch 20/50 — loss=0.5925, val_f1=0.4342, val_iou=0.2782 (32.9s)
+2026-05-04 11:12:24,199 cv_pipeline.train INFO New best model at epoch 20 — val_f1=0.4342.
+2026-05-04 11:12:57,106 cv_pipeline.train INFO Epoch 21/50 — loss=0.5886, val_f1=0.4374, val_iou=0.2809 (32.9s)
+2026-05-04 11:12:57,344 cv_pipeline.train INFO New best model at epoch 21 — val_f1=0.4374.
+2026-05-04 11:13:26,192 cv_pipeline.train INFO Epoch 22/50 — loss=0.5836, val_f1=0.4416, val_iou=0.2844 (28.8s)
+2026-05-04 11:13:26,429 cv_pipeline.train INFO New best model at epoch 22 — val_f1=0.4416.
+2026-05-04 11:13:59,267 cv_pipeline.train INFO Epoch 23/50 — loss=0.5782, val_f1=0.4478, val_iou=0.2895 (32.8s)
+2026-05-04 11:13:59,800 cv_pipeline.train INFO New best model at epoch 23 — val_f1=0.4478.
+2026-05-04 11:14:33,416 cv_pipeline.train INFO Epoch 24/50 — loss=0.5741, val_f1=0.4465, val_iou=0.2884 (33.6s)
+2026-05-04 11:15:06,498 cv_pipeline.train INFO Epoch 25/50 — loss=0.5700, val_f1=0.4430, val_iou=0.2855 (33.1s)
+2026-05-04 11:15:39,692 cv_pipeline.train INFO Epoch 26/50 — loss=0.5657, val_f1=0.4441, val_iou=0.2863 (33.2s)
+2026-05-04 11:16:12,045 cv_pipeline.train INFO Epoch 27/50 — loss=0.5615, val_f1=0.4493, val_iou=0.2908 (32.4s)
+2026-05-04 11:16:12,326 cv_pipeline.train INFO New best model at epoch 27 — val_f1=0.4493.
+2026-05-04 11:16:45,232 cv_pipeline.train INFO Epoch 28/50 — loss=0.5571, val_f1=0.4549, val_iou=0.2953 (32.9s)
+2026-05-04 11:16:45,746 cv_pipeline.train INFO New best model at epoch 28 — val_f1=0.4549.
+2026-05-04 11:17:18,386 cv_pipeline.train INFO Epoch 29/50 — loss=0.5525, val_f1=0.4568, val_iou=0.2970 (32.6s)
+2026-05-04 11:17:18,717 cv_pipeline.train INFO New best model at epoch 29 — val_f1=0.4568.
+2026-05-04 11:17:51,931 cv_pipeline.train INFO Epoch 30/50 — loss=0.5491, val_f1=0.4542, val_iou=0.2947 (33.2s)
+2026-05-04 11:18:24,581 cv_pipeline.train INFO Epoch 31/50 — loss=0.5444, val_f1=0.4606, val_iou=0.3001 (32.6s)
+2026-05-04 11:18:24,931 cv_pipeline.train INFO New best model at epoch 31 — val_f1=0.4606.
+2026-05-04 11:18:58,151 cv_pipeline.train INFO Epoch 32/50 — loss=0.5405, val_f1=0.4706, val_iou=0.3086 (33.2s)
+2026-05-04 11:18:58,653 cv_pipeline.train INFO New best model at epoch 32 — val_f1=0.4706.
+2026-05-04 11:19:32,346 cv_pipeline.train INFO Epoch 33/50 — loss=0.5353, val_f1=0.4681, val_iou=0.3066 (33.7s)
+2026-05-04 11:20:05,787 cv_pipeline.train INFO Epoch 34/50 — loss=0.5319, val_f1=0.4685, val_iou=0.3069 (33.4s)
+2026-05-04 11:20:38,916 cv_pipeline.train INFO Epoch 35/50 — loss=0.5272, val_f1=0.4801, val_iou=0.3167 (33.1s)
+2026-05-04 11:20:39,273 cv_pipeline.train INFO New best model at epoch 35 — val_f1=0.4801.
+2026-05-04 11:21:12,356 cv_pipeline.train INFO Epoch 36/50 — loss=0.5242, val_f1=0.4864, val_iou=0.3223 (33.1s)
+2026-05-04 11:21:12,657 cv_pipeline.train INFO New best model at epoch 36 — val_f1=0.4864.
+2026-05-04 11:21:45,616 cv_pipeline.train INFO Epoch 37/50 — loss=0.5196, val_f1=0.4768, val_iou=0.3138 (33.0s)
+2026-05-04 11:22:18,994 cv_pipeline.train INFO Epoch 38/50 — loss=0.5165, val_f1=0.4806, val_iou=0.3171 (33.4s)
+2026-05-04 11:22:52,419 cv_pipeline.train INFO Epoch 39/50 — loss=0.5119, val_f1=0.4916, val_iou=0.3267 (33.4s)
+2026-05-04 11:22:52,842 cv_pipeline.train INFO New best model at epoch 39 — val_f1=0.4916.
+2026-05-04 11:23:26,539 cv_pipeline.train INFO Epoch 40/50 — loss=0.5079, val_f1=0.4887, val_iou=0.3241 (33.7s)
+2026-05-04 11:24:00,917 cv_pipeline.train INFO Epoch 41/50 — loss=0.5039, val_f1=0.4949, val_iou=0.3295 (34.4s)
+2026-05-04 11:24:01,372 cv_pipeline.train INFO New best model at epoch 41 — val_f1=0.4949.
+2026-05-04 11:24:35,459 cv_pipeline.train INFO Epoch 42/50 — loss=0.5002, val_f1=0.4963, val_iou=0.3307 (34.1s)
+2026-05-04 11:24:36,010 cv_pipeline.train INFO New best model at epoch 42 — val_f1=0.4963.
+2026-05-04 11:25:09,251 cv_pipeline.train INFO Epoch 43/50 — loss=0.4944, val_f1=0.4977, val_iou=0.3320 (33.2s)
+2026-05-04 11:25:09,788 cv_pipeline.train INFO New best model at epoch 43 — val_f1=0.4977.
+2026-05-04 11:25:43,466 cv_pipeline.train INFO Epoch 44/50 — loss=0.4913, val_f1=0.5134, val_iou=0.3459 (33.7s)
+2026-05-04 11:25:44,021 cv_pipeline.train INFO New best model at epoch 44 — val_f1=0.5134.
+2026-05-04 11:26:17,153 cv_pipeline.train INFO Epoch 45/50 — loss=0.4877, val_f1=0.4937, val_iou=0.3284 (33.1s)
+2026-05-04 11:26:50,108 cv_pipeline.train INFO Epoch 46/50 — loss=0.4824, val_f1=0.4968, val_iou=0.3313 (33.0s)
+2026-05-04 11:27:23,090 cv_pipeline.train INFO Epoch 47/50 — loss=0.4781, val_f1=0.5166, val_iou=0.3488 (33.0s)
+2026-05-04 11:27:23,630 cv_pipeline.train INFO New best model at epoch 47 — val_f1=0.5166.
+2026-05-04 11:27:56,811 cv_pipeline.train INFO Epoch 48/50 — loss=0.4773, val_f1=0.5062, val_iou=0.3396 (33.2s)
+2026-05-04 11:28:29,837 cv_pipeline.train INFO Epoch 49/50 — loss=0.4751, val_f1=0.4664, val_iou=0.3048 (33.0s)
+2026-05-04 11:29:02,183 cv_pipeline.train INFO Epoch 50/50 — loss=0.4680, val_f1=0.4811, val_iou=0.3176 (32.3s)
+2026-05-04 11:29:02,460 cv_pipeline.train INFO Best checkpoint saved to 'models/run_001/best_model.pth'.
+2026-05-04 11:29:02,461 cv_pipeline.train INFO Run metrics saved to 'models/run_001/run_metrics.json'.
+2026-05-04 11:29:02,462 cv_pipeline.train INFO Training complete — best val_f1=0.5166 at epoch 47.
