@@ -1,0 +1,26 @@
+[project]
+name = "cv-backend"
+version = "0.1.0"
+description = "Backend API for CV pipeline"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.0",
+  "pydantic-settings>=2.5.0",
+  "python-multipart>=0.0.9",
+  "cv-pipeline",
+  "sqlalchemy>=2.0",
+  "alembic>=1.13",
+  "psycopg2-binary>=2.9",
+  "asyncpg>=0.29",
+  "bcrypt>=4.0",
+  "slowapi>=0.1.9",
+  "pyjwt[crypto]>=2.8",
+  "authlib>=1.3",
+  "itsdangerous>=2.1",
+  "httpx>=0.27",
+  "prometheus-fastapi-instrumentator>=8.0.0",
+]
+
+[tool.uv.sources]
+cv-pipeline = { workspace = true }
