@@ -51,6 +51,7 @@ checkpoints/
 *.pt
 *.onnx
 *.ckpt
+*.safetensors
 models/**/*.pth
 ._model_check/
 
@@ -58,6 +59,13 @@ models/**/*.pth
 infra/airflow/logs/
 infra/airflow/plugins/
 *.log
+# ...but this one is a deliberate artefact: the training log for the recorded
+# run. Without this negation the *.log rule above swallows it silently.
+!models/run_001/training.log
+
+# --- Smoke-test images: 102 MB across 10 files, never tracked upstream.
+# Ship downsampled crops or a Release asset, not this.
+smoke_set/
 
 # --- Notebooks ---
 .ipynb_checkpoints/
