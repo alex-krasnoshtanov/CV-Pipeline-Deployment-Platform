@@ -1,0 +1,96 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-6);
+  background: var(--color-bg);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-8);
+  animation: fadeIn 0.35s ease forwards;
+}
+
+.header {
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- tab toggle ---------- */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  text-align: center;
+}
+
+.tab:not(:last-child) {
+  border-right: 1px solid var(--color-border);
+}
+
+.tab:hover {
+  background: var(--color-surface-2);
+}
+
+.tabActive {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.tabActive:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ---------- form ---------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: var(--space-3) var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.error {
+  margin-bottom: var(--space-4);
+}
