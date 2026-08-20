@@ -1,0 +1,177 @@
+/* Layout + chrome for the live operational charts. Card colours/borders come
+   from the global `card` class; this module only adds layout and small bits. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.ranges {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.rangeActive {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .wide { grid-column: auto; }
+}
+
+.chartCard {
+  padding: 1rem;
+}
+
+.chartHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.chartTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.legend {
+  display: inline-flex;
+  gap: 0.75rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.empty {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.85rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.note {
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+.note p {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted, #6b7280);
+}
+
+.note code {
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
+.toolbarRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.runMsg {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.driftHead {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.badgeOk {
+  background: rgba(34, 197, 94, 0.13);
+  color: #16a34a;
+}
+
+.badgeAlert {
+  background: rgba(239, 68, 68, 0.13);
+  color: #dc2626;
+}
+
+.badgeNeutral {
+  background: var(--color-surface-2, #f0f1f3);
+  color: var(--text-muted, #6b7280);
+}
+
+.badgeValue {
+  font-size: 0.72rem;
+  color: var(--text-muted, #6b7280);
+}
