@@ -13,6 +13,10 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          printf '%s\n' "$PR_TITLE" | grep -qE '^(feat|fix|hotfix|docs|chore|test|style|refactor|ci)\(#[0-9]+\): .+' \
-            || (echo "PR title does not match required format: type(#ticket-id): description" && exit 1)
+          # The group repository required a ticket reference, e.g. feat(#123).
+          # There is no issue tracker behind this repository, so the scope is
+          # optional here: "feat: description" and "feat(api): description"
+          # both pass. Matches what commitizen enforces locally via pre-commit.
+          printf '%s\n' "$PR_TITLE" | grep -qE '^(feat|fix|hotfix|docs|chore|test|style|refactor|ci|build|perf)(\([^)]+\))?!?: .+' \
+            || (echo "PR title must look like: type(optional-scope): description" && exit 1)
 

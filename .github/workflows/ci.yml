@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Lint and test (Python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # setup-uv no longer publishes moving major tags: pinning to @v10 fails.
+      # Astral removed them deliberately after the tj-actions compromise, so the
+      # full immutable tag is the only supported form.
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      # uv reads .python-version and installs the interpreter itself, so
+      # actions/setup-python is not needed.
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Ruff (lint)
+        run: uv run ruff check .
+
+      - name: Ruff (format)
+        run: uv run ruff format --check .
+
+      - name: Tests
+        env:
+          # Dummy values. The app fails loudly when these are unset, which is
+          # the intended behaviour - CI supplies throwaway ones.
+          API_KEY: ci-test-key
+          ADMIN_API_KEY: ci-test-admin-key
+          DB_URL: postgresql+asyncpg://ci:ci@localhost:5432/ci
+        run: |
+          uv run pytest \
+            --cov=cv_pipeline \
+            --cov=api \
+            --cov-report=term-missing \
+            --cov-fail-under=85 \
+            -m unit \
+            -v
+
+  frontend:
+    name: Lint, test and build (frontend)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/frontend/package-lock.json
+
+      - run: npm ci
+      - run: npx eslint src/
+      - run: npm run test:ci
+      - run: npm run build

@@ -1,5 +1,13 @@
 name: Docs
 
+# Builds the Sphinx documentation on every change that could affect it.
+#
+# The GitHub Pages deploy job from the group repository is deliberately not
+# carried over: Pages on a private repository needs a paid plan, so the job
+# would fail on every run. Re-enable it after this repository goes public by
+# turning on Pages in the settings and restoring a deploy job that consumes the
+# artefact uploaded below.
+
 on:
   push:
     branches: [main]
@@ -21,40 +29,25 @@ on:
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
-# Serialize Pages deploys: queue newer runs instead of cancelling in-flight ones.
-# cancel-in-progress: false prevents the "higher priority waiting request" error
-# that fires when back-to-back merges race to deploy the same Pages environment.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
-  # Build on every push + PR.
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11.9"
+      - uses: actions/checkout@v7
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v10.0.1
         with:
-          version: "0.5.20"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
 
+      # The docs group pulls sphinx, autoapi, furo and myst-parser. autoapi
+      # reads source statically rather than importing it, so torch and fastapi
+      # are never loaded at build time.
       - name: Install dependencies
-        # docs group pulls sphinx + autoapi + furo + myst-parser.
-        # Main package sync also picks up cv_pipeline + api for
-        # autoapi's static parser (it reads source, doesn't import,
-        # so torch/fastapi are not actually loaded at build time).
         run: uv sync --group docs
 
       - name: Generate OpenAPI Markdown
@@ -64,22 +57,9 @@ jobs:
         working-directory: docs
         run: make html
 
-      - name: Upload build artefact
-        # Only upload on main — PRs just need build-to-pass.
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload built site
+        uses: actions/upload-artifact@v5
         with:
+          name: docs-html
           path: docs/build/html
-
-  # Deploy only from main.
-  deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          retention-days: 7
