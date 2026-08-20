@@ -1,0 +1,28 @@
+# Line endings are normalised here rather than left to each contributor's
+# core.autocrlf setting. On a machine with core.autocrlf=false, CRLF would be
+# committed and every shell script would fail inside a Linux container with
+#   /usr/bin/env: 'bash\r': No such file or directory
+* text=auto
+
+# Run inside containers - must be LF in the working tree as well as in git.
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf
+*.mako text eol=lf
+
+# Windows-only helpers keep CRLF.
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Never transformed.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.whl binary
+*.pth binary
+*.pt binary
+*.onnx binary
+*.ckpt binary
+*.safetensors binary

@@ -59,9 +59,9 @@ models/**/*.pth
 infra/airflow/logs/
 infra/airflow/plugins/
 *.log
-# ...but this one is a deliberate artefact: the training log for the recorded
-# run. Without this negation the *.log rule above swallows it silently.
-!models/run_001/training.log
+# ...but training logs under models/ are deliberate artefacts. Without this
+# negation the *.log rule above swallows them silently.
+!models/**/training.log
 
 # --- Smoke-test images: 102 MB across 10 files, never tracked upstream.
 # Ship downsampled crops or a Release asset, not this.
