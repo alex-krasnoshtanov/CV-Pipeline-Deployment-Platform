@@ -1,0 +1,24 @@
+# Prometheus scrape config TEMPLATE.
+#
+# __BACKEND_TARGET__ and __SCRAPE_SCHEME__ are substituted at container start by
+# docker-entrypoint.sh from the BACKEND_TARGET / SCRAPE_SCHEME env vars. This is
+# what lets ONE image serve local, on-prem (Portainer) and cloud (ACA): only the
+# backend address and scheme differ per environment, never the image.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # The FastAPI backend exposes Prometheus metrics at /metrics
+  # (prometheus-fastapi-instrumentator). This is the target the operational
+  # dashboard reads from.
+  - job_name: cv-backend
+    metrics_path: /metrics
+    scheme: "__SCRAPE_SCHEME__"
+    static_configs:
+      - targets: ["__BACKEND_TARGET__"]
+
+  # Prometheus scraping itself: a free liveness signal for the monitoring stack.
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

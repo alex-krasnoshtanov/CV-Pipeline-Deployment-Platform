@@ -1,0 +1,88 @@
+services:
+  backend:
+    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/backend:latest
+    environment:
+      MODEL_VERSION: ${MODEL_VERSION:-unet-v1}
+      CV_PIPELINE_CACHE_DIR: /models
+      DB_URL: postgresql+asyncpg://${POSTGRES_USER:-cvuser}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@db:5432/${POSTGRES_DB:-cvdb}
+      LOG_LEVEL: INFO
+      API_KEY: ${API_KEY}
+      ADMIN_API_KEY: ${ADMIN_API_KEY}
+      GITHUB_OAUTH_CLIENT_ID: ${GITHUB_OAUTH_CLIENT_ID:-}
+      GITHUB_OAUTH_CLIENT_SECRET: ${GITHUB_OAUTH_CLIENT_SECRET:-}
+      OAUTH_REDIRECT_URI: ${OAUTH_REDIRECT_URI:-http://<host>:2026/auth/github/callback}
+      FRONTEND_URL: ${FRONTEND_URL:-http://<host>:2027}
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY}
+      JWT_TTL_MIN: ${JWT_TTL_MIN:-60}
+      SESSION_SECRET: ${SESSION_SECRET}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://<host>:2027}
+      FEEDBACK_STORAGE_BACKEND: ${FEEDBACK_STORAGE_BACKEND:-blob}
+      FEEDBACK_STORAGE_BLOB_CONNECTION_STRING: ${FEEDBACK_STORAGE_BLOB_CONNECTION_STRING}
+      FEEDBACK_STORAGE_BLOB_CONTAINER: ${FEEDBACK_STORAGE_BLOB_CONTAINER}
+    ports:
+      - "2026:8000"
+    volumes:
+      - models:/models
+    depends_on:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+
+  frontend:
+    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/frontend:latest
+    ports:
+      - "2027:3000"
+    environment:
+      BACKEND_URL: http://backend:8000
+      # Operational dashboard reads time-series from Prometheus (server-side
+      # only; never exposed to the browser).
+      PROMETHEUS_URL: http://prometheus:9090
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cvdb}
+      POSTGRES_USER: ${POSTGRES_USER:-cvuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "2028:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cvuser} -d ${POSTGRES_DB:-cvdb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Operational monitoring. Pulls the templated Prometheus image built by CD and
+  # scrapes the backend's /metrics. CD pins the :latest tag to the commit SHA on
+  # deploy (same mechanism as backend/frontend). Same image as local and cloud;
+  # only BACKEND_TARGET / SCRAPE_SCHEME differ. Exposed on 2029 for the demo
+  # screen; the frontend reaches it internally by service name on the stack net.
+  prometheus:
+    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/prometheus:latest
+    environment:
+      BACKEND_TARGET: backend:8000
+      SCRAPE_SCHEME: http
+    ports:
+      - "2029:9090"
+    volumes:
+      - prometheus_data:/prometheus
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  models:
+  prometheus_data:
+  postgres_data:
