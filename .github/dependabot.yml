@@ -1,0 +1,80 @@
+version: 2
+
+# Grouping is the important part. Ungrouped weekly updates across five
+# ecosystems produce a dozen open PRs that all conflict with each other on the
+# lockfiles as soon as one merges. One grouped PR per ecosystem per month
+# merges cleanly and is actually reviewable.
+#
+# Minor and patch bumps are batched. Majors are left ungrouped on purpose so
+# they arrive individually and get read properly.
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # uv workspace root: cv-pipeline + backend + workspace tooling.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    groups:
+      workspace-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      # torch/torchvision resolve from the explicit CPU wheel index and are
+      # pinned by that index's release cadence, not PyPI's. Let them move
+      # deliberately rather than on a monthly bump.
+      - dependency-name: "torch"
+      - dependency-name: "torchvision"
+
+  # Airflow has its own lock: its constraints conflict with the workspace's.
+  - package-ecosystem: "uv"
+    directory: "/infra/airflow"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    groups:
+      airflow-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "uv"
+    directory: "/scripts/azure"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    groups:
+      azure-scripts-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/apps/frontend"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    groups:
+      frontend-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "docker"
+    directories:
+      - "/apps/backend"
+      - "/apps/frontend"
+      - "/infra/monitoring/prometheus"
+      - "/infra/airflow"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    groups:
+      base-images:
+        patterns: ["*"]
