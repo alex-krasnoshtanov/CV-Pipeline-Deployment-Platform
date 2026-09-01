@@ -1,8 +1,8 @@
 # Local Deployment
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
+> **⚠️ Historical design document (2026-04-17).**
 > Current architecture lives in [`system.md`](system.md), [`deployment.md`](deployment.md), and [`mlops.md`](mlops.md); refer to those for the state of `main`.
-> This draft predates work that has since shipped: the frontend migrated from **Streamlit** to **Next.js** (port 3000) on 2026-05-30; pipeline orchestration is implemented as **Airflow DAGs** in `infra/airflow/dags/` (running Azure ML training jobs), not an "Azure ML pipeline"; and confidence/drift monitoring shipped on `main` (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The component labels and ✅ Built / 🟡 Planned statuses below reflect the original Sprint-1 design, not current `main`.
+> This is the original design, kept because the reasoning behind it is still the reasoning the system runs on. Several details changed during implementation: the frontend moved from **Streamlit** to **Next.js** (port 3000); orchestration is **Airflow DAGs** in `infra/airflow/dags/` submitting Azure ML jobs, not an "Azure ML pipeline"; and confidence/drift monitoring shipped (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The ✅ Built / 🟡 Planned labels below reflect the design as drafted, not the final state.
 
 > **Scope:** How the three containers (backend, frontend, database) run on a developer
 > machine or edge device, with the same images that run on-premise and in the cloud.
@@ -18,7 +18,7 @@
 > 12 GB through RTX 5070 12 GB) and ARM64 edge devices (Jetson Orin Nano 8 GB). Apple
 > Silicon and CPU-only machines are supported through fall-back paths.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 
@@ -293,9 +293,8 @@ the kernel starts swapping. `BATCH_SIZE` is an env var for this reason.
   weights file. It does not call a cloud endpoint, deliberately — so the developer can
   work offline and so the cloud is not hit on every test run.
 
-## How this supports the ILO 9.5A evidence
-
-| Rubric item | Where it is visible |
+## Capability coverage
+| Capability | Where it is visible |
 |---|---|
 | Deploy an inference pipeline using industry-standard tools | Docker Compose, 3-container stack |
 | Interact with a deployed model locally | `localhost:8501` frontend, `localhost:8000/docs` API |

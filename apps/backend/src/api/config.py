@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     # Logging
     log_level: str = "INFO"
 
-    # Monitoring thresholds (task_328 §13)
+    # Monitoring thresholds (specification §13)
     alert_confidence_min: float = 0.60
     alert_low_conf_fraction: float = 0.20
     alert_latency_p95_ms: int = 5000

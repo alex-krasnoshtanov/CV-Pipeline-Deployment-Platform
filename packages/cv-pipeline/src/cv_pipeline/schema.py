@@ -2,7 +2,7 @@
 
 Defines the JSON-serializable dataclasses that represent inference results
 and error responses. These structures implement the contract from the
-CV Pipeline Specification (task_328), sections 4 and 6.
+CV Pipeline Specification, sections 4 and 6.
 
 All consumers of the pipeline — FastAPI, CLI, Azure ML jobs — receive
 these same structures.

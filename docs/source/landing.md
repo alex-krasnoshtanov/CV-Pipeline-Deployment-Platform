@@ -2,7 +2,7 @@
 
 Computer vision pipeline for plant organ segmentation and root tip
 detection on *Arabidopsis thaliana* seedling images, built as the
-Block D deliverable of the BUas Applied Data Science & AI programme.
+Built as a university group project in applied data science and AI.
 
 This documentation is organised along the
 [Diátaxis framework](https://diataxis.fr/): four pages for four
@@ -38,13 +38,13 @@ The code ships in three forms, all driven by the same package:
 - **CLI:** `cv-pipeline infer --image plate.png --output results/`
 - **HTTP API:** `POST /infer` on the FastAPI backend (X-API-Key auth).
 
-Full contract: see the API contract specification (coursework, not published here) §4.
+Full contract: see the CV pipeline specification §4.
 
 ## Current scope
 
-| Sprint | Delivered |
+| Phase | Delivered |
 |---|---|
-| 1 | Package plan, architecture diagrams, API spec (task_328) |
+| 1 | Package plan, architecture diagrams, API specification |
 | 2 | cv-pipeline package (U-Net + landmarks), FastAPI service, CLI, Docker, local deploy |
 | 3 | Azure ML data pipelines + cloud training (Airflow DAGs running Azure ML jobs) |
 | 4 | Azure deployment + monitoring + feedback loop |

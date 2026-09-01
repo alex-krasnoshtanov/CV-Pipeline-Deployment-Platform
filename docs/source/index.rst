@@ -21,6 +21,7 @@ navigation tree below.
    tutorials/quickstart
    how-to/index
    reference/index
+   reference/specification
    explanation/index
 
 

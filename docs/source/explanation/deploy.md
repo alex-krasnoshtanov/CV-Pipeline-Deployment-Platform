@@ -9,7 +9,7 @@ The application is containerized and designed to run across multiple environment
    - Runs the backend, frontend, and a local PostgreSQL 16 database.
    - Ideal for rapid iteration and testing.
 
-2. **On-Premise (BUas Shared Server)**
+2. **On-Premise (shared university server)**
    - Deployed via Portainer.
    - Images are built by GitHub Actions and pushed to GHCR (GitHub Container Registry).
    - The Portainer agent pulls these images to run on the shared GPU-enabled servers.

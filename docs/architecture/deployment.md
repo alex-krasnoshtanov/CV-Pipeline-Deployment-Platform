@@ -9,7 +9,7 @@ flowchart LR
     ghcr["GHCR<br/>(GitHub Container Registry)"]
     
     subgraph OnPremise [On-Premise]
-        portainer["Portainer<br/>BUas Shared Server"]
+        portainer["Portainer<br/>Shared on-prem server"]
     end
     
     subgraph Cloud [Azure Cloud]

@@ -3,7 +3,7 @@
 How authentication and authorization work today, and where they're
 headed.
 
-## Sprint 2: shared X-API-Key
+## First iteration: shared X-API-Key
 
 Every endpoint except `/health` requires a valid `X-API-Key` HTTP
 header. The backend compares the incoming header to the `API_KEY`
@@ -29,7 +29,7 @@ precisely could guess the key one byte at a time ("a...": 120 µs,
 "b...": 125 µs, so "b" is correct). `hmac.compare_digest` always
 compares all bytes in constant time.
 
-At our threat model (student project, LAN deployment) this is
+At this threat model (small-team project, LAN deployment) this is
 overkill — but it's a 5-line decision that matches industry
 standard and gets noticed by reviewers.
 
@@ -51,10 +51,10 @@ orchestrators — is more complex than the problem warrants.
 `/health` returns only the model version and serving mode, neither
 of which is sensitive.
 
-## Sprint 4: per-user keys with bcrypt
+## Current: per-user keys with bcrypt
 
-The Sprint 2 shared-key model doesn't scale to multiple researchers
-with different permissions. The task_328 §10.3 schema defines a
+The shared-key model doesn't scale to multiple researchers
+with different permissions. The specification §10.3 schema defines a
 `users` table:
 
 ```
@@ -62,7 +62,7 @@ users(id, email, api_key_hash, role, created_at, revoked_at)
 ```
 
 Where `api_key_hash` is a bcrypt hash of the key the user receives.
-The Sprint 4 migration replaces the hardcoded comparison in
+The migration replaces the hardcoded comparison in
 `api.auth.api_key.require_api_key` with:
 
 ```python
@@ -81,7 +81,7 @@ async def require_api_key(
 
 Every route that currently takes the dependency already receives
 the return value — today it's just the matched key string; in
-Sprint 4 it becomes the `User` instance, so role-based checks can
+it becomes the `User` instance, so role-based checks can
 happen at handler level.
 
 **This is a non-breaking migration.** No route handler has to be
@@ -95,8 +95,7 @@ Out of scope for Block D:
 - Rate limiting — relies on ingress (nginx / Azure Front Door) later.
 - HTTPS termination — handled by Traefik/Portainer on-prem, by
   Azure Container Apps ingress in cloud.
-- Audit logging of auth failures — deferred to App Insights in
-  Sprint 4.
+- Audit logging of auth failures — deferred to App Insights.
 - CSRF — we don't use cookies for auth; header-based auth is
   naturally CSRF-immune.
 
@@ -123,7 +122,7 @@ live in the non-committed `configs/env/.env`.
 
 ## Related contracts
 
-- Multi-user authentication requirement: project brief R9.
-- Users table schema: task_328 §10.3.
-- ILO 9.5A "multi-user auth and secure access" — Sprint 2 MVP
-  meets the letter, Sprint 4 closes the spirit.
+- Multi-user authentication requirement: R9.
+- Users table schema: specification §10.3.
+- Multi-user authentication and secure access
+  the shared key meets the letter; per-user keys close the spirit.

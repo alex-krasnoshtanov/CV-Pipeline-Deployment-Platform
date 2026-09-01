@@ -1,6 +1,6 @@
 """Training pipeline DAG — submits HADES model training to Azure ML.
 
-Covers Creative Brief Sprint 3 requirements:
+Requirements covered:
   1. Ingest data from versioned data assets
   2. Preprocess the data
   3. Train a model
@@ -12,7 +12,7 @@ reads the winning lr and batch_size from the Airflow Variable
 'hades_best_hparams'. If the Variable is absent or malformed, it
 falls back to the hardcoded defaults below.
 
-Schedule: Every Monday at 2 AM (ILO 9.4B — automated pipeline).
+Schedule: Every Monday at 2 AM.
 Steps 1–5 execute on the Azure ML compute cluster (lambda-0).
 Airflow is the orchestrator — it submits the job and monitors it.
 """
@@ -57,7 +57,7 @@ local_tz = pendulum.timezone("Europe/Amsterdam")
     schedule="0 2 * * 1",
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["training", "hades", "ilo-9.4"],
+    tags=["training", "hades", "data-pipeline"],
 )
 def data_pipeline():
     """Submit HADES training job to Azure ML and monitor completion."""

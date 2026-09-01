@@ -51,7 +51,7 @@ local_tz = pendulum.timezone("Europe/Amsterdam")
     schedule=None,
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["feedback", "hades", "retraining", "ilo-9.5"],
+    tags=["feedback", "hades", "retraining"],
 )
 def feedback_to_raw_upload():
     """Stage ready feedback into a new raw-upload version and retrain."""
