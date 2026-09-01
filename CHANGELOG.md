@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-This repository was reassembled from the original four-person group repository
+This repository was reassembled from the original five-person group repository
 for public release. History was rewritten rather than carried over, so it does
 not preserve the group project's commit log — see
 [Attribution](README.md#attribution) for authorship.
@@ -41,6 +41,14 @@ not preserve the group project's commit log — see
   assessment rather than the system.
 - The group repository's deploy pipeline, which targeted a campus IP and a
   provisioned cloud environment that no longer exist.
+
+### Security
+
+- Commit history was rewritten with `git-filter-repo` to remove the personal
+  and institutional identifiers listed above from every historical commit, not
+  just from the current tree. The tip tree is unchanged by the rewrite; only
+  ancestor commits differ. No live credential was ever committed to this
+  repository.
 
 ### Known gaps
 
