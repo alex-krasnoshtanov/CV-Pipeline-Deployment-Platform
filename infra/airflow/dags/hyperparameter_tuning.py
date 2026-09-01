@@ -1,7 +1,7 @@
 """Hyperparameter tuning DAG — submits a sweep job to Azure ML.
 
-Covers Creative Brief Sprint 3 requirement:
-  "Create a pipeline for automated hyperparameter tuning." (ILO 8.9B)
+Requirement covered:
+  "Create a pipeline for automated hyperparameter tuning."
 
 After the sweep completes, the winning hyperparameters are extracted
 and written to the Airflow Variable 'hades_best_hparams'. The training
@@ -47,7 +47,7 @@ TRAINING_CODE_DIR = str(Path(__file__).parent.parent / "training_code")
     schedule=None,
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["tuning", "hades", "ilo-8.9"],
+    tags=["tuning", "hades", "hpo"],
 )
 def hyperparameter_tuning():
     """Submit a sweep job to Azure ML to find optimal hyperparameters."""

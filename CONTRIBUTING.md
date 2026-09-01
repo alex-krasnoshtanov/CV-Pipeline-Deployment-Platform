@@ -1,126 +1,120 @@
 # Contributing
 
-This document captures the team's working agreements for the
-NPEC CV Pipeline project. It is the single source of truth for
-PR conventions, review expectations, and branching rules.
+This document covers the conventions this repository is built on: commit and
+PR format, branching, and what "done" means before review.
 
-## PR review SLA
+> Note on reuse: this repository does not carry an open-source license, because
+> it is jointly authored and I hold copyright only in my own contributions. See
+> [License and reuse](README.md#license-and-reuse). Contributions and issues are
+> still welcome — that restriction is about redistribution, not participation.
 
-The team has agreed on the following review service-level agreement
-to keep delivery flowing and avoid the "stale PR" pattern observed
-in Sprint 2 retrospective (action item #2314):
+## Getting set up
 
-- **Target turnaround:** 24 business hours (Mon-Fri, 09:00-18:00 CET)
-  between PR opening and first reviewer response.
-- **Reviewer assignment:** the PR author requests a review at PR
-  creation time. Default rotation by area:
-  - Backend / API -> Filipp or Danil
-  - Frontend -> Maksym
-  - Infrastructure / Docker / CI / Deploy -> Alex
-  - Tests / docs -> Marin or Danil
-- **What counts as a response:** an approval, a "request changes"
-  review, or an explicit comment that the reviewer has started the
-  review and needs more time. Silence does not count.
-- **Escalation:** if 24 business hours pass with no response, the
-  author pings the team channel. No blame -- this is just a signal
-  to pull in a backup reviewer.
-- **Tracking:** breach patterns are noted in the next sprint retro.
-  Misses are signals about workload and dependencies, not faults of
-  individual reviewers.
-
-## PR title format
-
-PR titles must follow the conventional-commits pattern:
-
-```
-type(#issue): short imperative description
+```bash
+uv sync                 # installs the workspace, including dev tooling
+uv run pre-commit install
+cd apps/frontend && npm ci
 ```
 
-Allowed `type` values: `feat`, `fix`, `hotfix`, `docs`, `chore`,
-`test`, `style`, `refactor`, `ci`.
+The workspace resolves CPU PyTorch wheels. If you need a CUDA build for local
+training, override the index at sync time rather than editing `pyproject.toml` —
+see the comment in that file for why the default is CPU.
 
-Examples:
+## Definition of done
 
-- `feat(#1232): add MLflow-logged training script`
-- `fix(#473): correct em-dash mojibake in docs`
-- `docs(#2314): document PR review SLA`
+A change is done when all of the following hold. Apply this bar before
+requesting review.
 
-The `pr-title` GitHub Action enforces this pattern at PR creation.
+- CI is green: lint, format, tests, and the image build.
+- Tests cover the changed behaviour. The suite gates at 85% line coverage.
+- Documentation is updated if behaviour or configuration changed.
+- The PR description explains *why*, not just what.
+- One concern per PR. Unrelated changes go in their own branch.
+- No secrets, credentials, personal identifiers, or internal hostnames.
 
-## Branch naming
-
-Use the pattern `type/issue-short-slug`:
-
-- `feat/1232-mlflow-training`
-- `fix/473-em-dash-mojibake`
-- `docs/2314-pr-review-sla`
+That last item is not boilerplate. This repository was extracted from a
+university group project, and leaked identifiers — a student number in a
+download URL, an internal hostname in a docstring — were the single most
+common thing that had to be cleaned up.
 
 ## Commit messages
 
-Conventional Commits, same `type(#issue): description` shape as PR
-titles. `commitizen` is configured in `pyproject.toml`; run
-`uv run cz commit` if you want guided commit creation.
+[Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+type(scope): short imperative description
+```
+
+Allowed types: `feat`, `fix`, `docs`, `chore`, `test`, `style`, `refactor`,
+`ci`, `perf`, `build`.
+
+`commitizen` is configured in `pyproject.toml`; `uv run cz commit` gives a
+guided prompt if you want one.
+
+## PR titles
+
+PR titles follow the same pattern and are enforced by the `pr-title` workflow,
+which fails the check rather than the build.
+
+```
+feat(backend): add drift detection endpoint
+fix(cv-pipeline): handle RGBA input without silent conversion
+docs: document the model version registry
+```
+
+## Branch naming
+
+```
+type/short-slug
+```
+
+For example `feat/drift-endpoint`, `fix/rgba-input`, `docs/weights-registry`.
+Include an issue number when one exists: `fix/473-rgba-input`.
 
 ## Workflow
 
-We use trunk-based development:
+Trunk-based development against `main`:
 
 1. `git checkout main && git pull`
-2. `git checkout -b type/issue-short-slug`
-3. Make changes, run `uv run ruff format` + `uv run ruff check` +
-   `uv run pytest` locally.
+2. `git checkout -b type/short-slug`
+3. Make the change. Run the local gate:
+   ```bash
+   uv run ruff format .
+   uv run ruff check .
+   uv run pytest -m unit
+   ```
 4. `git push -u origin <branch>` and open a PR.
-5. Request review from the area owner above.
-6. Address feedback in additional commits on the same branch.
-7. Squash-merge to `main` once approved + CI green.
+5. Address feedback in additional commits on the same branch.
+6. Squash-merge once CI is green.
 
-Branches are deleted automatically after merge.
+`main` is protected. Branches are deleted after merge.
 
-## Self-review checklist
+## Testing
 
-Before requesting review, the author confirms:
+```bash
+uv run pytest -m unit                     # fast, no external dependencies
+uv run pytest -m integration              # requires a running stack
+cd apps/frontend && npm run test:ci       # vitest
+```
 
-- [ ] PR title matches `type(#issue): description`
-- [ ] All CI checks green (lint, test, docs build)
-- [ ] No unrelated changes mixed in (one concern per PR)
-- [ ] Description explains the why, links the issue, lists any
-  follow-up work
-- [ ] Tests added or updated for new behaviour
-- [ ] Docs updated if the change affects user-facing behaviour
+Unit tests must not require a database, a network call, or model weights. If a
+test needs one of those, mark it `integration`.
 
-## Issue references
+## Documentation
 
-Every PR closes or relates to an Azure DevOps work item. Use the
-`#NNNN` form in the title and again in the body so the link is
-unambiguous.
+Sphinx sources live in `docs/source/` and follow the
+[Diátaxis](https://diataxis.fr/) split — tutorials, how-to, reference,
+explanation. Put a new page in the quadrant that matches its purpose rather
+than the component it describes.
 
-## Board hygiene
+The API reference is generated; do not hand-edit
+`docs/source/reference/backend-api.md`. Regenerate it with:
 
-Sprint 2 retrospective identified that the Azure DevOps board was
-not actively maintained during the sprint, making blockers and
-progress invisible until standup. Action item #2312 sets the
-following expectation for Sprint 3 and beyond:
+```bash
+uv run scripts/generate_openapi_docs.py
+```
 
-- **Daily state update.** Each member moves their assigned tasks
-  through `To Do` -> `Doing` -> `Done` on the same day the work
-  changes phase. Aim for at least one board interaction per
-  working day, even if it is just to confirm a task is still in
-  progress.
-- **Blocker comments.** If a task is stuck for more than half a
-  day, add a comment on the work item describing the blocker and
-  who or what is needed to unblock it. Do not wait for standup.
-- **Standup board review.** The first five minutes of every daily
-  standup is spent walking the Sprint board together. We start
-  from the rightmost column (Done) and move left, so blockers in
-  Doing are surfaced before new work is picked up from To Do.
-- **End-of-sprint sweep.** On the last day of the sprint, the
-  Scrum Master verifies every parent Issue whose child Tasks are
-  all Done has itself been moved to Done. Open Issues with no
-  open Tasks are a board-hygiene defect.
-- **Tracking.** Adherence is reviewed in each sprint retro. The
-  metric we care about is "did blockers surface within a day of
-  appearing", not raw click counts.
-
-This protocol is also referenced from the Sprint 2 retro action
-item #2312 and applies to all five team members regardless of
-role.
+The [CV pipeline specification](docs/source/reference/specification.md) is the contract between
+the package and its consumers. Its section numbers are referenced from code
+comments and other documents, so sections are amended in place and never
+renumbered.

@@ -1,14 +1,14 @@
 # High-Level Component Architecture
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
+> **⚠️ Historical design document (2026-04-17).**
 > Current architecture lives in [`system.md`](system.md), [`deployment.md`](deployment.md), and [`mlops.md`](mlops.md); refer to those for the state of `main`.
-> This draft predates work that has since shipped: the frontend migrated from **Streamlit** to **Next.js** (port 3000) on 2026-05-30; pipeline orchestration is implemented as **Airflow DAGs** in `infra/airflow/dags/` (running Azure ML training jobs), not an "Azure ML pipeline"; and confidence/drift monitoring shipped on `main` (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The component labels and ✅ Built / 🟡 Planned statuses below reflect the original Sprint-1 design, not current `main`.
+> This is the original design, kept because the reasoning behind it is still the reasoning the system runs on. Several details changed during implementation: the frontend moved from **Streamlit** to **Next.js** (port 3000); orchestration is **Airflow DAGs** in `infra/airflow/dags/` submitting Azure ML jobs, not an "Azure ML pipeline"; and confidence/drift monitoring shipped (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The ✅ Built / 🟡 Planned labels below reflect the design as drafted, not the final state.
 
 > **Scope:** Logical components of the CV pipeline deployment and how they talk to each other.
 > This view is environment-agnostic — local, on-premise, and cloud deployments all run the
 > same components. Per-environment deployment diagrams are tracked separately.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 

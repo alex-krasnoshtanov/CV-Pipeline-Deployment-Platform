@@ -55,7 +55,7 @@ local_tz = pendulum.timezone("Europe/Amsterdam")
     schedule=None,
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["preprocessing", "hades", "ilo-9.4"],
+    tags=["preprocessing", "hades"],
     params={"raw_version": "latest"},
 )
 def preprocessing_pipeline():

@@ -64,7 +64,7 @@ async def run_pipeline_inference(
     and concurrent /infer calls.
 
     Any ``ValidationError`` raised by the pipeline propagates upward;
-    the router maps it to an HTTP status via the task_328 §5 table.
+    the router maps it to an HTTP status via the specification §5 table.
 
     Args:
         image_path: Path to the validated image on disk.

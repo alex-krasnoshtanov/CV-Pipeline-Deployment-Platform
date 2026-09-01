@@ -1,7 +1,7 @@
 /**
  * Shared confidence thresholds and helpers.
  *
- * These thresholds mirror the cv-pipeline spec (task_328 section 13) and the
+ * These thresholds mirror the cv-pipeline specification (section 13) and the
  * backend monitoring alert rules, so the frontend tells the SAME story as the
  * Prometheus / Azure Monitor metrics: a viewer reading the UI sees the same
  * "good / watch / alert" boundaries the ops dashboards use.

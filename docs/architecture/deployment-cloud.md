@@ -1,7 +1,7 @@
 # Azure Cloud Deployment
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
-> This is the Sprint-1 design for the Azure production target. Current deployment state lives in [`deployment.md`](deployment.md): the backend and frontend are **deployed and Running on Azure Container Apps**, and on-prem Portainer is also live — see [`system.md`](system.md) and [`mlops.md`](mlops.md) for the rest.
+> **⚠️ Historical design document (2026-04-17).**
+> This is the original design for the Azure production target. Current deployment state lives in [`deployment.md`](deployment.md): the backend and frontend are **deployed and Running on Azure Container Apps**, and on-prem Portainer is also live — see [`system.md`](system.md) and [`mlops.md`](mlops.md) for the rest.
 > This draft also predates the frontend migration from **Streamlit** to **Next.js** (port 3000) on 2026-05-30, so the "Streamlit 1.33+" revision boxes below name the retired stack. The Azure-native services in the diagram (ACR, Azure ML endpoint, App Insights, Azure Monitor) remain **planned**, not built.
 
 > **Scope:** How the same three containers from local and on-prem run as managed
@@ -17,7 +17,7 @@
 > stays identical. Internal-only database stays identical. What changes is which
 > services run the pattern, and how scaling and deployment automation work.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 
@@ -160,7 +160,7 @@ flowchart TB
 | Azure ML workspace / model registry | 🟡 Planned | No AML workspace; zero `azure.ai.ml` imports in codebase |
 | Key Vault | 🟡 Planned | Secrets passed via GitHub environment secrets/vars; no Key Vault integration |
 | App Insights | 🟡 Planned | No App Insights SDK or instrumentation in `apps/backend/` |
-| Technical monitoring (Prometheus) | ✅ Built | `prometheus-fastapi-instrumentator` wired in `main.py`; `/metrics` exposes HTTP request rate, latency, error rate + `cv_inference_confidence` histogram (model-quality signal). Prometheus, not App Insights — same rubric coverage, no billable Azure service. |
+| Technical monitoring (Prometheus) | ✅ Built | `prometheus-fastapi-instrumentator` wired in `main.py`; `/metrics` exposes HTTP request rate, latency, error rate + `cv_inference_confidence` histogram (model-quality signal). Prometheus, not App Insights — same coverage, no billable Azure service. |
 | Azure Monitor custom metrics | 🟡 Planned | Not built |
 | Alerting + auto-rollback | 🟡 Planned | Not built |
 | Promotion gate (conditional model registration) | 🟡 Planned | Not built |
@@ -237,7 +237,7 @@ or days as confidence metrics prove it out. These cadences are not the same.
 | Secrets | Key Vault | Native Container Apps secret mounting; no app-code secrets |
 | Technical metrics | App Insights | Auto-instrumentation for FastAPI; near-zero setup |
 | Business metrics | Azure Monitor custom metrics | Backend logs `confidence`, `F1 drift` explicitly |
-| Ingress | Container Apps built-in | TLS auto-provisioned; custom domain supported; no separate gateway needed for Sprint 4 scope |
+| Ingress | Container Apps built-in | TLS auto-provisioned; custom domain supported; no separate gateway needed for the scope at the time |
 
 **Explicitly not chosen:**
 
@@ -251,7 +251,7 @@ or days as confidence metrics prove it out. These cadences are not the same.
   storage divergence across environments for no gain.
 - **Functions for inference.** Cold-start latency and GPU support are both worse than
   a managed endpoint with `min_replicas=1`.
-- **Front Door.** Nice-to-have for geo-distribution; not required for Sprint 4.
+- **Front Door.** Nice-to-have for geo-distribution; not required.
 
 ## The retraining loop closing
 
@@ -307,13 +307,13 @@ loses access simultaneously, which is the correct failure mode.
 - User feedback rate (flagged / total predictions)
 - F1 score computed nightly on feedback-corrected records
 
-The split matters because the free metrics cover ILO 9.5D "technical metrics" fully,
+The split matters because the free metrics cover the technical-metrics requirement fully,
 while the custom metrics cover "business metrics" and the drift detection that
 triggers auto-rollback. You want both; they do not substitute for each other.
 
 ## Cost control — sketch only
 
-Full analysis is ILO 4.4B and lives in a separate cost report. The diagram-level
+Full analysis lives in the separate cost analysis document. The diagram-level
 decisions that keep cost bounded:
 
 - **Scale-to-zero on frontend.** NPEC researchers do not use the tool 24/7. Off-hours
@@ -325,29 +325,28 @@ decisions that keep cost bounded:
 - **Azure ML endpoint on a single GPU VM.** Scale-up for heavy load is automatic
   but capped in the endpoint config.
 - **Log retention 30 days.** App Insights default is 90; dropping to 30 cuts storage
-  cost and is enough for Sprint 5 demo and post-mortem.
+  cost and is enough for the demo and post-mortem.
 
 ## What this diagram deliberately does not show
 
 - **VNet, private endpoints, NSGs.** A real production deployment would put the DB
-  behind a private endpoint and scope network access tightly. For Sprint 4 scope,
+  behind a private endpoint and scope network access tightly. For the scope at the time,
   Container Apps built-in access to Azure services through managed identity is
   sufficient; the diagram flags Postgres as "private endpoint" to nod at this
   without diagramming the full network layer.
 - **Front Door / WAF.** Not required for the brief.
 - **Disaster recovery, geo-replication, backup schedules.** Operational concerns
   beyond scope.
-- **Cost breakdown per service.** ILO 4.4B report.
+- **Cost breakdown per service.** Covered in the cost analysis.
 - **Exact Azure ML endpoint SKU.** Decision that depends on the Block B model's
-  inference profile and is tuned during Sprint 4.
+  inference profile and is tuned once real traffic exists.
 - **Training pipeline internals.** That is a separate diagram; here it appears only
   as the loop-closing producer.
 - **Individual GitHub Actions job steps.** CI/CD workflow files are where that
   detail lives.
 
-## How this supports ILO 9.5 evidence
-
-| Rubric item | Where it is visible |
+## Capability coverage
+| Capability | Where it is visible |
 |---|---|
 | Deploy registered models as endpoints (9.5C) | Azure ML managed endpoint box with model versions |
 | Model versioning and rollback (9.5C) | Two model deployments with traffic % on endpoint |
@@ -363,5 +362,5 @@ decisions that keep cost bounded:
 
 Mermaid inside markdown. When the deployment workflow or service selection changes,
 the corresponding box here changes along with the IaC (Bicep/Terraform) and the
-Azure DevOps runbook. These three must stay consistent — a change to one without
+operations runbook. These three must stay consistent — a change to one without
 the others means the diagram is lying.

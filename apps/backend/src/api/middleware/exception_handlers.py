@@ -1,7 +1,7 @@
 """Global exception handlers for the backend API.
 
 Ensures every unhandled exception reaches the client as a structured
-error body matching task_328 section 6, rather than FastAPI's default
+error body matching specification section 6, rather than FastAPI's default
 ``{"detail": "Internal Server Error"}``.
 
 Copilot instruction compliance: "Endpoints must handle missing or

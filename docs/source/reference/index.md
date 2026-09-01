@@ -68,16 +68,16 @@ Not auto-generated — these are human-curated specification documents:
 backend-api
 ```
 
-- **Response schema (task_328 §4):** Full JSON schema for `/infer` responses.
-- **Error codes (task_328 §5):** HTTP status mapping and `error_code`
+- **Response schema (specification §4):** Full JSON schema for `/infer` responses.
+- **Error codes (specification §5):** HTTP status mapping and `error_code`
   values — see {doc}`../explanation/error-codes` for a readable
   summary.
-- **Health contract (task_328 §12):** `status`, `model_loaded`,
+- **Health contract (specification §12):** `status`, `model_loaded`,
   `serving_mode` field semantics.
-- **Database schema (task_328 §10):** Target schema for Sprint 4.
+- **Database schema (specification §10):** Target schema.
 
 All four live in
-the API contract specification (coursework, not published here)
+the [CV pipeline specification](specification.md)
 in the repo. The Sphinx site reflects the code; the markdown spec
 reflects the contract. Both must agree.
 

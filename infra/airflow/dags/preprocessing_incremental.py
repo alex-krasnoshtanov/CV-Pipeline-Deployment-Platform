@@ -89,7 +89,7 @@ def _resolve_latest(ml_client, asset_name: str) -> str:
     schedule=None,
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["preprocessing", "hades", "incremental", "ilo-9.4"],
+    tags=["preprocessing", "hades", "incremental"],
     params={
         "raw_version": "latest",
         "train_version": "latest",

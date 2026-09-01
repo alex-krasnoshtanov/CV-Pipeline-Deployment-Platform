@@ -191,7 +191,7 @@ app = FastAPI(
     version=_pipeline_version,
     description=(
         "NPEC plant organ segmentation and root tip detection. "
-        "Implements CV Pipeline Specification task_328."
+        "Implements the CV Pipeline Specification."
     ),
     lifespan=lifespan,
 )

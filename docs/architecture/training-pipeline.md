@@ -1,8 +1,8 @@
 # Model Training Pipeline
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
+> **⚠️ Historical design document (2026-04-17).**
 > Current architecture lives in [`system.md`](system.md), [`deployment.md`](deployment.md), and [`mlops.md`](mlops.md); refer to those for the state of `main`.
-> This draft predates work that has since shipped: the frontend migrated from **Streamlit** to **Next.js** (port 3000) on 2026-05-30; pipeline orchestration is implemented as **Airflow DAGs** in `infra/airflow/dags/` (running Azure ML training jobs), not an "Azure ML pipeline"; and confidence/drift monitoring shipped on `main` (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The component labels and ✅ Built / 🟡 Planned statuses below reflect the original Sprint-1 design, not current `main`.
+> This is the original design, kept because the reasoning behind it is still the reasoning the system runs on. Several details changed during implementation: the frontend moved from **Streamlit** to **Next.js** (port 3000); orchestration is **Airflow DAGs** in `infra/airflow/dags/` submitting Azure ML jobs, not an "Azure ML pipeline"; and confidence/drift monitoring shipped (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The ✅ Built / 🟡 Planned labels below reflect the design as drafted, not the final state.
 
 > **Scope:** How versioned data assets become a registered, production-grade model.
 > Covers the three trigger sources, hyperparameter sweep, evaluation against a held-out
@@ -15,7 +15,7 @@
 > **Based on:** The `ResAttentionUNet` training code from Block B (`Task 5/train.py`),
 > adapted for orchestration, experiment tracking, and conditional registration.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 
@@ -158,13 +158,13 @@ flowchart LR
 
 Like the data pipeline, this is a single orchestrated workflow with three entry points.
 The three triggers map cleanly onto the project requirements: scheduled runs keep the
-model fresh (ILO 9.5D), new-data-version runs compound naturally with the data pipeline
+model fresh, new-data-version runs compound naturally with the data pipeline
 (data pipeline v3 finishing → training pipeline automatically consumes `train_v3`), and
 manual/feedback triggers handle the data-flywheel case where accumulated researcher
 feedback makes retraining worthwhile before the weekly cadence would otherwise fire.
 
 The key architectural choice is that **hyperparameter sweep is part of the pipeline,
-not a separate pipeline**. ILO 8.9B bundles tuning and conditional registration, and
+not a separate pipeline**. Tuning and conditional registration belong together, and
 in practice Azure ML `sweep` jobs wrap a training step rather than replacing it.
 Splitting them would double the orchestration code without clarifying anything.
 
@@ -205,7 +205,7 @@ gate — the training logic itself is lifted from `Task 5/train.py` largely unch
      Block B best of 0.7847 — non-regression rather than absolute quality target)
 
    Only runs that pass both conditions register a new model. This is the conditional
-   registration requirement from ILO 8.9B.
+   conditional-registration requirement.
 
 7. **Register** (pass) or **Reject** (fail). On pass, the winner checkpoint is
    registered in the Azure ML model registry as `unet-vN+1`, inheriting data asset
@@ -225,7 +225,7 @@ Concretely:
 - **Test metrics** — candidate and baseline on identical test data
 - **Gate decision** — pass/fail, which conditions held, numerical margins
 
-The brief says "learning curves and example outputs" explicitly (ILO 8.9B). These
+Learning curves and example outputs are a hard requirement here. These
 are artefacts attached to the run, not a separate system.
 
 ## What this diagram deliberately does not show
@@ -240,9 +240,8 @@ are artefacts attached to the run, not a separate system.
 - **Model architecture internals** — ResAttentionUNet structure is documented in the
   package plan and in Block B `Task 5/train.py`. Not an architecture-diagram concern.
 
-## How this supports the ILO 8.9 evidence
-
-| Rubric item | Where it is visible |
+## Capability coverage
+| Capability | Where it is visible |
 |---|---|
 | Train locally and in the cloud | Same `train_model()` runs in both; cloud wraps it with sweep |
 | Key metrics tracked | MLflow node connected to every stage |

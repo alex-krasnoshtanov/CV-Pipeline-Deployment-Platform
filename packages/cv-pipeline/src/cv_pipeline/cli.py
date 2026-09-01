@@ -372,7 +372,7 @@ def _run_train(args: argparse.Namespace) -> None:
     """Execute the train subcommand.
 
     Validates inputs, runs training, writes outputs, and exits with
-    the appropriate code per task_328 §9.3.
+    the appropriate code per specification §9.3.
 
     Exit codes:
         0 — Training completed successfully, checkpoint saved.
