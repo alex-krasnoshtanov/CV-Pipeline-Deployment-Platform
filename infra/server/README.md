@@ -1,6 +1,6 @@
 # On-Prem Deployment (Portainer)
 
-This folder stores deployment assets for the BUas on-premise server managed through Portainer.
+This folder stores deployment assets for the on-premise server managed through Portainer.
 
 Expected contents:
 

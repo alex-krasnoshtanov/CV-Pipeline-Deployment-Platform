@@ -5,7 +5,7 @@ stable `error_code` alongside the human-readable `message`.
 Clients should branch on the code, never on the message text (which
 may be rephrased without notice).
 
-Source of truth: section 5 of the API contract specification (coursework, not published here).
+Source of truth: section 5 of the [CV pipeline specification](../reference/specification.md).
 
 ## The envelope
 
@@ -101,12 +101,12 @@ with the same `request_id`, so you can still trace it.
 We explicitly don't raise `INTERNAL_SERVER_ERROR` from our own
 code. It's the signal of "something we didn't plan for" - if a new
 failure mode becomes common, it gets its own code in a spec bump
-(e.g. `MODEL_NOT_READY` was added in task_328 v0.2.1 after exactly
+(e.g. `MODEL_NOT_READY` was added in specification v0.2.1 after exactly
 this pattern).
 
 ## Adding a new code
 
-1. Add the row to task_328 section 5 in a minor version bump (e.g. 0.2.1 -> 0.2.2).
+1. Add the row to specification section 5 in a minor version bump (e.g. 0.2.1 -> 0.2.2).
 2. Add the code to `cv_pipeline.validation.ValidationError` or the
    appropriate raise site.
 3. If HTTP-visible, add the mapping in `api.routers.infer._ERROR_STATUS`.

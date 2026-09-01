@@ -1,11 +1,11 @@
 # On-Premise Deployment
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
+> **⚠️ Historical design document (2026-04-17).**
 > Current architecture lives in [`system.md`](system.md), [`deployment.md`](deployment.md), and [`mlops.md`](mlops.md); refer to those for the state of `main`.
-> This draft predates work that has since shipped: the frontend migrated from **Streamlit** to **Next.js** (port 3000) on 2026-05-30; pipeline orchestration is implemented as **Airflow DAGs** in `infra/airflow/dags/` (running Azure ML training jobs), not an "Azure ML pipeline"; and confidence/drift monitoring shipped on `main` (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The component labels and ✅ Built / 🟡 Planned statuses below reflect the original Sprint-1 design, not current `main`.
+> This is the original design, kept because the reasoning behind it is still the reasoning the system runs on. Several details changed during implementation: the frontend moved from **Streamlit** to **Next.js** (port 3000); orchestration is **Airflow DAGs** in `infra/airflow/dags/` submitting Azure ML jobs, not an "Azure ML pipeline"; and confidence/drift monitoring shipped (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The ✅ Built / 🟡 Planned labels below reflect the design as drafted, not the final state.
 
 > **Scope:** How the same three containers from the local deployment run on the shared
-> BUas Linux server managed through Portainer. Covers the deployment path from CI to
+> University-managed Linux server, administered through Portainer. Covers the deployment path from CI to
 > Portainer, GPU auto-selection across the 16-card GPU pool, reverse-proxy ingress,
 > and model-weight distribution from the Azure ML registry.
 >
@@ -13,11 +13,11 @@
 > (next diagram). This one sits in the middle — further from local than a rebadge,
 > closer to a rehearsal for cloud.
 >
-> **Target host:** Shared BUas server, Threadripper CPU, two racks with 8 RTX 6000
+> **Target host:** Shared university server, Threadripper CPU, two racks with 8 RTX 6000
 > cards per rack (16 total), multi-team tenancy, Portainer as the web-facing Docker
 > orchestrator, reverse proxy already provisioned on the host.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 
@@ -134,7 +134,7 @@ flowchart TB
 | Frontend / Backend / Database containers | ✅ Built | `infra/server/docker-compose.portainer.yml` |
 | Container logs (Portainer UI) | ✅ Built | Portainer stack — stdout captured by Docker |
 | NPEC researchers (access) | ✅ Built | API and frontend deployed on-premise |
-| Reverse proxy (Traefik) | 🟠 Partial | Traefik labels in `infra/server/docker-compose.portainer.yml`; actual subdomain routing depends on BUas server admin config |
+| Reverse proxy (Traefik) | 🟠 Partial | Traefik labels in `infra/server/docker-compose.portainer.yml`; actual subdomain routing depends on the server admin's configuration |
 | Model weight cache | 🟠 Partial | `infra/server/docker-compose.portainer.yml` — local volume mount; AML weight download not implemented |
 | Azure ML registry (weight source) | 🟡 Planned | No AML workspace; zero `azure.ai.ml` imports in codebase |
 | GPU auto-selector (`pynvml` pre-import hook) | 🟡 Planned | No GPU selector code in `apps/backend/`; described in docs only |
@@ -199,7 +199,7 @@ ResAttentionUNet plus inference activations sit comfortably under 4 GB. The
 "wasted" capacity is actually useful: another team picking a card also sees yours as
 partially free and will likely pick elsewhere, approximating fair allocation.
 
-Alternatives considered and rejected for Sprint 2 scope:
+Alternatives considered and rejected for the scope at the time:
 
 - **`nvidia.com/gpu` device plugin with resource requests.** Cleaner but needs
   Kubernetes; Portainer on plain Docker does not expose this.
@@ -218,7 +218,7 @@ Two parallel paths:
 push to `main`, tags them with the commit SHA and a semantic version, pushes to
 GitHub Container Registry. After a successful push, Actions calls the Portainer
 webhook for the stack, which pulls the new images and restarts the containers. This
-is the CD piece of ILO 9.5B — no human SSH, no manual pull, no "it works on my
+is the CD piece — no human SSH, no manual pull, no "it works on my
 machine but not on the server."
 
 **Weight distribution.** When the backend container starts, it checks its local model
@@ -235,7 +235,7 @@ Read-only enforcement prevents an accidental write from corrupting cached weight
 
 ## Reverse proxy and ingress
 
-The BUas server already runs Traefik (or equivalent) as the single ingress point for
+The server already runs Traefik (or equivalent) as the single ingress point for
 all teams. We do not deploy our own proxy. Instead, the frontend and backend
 containers carry Traefik labels:
 
@@ -298,7 +298,7 @@ when something is actually wrong and you want to investigate.
 ### 4 · Internal-only database
 
 Postgres has no published port on the host. The backend reaches it by service name
-on the internal Docker network (`db:5432`). This keeps ILO 9.5A's "secure access"
+on the internal Docker network (`db:5432`). This keeps the "secure access"
 requirement honest — no one can reach the DB directly from the campus network, even
 if they guess credentials.
 
@@ -307,7 +307,7 @@ if they guess credentials.
 Portainer's per-container log view is the default debugging surface for on-prem.
 Backend and frontend log through Python's `logging` module to stdout, Docker captures
 it, Portainer surfaces it. If a proper log aggregator (Loki, ELK) is already
-available on the server, a later sprint can plug into it through a Docker logging
+available on the server, a later iteration can plug into it through a Docker logging
 driver without touching the app code.
 
 ## What this diagram deliberately does not show
@@ -318,16 +318,15 @@ driver without touching the app code.
 - **CI/CD internals.** GitHub Actions job steps, webhook authentication, and image
   signing belong in a CI/CD diagram or in the Actions workflow files.
 - **Per-team quota values.** CPU shares, memory limits, GPU allocation policy are
-  set by the BUas sysadmin and subject to change.
+  set by the server's administrator and subject to change.
 - **Inference logic or package structure.** Component diagram.
 - **The cloud endpoint.** The on-prem backend does inference locally from cached
   weights. It does not call out to the Azure ML endpoint — that would defeat the
   point of on-prem deployment and introduce a latency-and-availability dependency on
   the cloud.
 
-## How this supports the ILO 9.5A, 9.5B, and 9.5D evidence
-
-| Rubric item | Where it is visible |
+## Capability coverage
+| Capability | Where it is visible |
 |---|---|
 | On-premise deployment on Portainer | `Portainer` orchestrator in the diagram |
 | Inference interactable on on-premise | Reverse proxy → frontend and backend paths |

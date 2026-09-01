@@ -18,10 +18,24 @@ def generate_markdown(schema: dict) -> str:
     Returns:
         A markdown string containing endpoint, parameter, and response sections.
     """
+    # The note is emitted here rather than hand-added to the output file:
+    # this script overwrites that file on every docs build, so anything
+    # written into it by hand is silently lost on the next run.
     lines = [
         "# Backend API Reference",
         "",
         "This is an OpenAPI-derived reference for the backend API.",
+        "",
+        ":::{note}",
+        "This page is generated from the live FastAPI app by",
+        "`scripts/generate_openapi_docs.py`, which the `docs.yml` workflow runs",
+        "before Sphinx on every build, so the published site always reflects the",
+        "running app. Do not edit it by hand — regeneration discards the edit.",
+        "",
+        "Descriptions are the first paragraph of each route's docstring. The full",
+        "docstrings, including `Args`, `Returns` and `Raises`, are in the",
+        "autoapi reference.",
+        ":::",
         "",
     ]
     paths = schema.get("paths", {})

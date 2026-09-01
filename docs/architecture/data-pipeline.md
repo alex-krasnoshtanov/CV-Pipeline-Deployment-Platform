@@ -1,8 +1,8 @@
 # Data Pipeline
 
-> **⚠️ Superseded — Sprint-1 design snapshot (last updated 2026-04-17).**
+> **⚠️ Historical design document (2026-04-17).**
 > Current architecture lives in [`system.md`](system.md), [`deployment.md`](deployment.md), and [`mlops.md`](mlops.md); refer to those for the state of `main`.
-> This draft predates work that has since shipped: the frontend migrated from **Streamlit** to **Next.js** (port 3000) on 2026-05-30; pipeline orchestration is implemented as **Airflow DAGs** in `infra/airflow/dags/` (running Azure ML training jobs), not an "Azure ML pipeline"; and confidence/drift monitoring shipped on `main` (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The component labels and ✅ Built / 🟡 Planned statuses below reflect the original Sprint-1 design, not current `main`.
+> This is the original design, kept because the reasoning behind it is still the reasoning the system runs on. Several details changed during implementation: the frontend moved from **Streamlit** to **Next.js** (port 3000); orchestration is **Airflow DAGs** in `infra/airflow/dags/` submitting Azure ML jobs, not an "Azure ML pipeline"; and confidence/drift monitoring shipped (Prometheus `/metrics` via `apps/backend/src/api/metrics.py`, rolling-confidence drift in `apps/backend/src/api/services/drift_detector.py`). The ✅ Built / 🟡 Planned labels below reflect the design as drafted, not the final state.
 
 > **Scope:** How raw HADES images become versioned training, validation, and test data
 > assets in Azure ML. Covers the three trigger sources (scheduled, new-data, feedback)
@@ -12,7 +12,7 @@
 > training pipeline diagram. Inference-time data flow (API requests, live predictions)
 > is in the high-level component diagram.
 >
-> **Status:** Sprint 1 draft · owner: Krasnoshtanov, Alex · last updated: 2026-04-17
+> **Status:** Original design draft, 2026-04-17.
 >
 > **Implementation status:** ✅ Built — code exists and is wired · 🟠 Partial — exists but incomplete or unconfirmed · 🟡 Planned — drawn only, no implementing code
 
@@ -131,7 +131,7 @@ flowchart LR
 
 The pipeline is a single orchestrated workflow in Azure ML (or Airflow — tooling choice is in the implementation plan, not here) with three entry points:
 
-1. **Weekly schedule.** Baseline cadence so the training set is never older than a week. This keeps ILO 9.4B satisfied even if nothing else triggers a run.
+1. **Weekly schedule.** Baseline cadence so the training set is never older than a week. This guarantees a refresh even if nothing else triggers a run.
 2. **New data event.** A HADES batch lands in the raw datastore → the pipeline runs only on the new files. This is the happy path for incremental production use.
 3. **Feedback threshold.** Researchers flag predictions as bad in the frontend; each flag gets stored in the operational DB along with the corrected mask. Once enough flags accumulate, the pipeline runs and folds those corrected pairs into the next training version. This is what makes the system a data flywheel.
 
@@ -143,7 +143,7 @@ To optimize compute and make data joins explicit, the initial ingestion and vali
 
 1. **List files** — enumerate the new blobs that this run needs to process and read their metadata. This separates the lightweight listing operation from the heavy downloading phase.
 2. **Early gate** — perform cheap, surface-level checks (file extension, file size, header bytes). Rejected files are caught here before wasting compute on expensive downloads and decoding.
-3. **Decode + validate** — download the files and run deep acceptance checks defined in the CV pipeline spec (`task_328.md`): resolution, bit depth, and colour mode. 
+3. **Decode + validate** — download the files and run deep acceptance checks defined in the [CV pipeline specification](../source/reference/specification.md): resolution, bit depth, and colour mode. 
 4. **Pair labels** — an explicit join step. When the pipeline is triggered by feedback, this stage matches the corrected masks from the operational DB to their original source images. 
 5. **Extract dish** — HADES plate photos contain non-dish regions (trays, markers, reflections). Cropping to the dish region before patching prevents the model from learning artefacts outside the biology.
 6. **Patch** — the U-Net operates on fixed-size tiles, not full-resolution plates. Consistent patch size and stride is what makes train and inference inputs comparable.
@@ -161,14 +161,13 @@ A successful run produces six artefacts:
 
 ## What this diagram deliberately does not show
 
-- **Tooling choice.** Azure ML pipeline vs. Airflow vs. something else — the diagram is agnostic because ILO 9.4B accepts any industry-standard orchestrator. Decision lives in the package plan.
+- **Tooling choice.** Azure ML pipeline vs. Airflow vs. something else — the diagram is agnostic; any industry-standard orchestrator satisfies it. The decision lives in the package plan.
 - **Compute topology.** Which steps run on which cluster, parallelism, scaling — belongs in the cloud deployment diagram.
 - **Training steps.** What happens once `train_vN` is consumed — in the training pipeline diagram.
 - **Data lineage graph.** Which model version trained on which data version — tracked in Azure ML automatically, not drawn here.
 
-## How this diagram supports the ILO 9.4 evidence
-
-| Rubric item | Where it is visible |
+## Capability coverage
+| Capability | Where it is visible |
 |---|---|
 | Cloud data storage | `Raw HADES images` and output assets are datastore-backed |
 | Versioned data assets | `Register` stage produces `_vN` suffixed assets |

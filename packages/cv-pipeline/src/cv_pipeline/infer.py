@@ -2,7 +2,7 @@
 
 Wires together validation, preprocessing, segmentation, and landmark
 detection into a single ``infer`` call that implements the contract
-defined in the CV Pipeline Specification (task_328).
+defined in the CV Pipeline Specification.
 """
 
 from __future__ import annotations

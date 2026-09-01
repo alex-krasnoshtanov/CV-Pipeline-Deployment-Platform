@@ -446,7 +446,7 @@ git history — files touched and lines attributed per component.
 | `infra/server` | 1 | 88 | **97%** | — |
 | `.github/workflows` | 5 | 900 | **61%** | Danil 221 |
 | `scripts/azure` | 12 | 1,789 | **57%** | Filipp 641 |
-| `apps/frontend` | 40 | 6,201 | **47%** | swif 2,318; Danil 981 |
+| `apps/frontend` | 40 | 6,201 | **47%** | Maksym 2,318; Danil 981 |
 | `apps/backend` | 97 | 12,456 | **43%** | Filipp 4,831; Danil 1,809 |
 | `infra/airflow` | 19 | 4,413 | **31%** | Filipp 3,014 (68%) |
 | `infra/cloud` | 8 | 458 | **26%** | Filipp 341 (74%) |
@@ -460,7 +460,14 @@ the Azure ML training layer were predominantly Filipp's work; I contributed to
 all three but did not lead them.
 
 Original team: Oleksii Krasnoshtanov, Filipp Lotsmanov, Danil Sysenko,
-Marin Chiosa.
+Maksym Steshkin, Marin Chiosa.
+
+Two notes on how to read the table. Line counts are a poor proxy for
+contribution — they reward whoever typed the boilerplate — so treat the
+percentages as a rough shape, not a scoreboard. And commit counts are worse:
+Maksym's frontend work landed in four large commits, which is why a
+commit-ranked list would have understated it badly. A small number of the
+original repository's commits were also authored by a GitHub Copilot agent.
 
 ---
 

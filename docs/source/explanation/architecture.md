@@ -3,7 +3,7 @@
 :::{note}
 **Explanation** pages discuss concepts and design decisions. If you
 want to do something specific, see [How-to](../how-to/index). If you
-want the formal spec, see the API contract specification. That document is coursework and is not published in this repository.
+want the formal spec, see the [CV pipeline specification](../reference/specification.md).
 :::
 
 ## Architecture Diagrams
@@ -22,7 +22,7 @@ path:
 +--------------+   +--------------+   +--------------+
 |   CLI        |   |   FastAPI    |   |  Azure ML    |
 | cv-pipeline  |   |  backend     |   |  scoring     |
-|   infer      |   |  /infer      |   |  (Sprint 4)  |
+|   infer      |   |  /infer      |   |  (deployed)  |
 +------+-------+   +------+-------+   +------+-------+
        |                  |                  |
        +------------------+------------------+
@@ -36,8 +36,7 @@ path:
 
 Everything downstream of the three delivery forms is identical.
 The CLI and the API call the same `cv_pipeline.infer()` function
-with the same arguments; the Azure ML scoring script (coming in
-Sprint 4) will too. **There is no duplicated inference code.**
+with the same arguments; the Azure ML scoring script does too. **There is no duplicated inference code.**
 
 This matters because:
 - One test suite validates all three paths.
@@ -58,7 +57,7 @@ We chose FastAPI over Flask or Django-REST for three reasons:
 3. **Pydantic everywhere.** Request validation, response
    serialisation, and error envelopes all flow through the same
    type system. This gives us a single source of truth for the API
-   contract (task_328 section 4).
+   contract (specification section 4).
 
 ## Why U-Net for segmentation
 
@@ -70,11 +69,11 @@ connections is the textbook match:
 - Handles pixel-level precision (landmark detection requires
   sub-millimetre accuracy in the mask).
 - Small enough to run on a consumer GPU (batch size 1, ~180 MB
-  weights) - BUas servers have limited GPU memory.
-- Well-studied for biomedical imagery - any improvement research in
-  Sprint 3/4 has plenty of priors to draw on.
+  weights) - the target servers have limited GPU memory.
+- Well-studied for biomedical imagery - any later improvement work has
+  plenty of priors to draw on.
 
-Alternatives considered and rejected for Sprint 2:
+Alternatives considered and rejected:
 - **Mask R-CNN** - adds instance segmentation we don't need (one
   plate = one connected root system).
 - **SAM (Segment Anything)** - foundation model, too heavy for
@@ -93,7 +92,7 @@ agree. At 50% overlap each output pixel is seen by 2-4 patches; we
 average their probabilities before thresholding.
 
 Trade-off: 2-4x the FLOPs vs. naive tiling, but gives visually
-seamless masks. In Sprint 4 we may explore overlap-blending via
+seamless masks. A later iteration may explore overlap-blending via
 Gaussian weights for further smoothing.
 
 ## Containerisation
@@ -114,23 +113,23 @@ red/green indicator so users know when the stack is up.
 The on-prem deployment uses the same compose file through Portainer
 with images pulled from GHCR.
 
-## Roadmap items from this snapshot (Sprint 3+)
+## Roadmap items from this snapshot
 
-These were the planned Sprint 3-4 deliverables when this page was first
-written. Most have since shipped on `main`:
+These were planned when this page was first written. Most have since
+shipped:
 
 - **Data & training pipelines** - Airflow DAGs in `infra/airflow/dags/`
   run preprocessing and Azure ML training jobs (HP sweeps, conditional
-  model registration on a test/val-F1 threshold) — Sprint 3, ILO 9.4 / 8.9.
+  model registration on a test/val-F1 threshold).
   **Shipped.**
 - **Blue-green deployment** - a blue-green rollout with a smoke-test
-  rollback gate is the active deployment safeguard (Sprint 4, ILO 9.5C).
+  rollback gate is the active deployment safeguard.
   **Shipped** on-prem and on Azure Container Apps (backend + frontend
   Running); the blue-green revision traffic-split is wired in `cd.yml`.
 - **Feedback loop** - corrections from the Next.js UI write to the
   `feedback` table; a threshold crossing triggers a retrain via the
-  `feedback_retrain_trigger` DAG (Sprint 4, ILO 9.5D). **Shipped.**
+  `feedback_retrain_trigger` DAG. **Shipped.**
 - **Monitoring** - the backend exposes Prometheus `/metrics` and runs a
   rolling-confidence drift detector (`apps/backend/src/api/services/drift_detector.py`)
-  — Sprint 4, ILO 9.5D. **Shipped.** Azure Monitor / App Insights
+  **Shipped.** Azure Monitor / App Insights
   dashboards remain **planned**.

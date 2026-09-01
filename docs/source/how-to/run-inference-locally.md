@@ -29,11 +29,11 @@ Outputs:
 
 - `results/plate_mask.png` - binary mask of root tissue
 - `results/plate_result.json` - full response matching
-  section 4 of the API contract specification (coursework, not published here)
+  section 4 of the [CV pipeline specification](../reference/specification.md)
 
 ## Batch processing
 
-There is no native `batch` subcommand yet (Sprint 3 scope). Loop
+There is no native `batch` subcommand yet. Loop
 with your shell:
 
 ```bash

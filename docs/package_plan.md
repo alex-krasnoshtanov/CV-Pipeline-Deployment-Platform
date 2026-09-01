@@ -1,8 +1,7 @@
 # Package Plan — cv-pipeline and Application Services
 
 **Version**: 0.1.0  
-**Status**: Sprint 2 — updated to match implemented code  
-**ILO**: 4.4A evidence  
+**Status**: Updated to match implemented code  
 **ADO**: #265  
 **Last updated**: 2026-04-20
 
@@ -44,7 +43,7 @@ cv-platform-workspace/
 │           │   ├── test_segmentation.py
 │           │   └── test_validation.py
 │           └── integration/
-│               └── README.md       # Integration tests added in Sprint 5
+│               └── README.md       # Integration tests
 ├── apps/
 │   ├── backend/                    # FastAPI service (not pip-installable, consumes cv-pipeline)
 │   │   ├── Dockerfile
@@ -57,7 +56,7 @@ cv-platform-workspace/
 │   │           ├── main.py         # FastAPI app with lifespan model loading
 │   │           ├── routers/
 │   │           │   ├── health.py   # GET /health — readiness probe
-│   │           │   └── infer.py    # POST /infer — image → segmentation result (Sprint 2)
+│   │           │   └── infer.py    # POST /infer — image → segmentation result
 │   │           └── schemas/
 │   │               ├── __init__.py
 │   │               └── health.py   # Pydantic HealthResponse model
@@ -71,7 +70,7 @@ cv-platform-workspace/
 │   ├── server/
 │   │   └── README.md               # Portainer deployment instructions
 │   └── cloud/
-│       └── README.md               # Azure ML deployment assets (Sprint 3–4)
+│       └── README.md               # Azure ML deployment assets
 ├── configs/
 │   ├── env/
 │   │   └── .env.example            # All required environment variables
@@ -79,7 +78,6 @@ cv-platform-workspace/
 │       └── base.yaml               # Default inference settings
 ├── docs/
 │   ├── architecture/               # Four deployment diagrams
-│   ├── sprint1_compliance/         # Roadmap, scope, spec, ILO mapping
 │   └── package_plan.md             # This file
 ├── .github/
 │   ├── workflows/
@@ -249,8 +247,8 @@ branching logic.
 | Method | Path | Purpose | Auth | Response Model |
 |--------|------|---------|------|----------------|
 | GET | `/health` | Readiness probe | None | `HealthResponse` (Pydantic) |
-| POST | `/infer` | Image → segmentation + landmarks | API key | `InferenceResponse` (Pydantic) — Sprint 2 |
-| POST | `/feedback` | User flags a bad prediction | API key | `FeedbackResponse` (Pydantic) — Sprint 4 |
+| POST | `/infer` | Image → segmentation + landmarks | API key | `InferenceResponse` (Pydantic) |
+| POST | `/feedback` | User flags a bad prediction | API key | `FeedbackResponse` (Pydantic) |
 
 ### 4.3 Authentication
 
@@ -274,9 +272,9 @@ apps/backend (FastAPI service, not installable)
   ├── fastapi >= 0.110
   ├── uvicorn >= 0.29
   ├── pydantic >= 2.0      (API response models only — cv-pipeline uses dataclasses)
-  ├── sqlalchemy >= 2.0    (Sprint 4: feedback storage)
-  ├── asyncpg >= 0.29      (Sprint 4: async Postgres driver)
-  └── azure-ai-ml >= 1.15  (Sprint 4: cloud serving mode, optional)
+  ├── sqlalchemy >= 2.0 (feedback storage)
+  ├── asyncpg >= 0.29 (async Postgres driver)
+  └── azure-ai-ml >= 1.15 (cloud serving mode, optional)
 
 apps/frontend (Next.js app, not installable)
   ├── next >= 16
@@ -344,6 +342,6 @@ remains usable outside of a web context (CLI, Azure ML jobs, notebooks).
 
 - **Package version**: `cv_pipeline._version.__version__` — single source of truth, updated in one file
 - **Model version**: read from checkpoint metadata key `model_version` (e.g. `"unet-v1"`), falls back to `"unet-v0"`
-- **Data version**: Azure ML registered data assets with version tags (`train_v1`, `train_v2`, etc.) — Sprint 3
+- **Data version**: Azure ML registered data assets with version tags (`train_v1`, `train_v2`, etc.)
 - **API version**: FastAPI app `version` parameter, currently `"0.1.0"`
 - **Container version**: GHCR image tagged with git SHA (`sha-<hash>`) and `latest`

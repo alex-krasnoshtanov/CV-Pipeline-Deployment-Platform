@@ -42,7 +42,7 @@ local_tz = pendulum.timezone("Europe/Amsterdam")
     schedule="0 3 * * *",
     start_date=datetime(2026, 5, 25, tzinfo=local_tz),
     catchup=False,
-    tags=["feedback", "hades", "retraining", "ilo-9.5"],
+    tags=["feedback", "hades", "retraining"],
 )
 def feedback_retrain_trigger():
     """Daily check that fires the bridge when feedback crosses threshold."""

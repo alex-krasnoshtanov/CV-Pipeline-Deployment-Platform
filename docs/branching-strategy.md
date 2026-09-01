@@ -13,7 +13,7 @@ Format: `type/ticket-id-short-description`
 - `hotfix/` — urgent fix that cannot wait for a normal review cycle (e.g. `hotfix/61-api-crash-on-startup`)
 - `chore/` — docs, config, CI, refactoring, dependencies (e.g. `chore/63-update-architecture-diagrams`)
 
-The ticket ID is the Azure DevOps work item number. This links branches and commits back to the board.
+The ticket ID is the GitHub issue number. This links branches and commits back to the issue tracker.
 
 ## Commit Messages
 
@@ -50,11 +50,11 @@ test(#42): add unit tests for segmentation output
 
 ## Pull Request Process
 
-1. Pick a work item from the Azure DevOps board.
+1. Pick an issue from the tracker.
 2. Branch off `main` using the naming convention above.
 3. Commit your work using the conventional commit format.
 4. Open a PR to `main`. In the description, include:
-   - Link to the Azure DevOps work item
+   - Link to the issue
    - What was changed and why
    - How it was tested
 5. CI runs automatically. The merge button is blocked until it passes.
