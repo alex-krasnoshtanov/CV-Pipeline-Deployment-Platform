@@ -13,12 +13,20 @@ dependencies = [
 [tool.uv.sources]
 cv-pipeline = { workspace = true }
 cv-backend = { workspace = true }
-torch = { index = "pytorch-cu124" }
-torchvision = { index = "pytorch-cu124" }
+# CPU wheels, deliberately. This workspace builds the serving image and runs
+# the test suite; neither uses a GPU. The CUDA build pulled ~2.5 GB of nvidia-*
+# wheels into a container that is never started with --gpus, which pushed the
+# image past the CI runner's disk budget for no runtime benefit.
+#
+# GPU training is a separate environment on purpose:
+#   - cloud  -> infra/cloud/train_environment/conda.yml (torch cu118)
+#   - manual -> override the index at sync time with the cu124 wheel index
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
 
 [[tool.uv.index]]
-name = "pytorch-cu124"
-url = "https://download.pytorch.org/whl/cu124"
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [dependency-groups]
