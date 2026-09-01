@@ -1,67 +1,82 @@
 # Add a new model version
 
-When retraining produces a better checkpoint, register it in the
-model registry so the CLI and API can serve it without code changes.
+When retraining produces a better checkpoint, register it in the model
+registry so the CLI and the API can serve it without a code change to
+any call site.
 
-## Current state (Sprint 2)
+## How the registry works
 
-The registry is a Python dict in `packages/cv-pipeline/src/cv_pipeline/weights.py`
-mapping version string to download URL:
+The registry is a Python dict in
+`packages/cv-pipeline/src/cv_pipeline/weights.py` mapping a version
+string to a download URL:
 
 ```python
 REGISTRY: dict[str, str] = {
-    "unet-v1": "https://example.invalid/...?download=1",
+    "unet-v1": (
+        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "releases/download/weights%2Funet-v1/unet-v1.pth"
+    ),
 }
 ```
 
-Checksum verification is a TODO for Sprint 3 - for now only the URL
-is stored. The pipeline downloads the file, checks that the server
-returns binary (not an HTML preview page), writes to a temp file, and
-renames on success so interrupted downloads leave no corrupt cache.
+Weights are published as **GitHub Release assets**. The release download
+endpoint streams `application/octet-stream` directly and needs no
+credentials for a public repository, which keeps first-run setup to a
+single `uv run` with nothing to configure.
 
-This will move to Azure ML Model Registry in Sprint 3 - but until
-then, adding a model is a PR against this dict.
+`get_weights()` downloads on first use and caches under
+`~/.cache/cv-pipeline/models/` (override with `CV_PIPELINE_CACHE_DIR`).
+The download writes to a temp file and renames on success, so an
+interrupted download cannot leave a corrupt file in the cache.
 
 ## Steps
 
-### 1. Upload the .pth to Azure Blob
+### 1. Publish the checkpoint as a release asset
 
-Ask the PO for blob container credentials, then:
+Tag the release under a `weights/` prefix so model releases sort apart
+from application releases:
 
 ```bash
-az storage blob upload \
-    --account-name <our-account> \
-    --container-name model-weights \
-    --name unet-v2.pth \
-    --file ./best_model.pth
+gh release create weights/unet-v2 \
+    --title "unet-v2 weights" \
+    --notes "U-Net checkpoint. See docs for training configuration." \
+    ./best_model.pth#unet-v2.pth
 ```
 
-Note the public download URL.
+The `#unet-v2.pth` suffix sets the asset filename, which is what the
+download URL resolves against.
 
-### 2. (Optional) Record the SHA-256
+### 2. Record the SHA-256
 
-Checksum verification is a TODO for Sprint 3. You can record it in a
-comment for future use:
+Include it in the release notes so a consumer can verify the download:
 
 ```bash
 sha256sum best_model.pth
-# e.g. a3f1... best_model.pth
 ```
 
 ### 3. Open a PR adding the entry
 
 ```python
 REGISTRY: dict[str, str] = {
-    "unet-v1": "https://example.invalid/...?download=1",
-    "unet-v2": "https://example.invalid/.../unet-v2.pth?download=1",
+    "unet-v1": (
+        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "releases/download/weights%2Funet-v1/unet-v1.pth"
+    ),
+    "unet-v2": (
+        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "releases/download/weights%2Funet-v2/unet-v2.pth"
+    ),
 }
 ```
 
+Note the `%2F`: the tag contains a slash, which has to stay
+percent-encoded inside the URL path.
+
 ### 4. Update the default (optional)
 
-If `unet-v2` should be the new default when no `--version` is
-specified, keep it first in the dict. Python dicts preserve insertion
-order, and the CLI uses `next(iter(REGISTRY))` as fallback.
+If `unet-v2` should be the default when no `--version` is given, keep it
+first in the dict. Python dicts preserve insertion order and the CLI
+uses `next(iter(REGISTRY))` as its fallback.
 
 ### 5. Test
 
@@ -69,22 +84,16 @@ order, and the CLI uses `next(iter(REGISTRY))` as fallback.
 uv run cv-pipeline infer --image test.png --output results/ --version unet-v2
 ```
 
-On first run the weights are downloaded from the blob URL and cached in
-`~/.cache/cv-pipeline/models/`. (SHA-256 verification is a Sprint 3
-TODO - the download will fail loudly if the server returns HTML instead
-of binary, preventing corrupt cache entries.)
+On first run the weights download and cache; subsequent runs reuse the
+cached file.
 
-## Sprint 3 migration notes
+## Why a dict rather than a model registry
 
-When we cut over to Azure ML Model Registry, this procedure is
-replaced by:
+A dict is import-time typo-checked, reviewable in a PR diff, and has no
+runtime dependency on a cloud control plane — a consumer who only wants
+inference does not need an Azure subscription to resolve a version.
 
-```bash
-az ml model register \
-    --name unet \
-    --version 2 \
-    --path ./best_model.pth
-```
-
-The Python registry dict becomes a thin cache populated at startup
-from the ML API - no PR needed to add new versions.
+Where an Azure ML workspace is available, `MODEL_ENDPOINT_URL` bypasses
+this path entirely: the backend delegates inference to the managed
+endpoint and never downloads weights. The registry is the local and
+on-premise story; the endpoint is the cloud one.

@@ -31,16 +31,14 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 # Version string -> download URL. Add a new entry per new model.
-# URLs must return the raw binary. For SharePoint / OneDrive share
-# links, append &download=1 to force direct download. If the host
-# returns HTML instead, the download will fail loudly with a clear
-# message - see _download below.
+# URLs must return the raw binary, so weights are published as GitHub
+# Release assets: the download endpoint streams octet-stream directly
+# and needs no credentials for a public repository. If a host returns
+# HTML instead, the download fails loudly - see _download below.
 REGISTRY: dict[str, str] = {
     "unet-v1": (
-        "https://example.invalid/:u:/g/personal/"
-        "REDACTED/"
-        "REDACTED"
-        "?download=1"
+        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "releases/download/weights%2Funet-v1/unet-v1.pth"
     ),
 }
 
@@ -120,17 +118,17 @@ def _download(url: str, target: Path) -> None:
     ) as response:
         response.raise_for_status()
 
-        # Guard against SharePoint-style preview redirects. A direct
-        # download returns application/octet-stream or similar. HTML
-        # means the URL is wrong (or SharePoint ignored &download=1).
+        # Guard against hosts that answer a download URL with a landing
+        # or preview page. A direct download returns octet-stream or
+        # similar; HTML means the URL is wrong, the asset is missing, or
+        # the release is private.
         content_type = response.headers.get("Content-Type", "")
         if "html" in content_type.lower():
             raise RuntimeError(
                 f"Expected binary response from {url} but got "
-                f"content-type={content_type!r}. This is probably a "
-                f"SharePoint preview page. Append '&download=1' to the "
-                f"share URL, or host the file somewhere that returns "
-                f"raw bytes (e.g. a GitHub Release asset)."
+                f"content-type={content_type!r}. The release asset is "
+                f"probably missing or not public. Check the tag and asset "
+                f"name, or point REGISTRY at any host that returns raw bytes."
             )
 
         tmp = target.with_suffix(target.suffix + ".tmp")
