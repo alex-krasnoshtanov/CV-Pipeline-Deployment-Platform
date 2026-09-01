@@ -85,7 +85,13 @@ Trunk-based development against `main`:
    ```
 4. `git push -u origin <branch>` and open a PR.
 5. Address feedback in additional commits on the same branch.
-6. Squash-merge once CI is green.
+6. Merge once CI is green, keeping `main` linear.
+
+Squash when the branch accumulated work-in-progress commits — the kind
+that say "fix typo" or "address review". Rebase when each commit is
+already a self-contained change with a message worth keeping. The test
+is whether someone reading `git log` a year from now benefits from the
+separation.
 
 `main` is protected. Branches are deleted after merge.
 
