@@ -1,31 +1,31 @@
-"""Client for calling the HADES segmentation model endpoint.
+"""Client for calling a remote segmentation model endpoint.
 
-The model is served by an Azure ML (Kubernetes/Arc) online endpoint on the
-BUas cluster. That endpoint's scoring URI is a private campus IP that is NOT
-reachable from Azure Container Apps, so we do **not** use the Azure ML SDK
-``invoke()`` here: management-plane ``invoke()`` still POSTs to the endpoint's
-private ``scoring_uri``, which Azure cannot route to (it times out).
+The model is served by an Azure ML (Kubernetes/Arc) online endpoint. In the
+deployment this was written for, that endpoint sat on a private network that
+the application tier could not route to, so the Azure ML SDK's ``invoke()``
+is deliberately **not** used: management-plane ``invoke()`` still POSTs to the
+endpoint's private ``scoring_uri``, so it times out from outside that network.
 
-Instead we POST directly to the public NGROK tunnel BUas runs in front of the
-endpoint (per the NGROK guide). Two env vars drive it:
+Instead the client POSTs directly to whatever public scoring URL is configured,
+which keeps it agnostic about how the endpoint is exposed (reverse proxy,
+tunnel, or a public managed endpoint). Two env vars drive it:
 
-- ``MODEL_ENDPOINT_URL``: the public scoring URL, e.g.
-  ``https://cradle.buas.ngrok.app/port-32452/api/v1/endpoint/hades-unet-endpoint/score``
+- ``MODEL_ENDPOINT_URL``: the scoring URL to POST to
 - ``MODEL_ENDPOINT_KEY``: the endpoint key, sent as ``Authorization: Bearer <key>``
 
 The same endpoint serves both request modes via the JSON ``mode`` field:
 ``infer`` returns a segmentation result, ``explain`` returns a Seg-Grad-CAM
 heatmap computed on the same loaded model. This is why cloud explanation needs
-no local model in the Container App and no request-time weight download.
+no local model in the application container and no request-time weight download.
 
 This path needs no Azure AD credential at all -- the endpoint key is the only
 auth -- which is why the service-principal env vars are irrelevant here.
 
 Design note -- why stdlib ``urllib`` rather than ``requests``/``httpx``:
 the call is a single JSON POST already offloaded to a worker thread, so the
-extra dependency buys nothing. ``urllib`` keeps this module dependency-free and
-mirrors the mentor's reference example exactly. If richer retry/backoff is ever
-needed, swapping to ``httpx`` is a localized change inside ``_post``.
+extra dependency buys nothing. ``urllib`` keeps this module dependency-free.
+If richer retry/backoff is ever needed, swapping to ``httpx`` is a localized
+change inside ``_post``.
 """
 
 from __future__ import annotations
@@ -45,8 +45,8 @@ from fastapi.concurrency import run_in_threadpool
 logger = logging.getLogger(__name__)
 
 # Bound the scoring call: the model runs on a shared GPU box and the request
-# crosses an NGROK tunnel, so allow headroom -- but cap it so a hung tunnel
-# fails fast instead of holding the worker thread indefinitely.
+# may cross a reverse proxy or tunnel, so allow headroom -- but cap it so a
+# hung hop fails fast instead of holding the worker thread indefinitely.
 _REQUEST_TIMEOUT_S = 60
 
 

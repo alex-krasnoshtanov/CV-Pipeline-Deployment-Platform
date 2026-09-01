@@ -102,11 +102,12 @@ seeds are out of scope for this package.
 :::{note}
 The sample files `docs/source/_static/sample_plate.png` and
 `docs/source/_static/sample_mask.png` ship with this repository.
-The plate image is `train_Alican_244760_im1.png` from the BUas
-Y2B_25 dataset; the overlay shows the corresponding ground-truth
-root annotation. Both downscaled from 4202x3006 px to 1500x1073 px
-for web delivery. Used with permission of BUas/NPEC for
-documentation purposes.
+The plate image is a single training frame from the NPEC
+*Arabidopsis thaliana* plate dataset; the overlay shows the
+corresponding ground-truth root annotation. Both downscaled from
+4202x3006 px to 1500x1073 px for web delivery. Reproduced with
+permission for documentation purposes. The dataset itself is not
+redistributed with this repository.
 :::
 
 ### Inspect the result JSON

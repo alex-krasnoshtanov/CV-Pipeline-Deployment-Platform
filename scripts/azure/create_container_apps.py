@@ -224,8 +224,8 @@ def _backend_env_vars(cfg: dict[str, str]) -> list[str]:
     - We deliberately do NOT set MODEL_VERSION here. In azure_ml mode the
       endpoint serves the model, but the container entrypoint still
       pre-caches weights from the registry whenever MODEL_VERSION is set,
-      which would pull ~50 MB from SharePoint on every cold start for no
-      reason. Omitting it skips that download cleanly.
+      which would pull ~50 MB from the weights registry on every cold start
+      for no reason. Omitting it skips that download cleanly.
     - COOKIE_SECURE=true because cloud ingress is HTTPS.
     - CORS_ORIGINS/FRONTEND_URL/OAUTH_REDIRECT_URI are set later, once the
       frontend FQDN is known (see update_backend_urls).
