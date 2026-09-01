@@ -5,7 +5,7 @@
 # docker-entrypoint.sh. A templated image is necessary because neither Portainer
 # (stack content is pushed via API, with no repo files on the host) nor Azure
 # Container Apps (no bind mounts) can mount a config file from the repo.
-FROM prom/prometheus:v3.1.0
+FROM prom/prometheus:v3.14.0
 
 # Template + entrypoint sit in the default config dir, which the base image makes
 # writable by the unprivileged 'nobody' user it runs as, so the rendered config
