@@ -166,7 +166,9 @@ html_copy_source = False
 html_theme_options = {
     "sidebar_hide_name": False,
     "navigation_with_keys": True,
-    "source_repository": ("https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"),
+    "source_repository": (
+        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
+    ),
     "source_branch": "main",
     "source_directory": "docs/source/",
 }

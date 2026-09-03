@@ -1,8 +1,8 @@
 # CV Pipeline — Plant Phenotyping Platform
 
-[![CI](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml)
-[![Docs](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml)
-[![Images](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml/badge.svg)](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml)
+[![CI](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml)
+[![Docs](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml)
+[![Images](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
@@ -161,7 +161,7 @@ see [`pyproject.toml`](pyproject.toml) for why.
 ### Install
 
 ```bash
-git clone https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform.git
+git clone https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform.git
 cd CV-Pipeline-Deployment-Platform
 uv sync
 ```
@@ -487,4 +487,4 @@ permission properly.
 
 ## Author
 
-**Oleksii (Alex) Krasnoshtanov** — [@Gfgf96](https://github.com/Gfgf96)
+**Oleksii (Alex) Krasnoshtanov** — [@alex-krasnoshtanov](https://github.com/alex-krasnoshtanov)

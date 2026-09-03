@@ -13,7 +13,7 @@ string to a download URL:
 ```python
 REGISTRY: dict[str, str] = {
     "unet-v1": (
-        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
         "releases/download/weights%2Funet-v1/unet-v1.pth"
     ),
 }
@@ -59,11 +59,11 @@ sha256sum best_model.pth
 ```python
 REGISTRY: dict[str, str] = {
     "unet-v1": (
-        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
         "releases/download/weights%2Funet-v1/unet-v1.pth"
     ),
     "unet-v2": (
-        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
         "releases/download/weights%2Funet-v2/unet-v2.pth"
     ),
 }

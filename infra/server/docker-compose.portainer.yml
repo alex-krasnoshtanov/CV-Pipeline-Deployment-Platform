@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/backend:latest
+    image: ghcr.io/alex-krasnoshtanov/cv-pipeline-deployment-platform/backend:latest
     environment:
       MODEL_VERSION: ${MODEL_VERSION:-unet-v1}
       CV_PIPELINE_CACHE_DIR: /models
@@ -35,7 +35,7 @@ services:
       start_period: 120s
 
   frontend:
-    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/frontend:latest
+    image: ghcr.io/alex-krasnoshtanov/cv-pipeline-deployment-platform/frontend:latest
     ports:
       - "2027:3000"
     environment:
@@ -70,7 +70,7 @@ services:
   # only BACKEND_TARGET / SCRAPE_SCHEME differ. Exposed on 2029 for the demo
   # screen; the frontend reaches it internally by service name on the stack net.
   prometheus:
-    image: ghcr.io/gfgf96/cv-pipeline-deployment-platform/prometheus:latest
+    image: ghcr.io/alex-krasnoshtanov/cv-pipeline-deployment-platform/prometheus:latest
     environment:
       BACKEND_TARGET: backend:8000
       SCRAPE_SCHEME: http

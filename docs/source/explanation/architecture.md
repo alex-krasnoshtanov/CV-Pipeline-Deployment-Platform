@@ -9,9 +9,9 @@ want the formal spec, see the [CV pipeline specification](../reference/specifica
 ## Architecture Diagrams
 
 For the latest visual architecture diagrams (rendered in Mermaid on GitHub), please refer to:
-- [System Architecture](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/system.md)
-- [Deployment Topology](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/deployment.md)
-- [MLOps Loop](https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/mlops.md)
+- [System Architecture](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/system.md)
+- [Deployment Topology](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/deployment.md)
+- [MLOps Loop](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/blob/main/docs/architecture/mlops.md)
 
 ## Three components, one pipeline
 

@@ -68,7 +68,7 @@ RESOURCE_GROUP = _required("AZURE_RESOURCE_GROUP")
 ENVIRONMENT = _required("ACA_ENVIRONMENT")
 REGISTRY = os.getenv(
     "IMAGE_REGISTRY",
-    "ghcr.io/gfgf96/cv-pipeline-deployment-platform",
+    "ghcr.io/alex-krasnoshtanov/cv-pipeline-deployment-platform",
 )
 BACKEND_APP = _required("BACKEND_APP")
 FRONTEND_APP = _required("FRONTEND_APP")

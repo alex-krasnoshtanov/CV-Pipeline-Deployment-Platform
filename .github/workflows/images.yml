@@ -52,7 +52,7 @@ jobs:
       - uses: actions/checkout@v7
 
       # GHCR rejects uppercase path segments, and github.repository is
-      # "Gfgf96/CV-Pipeline-Deployment-Platform" verbatim. Lowercase it rather
+      # "alex-krasnoshtanov/CV-Pipeline-Deployment-Platform" verbatim. Lowercase it rather
       # than relying on the registry to be forgiving.
       - name: Compute image name
         id: name

@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 # HTML instead, the download fails loudly - see _download below.
 REGISTRY: dict[str, str] = {
     "unet-v1": (
-        "https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform/"
+        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
         "releases/download/weights%2Funet-v1/unet-v1.pth"
     ),
 }

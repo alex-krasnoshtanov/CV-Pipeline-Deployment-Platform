@@ -27,7 +27,7 @@ for a 640x640 image) but works exactly the same.
 ## Step 1 - Clone and install
 
 ```bash
-git clone https://github.com/Gfgf96/CV-Pipeline-Deployment-Platform.git
+git clone https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform.git
 cd CV-Pipeline-Deployment-Platform
 uv sync
 ```
