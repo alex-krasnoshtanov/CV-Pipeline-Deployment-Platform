@@ -4,11 +4,8 @@
 [![Docs](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://alex-krasnoshtanov.github.io/CV-Pipeline-Deployment-Platform/)
 [![CD](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml)
 [![Images](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml)
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A computer-vision platform for plant organ segmentation and root-tip detection
 on *Arabidopsis thaliana* seedling images — packaged as a library, served
@@ -20,11 +17,10 @@ around the model: the packaging boundary, the serving modes, the retraining
 loop that closes on user feedback, and the fact that the same codebase deploys
 to a laptop, a shared GPU server, and a managed cloud endpoint without a fork.
 
-> **Attribution.** This began as a five-person university group project
-> (Breda University of Applied Sciences, April–June 2026). It is not solely my
-> work, and the [Attribution](#attribution) section below breaks down authorship
-> per component with line counts. Read that section before reading this as a
-> portfolio piece.
+> **A five-person university group project** — Breda University of Applied
+> Sciences, April to June 2026. The [Attribution](#attribution) section breaks
+> authorship down per component, derived from the original repository's git
+> history.
 
 ---
 
