@@ -514,19 +514,10 @@ are near-level — Filipp 14 to my 13 — while the lines are 76% to 21%. He wro
 the large modules; I made many small changes to them. Neither number alone says
 that, which is why both are here.
 
-Every figure above comes from
-[`scripts/attribution.py`](scripts/attribution.py), which is in the repository
-so the table can be checked rather than taken on trust. Point it at a clone of
-the group repository and it prints the same numbers:
-
-```bash
-python scripts/attribution.py path/to/group-repo
-```
-
-That repository is private and lives on a university account, so the script
-cannot run in CI, and the
-[original history](https://github.com/BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7)
-with every pull request and review is not publicly readable.
+The [original repository](https://github.com/BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7)
+is private and on a university account, so the history these numbers come from
+— every commit, pull request and review — is not publicly readable. The method
+is stated above so the figures can at least be argued with.
 
 ---
 
