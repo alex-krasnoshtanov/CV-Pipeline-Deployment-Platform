@@ -45,6 +45,7 @@ download explicitly:
 
 ```python
 from cv_pipeline.weights import get_weights
+
 get_weights("unet-v1")
 # Saved to ~/.cache/cv-pipeline/models/unet-v1.pth
 ```

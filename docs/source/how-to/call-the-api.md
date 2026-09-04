@@ -55,6 +55,7 @@ import asyncio
 import os
 import httpx
 
+
 async def infer(image_path: str) -> dict:
     async with httpx.AsyncClient(timeout=30) as client:
         with open(image_path, "rb") as f:
@@ -65,6 +66,7 @@ async def infer(image_path: str) -> dict:
             )
     response.raise_for_status()
     return response.json()
+
 
 result = asyncio.run(infer("plate.png"))
 ```

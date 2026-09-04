@@ -163,8 +163,8 @@ model = SegmentationModel(
     device=None,  # auto-detects CUDA
 )
 
-prob_map = model.predict(image)                    # → (H, W) float32 [0, 1]
-binary_mask, confidence = model.predict_mask(image) # → (uint8 0/255, float)
+prob_map = model.predict(image)  # → (H, W) float32 [0, 1]
+binary_mask, confidence = model.predict_mask(image)  # → (uint8 0/255, float)
 ```
 
 The caller creates the model once and reuses it across calls. The backend
@@ -226,14 +226,15 @@ The backend resolves the serving mode at startup from environment variables:
 ```python
 # apps/backend/src/api/main.py
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     state = ServiceState(...)
     if os.getenv("MODEL_ENDPOINT_URL"):
-        state.serving_mode = "azure_ml"   # Delegates to Azure ML endpoint
+        state.serving_mode = "azure_ml"  # Delegates to Azure ML endpoint
     else:
         model = SegmentationModel(os.getenv("MODEL_PATH"))
-        state.serving_mode = "local"      # Uses local weights
+        state.serving_mode = "local"  # Uses local weights
     ...
 ```
 

@@ -70,9 +70,7 @@ async def require_api_key(
     x_api_key: str = Header(...),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    user = await db.execute(
-        select(User).where(User.revoked_at.is_(None))
-    )
+    user = await db.execute(select(User).where(User.revoked_at.is_(None)))
     for u in user.scalars():
         if bcrypt.checkpw(x_api_key.encode(), u.api_key_hash):
             return u  # Returns the full user object for role checks

@@ -65,6 +65,15 @@ updates:
       frontend-minor-patch:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    ignore:
+      # typescript-eslint, pulled in by eslint-config-next, peer-requires
+      # typescript ">=4.8.4 <6.1.0". A TypeScript 7 bump therefore fails the
+      # frontend build outright with "typescript-eslint does not support
+      # TS 7.0" -- an upstream constraint, not something this repository can
+      # fix. Reopening that PR every month teaches people to ignore the bot.
+      # Drop this entry once typescript-eslint supports TS 7.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "docker"
     directories:

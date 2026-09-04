@@ -177,7 +177,12 @@ Python file.
 ```python
 # entrypoint.py — top of file, before any ML imports
 import os
-from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetCount
+from pynvml import (
+    nvmlInit,
+    nvmlDeviceGetHandleByIndex,
+    nvmlDeviceGetMemoryInfo,
+    nvmlDeviceGetCount,
+)
 
 nvmlInit()
 best_idx, best_free = 0, 0
