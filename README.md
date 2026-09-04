@@ -20,8 +20,8 @@ around the model: the packaging boundary, the serving modes, the retraining
 loop that closes on user feedback, and the fact that the same codebase deploys
 to a laptop, a shared GPU server, and a managed cloud endpoint without a fork.
 
-> **Attribution.** This began as a four-person university group project
-> (Breda University of Applied Sciences, Feb–Jun 2026). It is not solely my
+> **Attribution.** This began as a five-person university group project
+> (Breda University of Applied Sciences, April–June 2026). It is not solely my
 > work, and the [Attribution](#attribution) section below breaks down authorship
 > per component with line counts. Read that section before reading this as a
 > portfolio piece.
@@ -406,8 +406,8 @@ triggers the retraining DAG.
 | `cd.yml` | push to main | Builds and pushes three images, Trivy scan, on-premise deploy, smoke test, OIDC auth check, Container Apps rollout |
 | `images.yml` | PR / version tag | Proves all three Dockerfiles still build; publishes semver-tagged images from a tag |
 | `deploy-endpoint.yml` | manual | Redeploys the Azure ML scoring endpoint |
-| `docs.yml` | docs or source changes | Generates OpenAPI markdown, builds Sphinx, uploads the site |
-| `pr-title.yml` | PR | Enforces conventional-commit PR titles |
+| `docs.yml` | docs or source changes | Generates OpenAPI markdown, builds Sphinx, publishes it to Pages from main |
+| `pr-title.yml` | PR | Enforces conventional-commit PR titles, except Dependabot's |
 
 Image publishing authenticates with the built-in `GITHUB_TOKEN`. GHCR was
 chosen over Docker Hub specifically so that half of the pipeline needs no
