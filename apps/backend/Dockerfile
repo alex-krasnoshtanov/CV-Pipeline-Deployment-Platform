@@ -23,7 +23,7 @@ RUN uv sync --frozen --no-dev
 
 # Stage 2: runtime image. We copy the venv from the builder so the
 # final image has no build tooling, which cuts size.
-FROM python:3.11-slim-bookworm AS runtime
+FROM python:3.14-slim-bookworm AS runtime
 
 WORKDIR /app
 
