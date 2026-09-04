@@ -45,7 +45,8 @@ to a laptop, a shared GPU server, and a managed cloud endpoint without a fork.
 - [Testing](#testing)
 - [Documentation](#documentation)
 - [Attribution](#attribution)
-- [License and reuse](#license-and-reuse)
+- [Licence](#licence)
+- [Author](#author)
 
 ---
 

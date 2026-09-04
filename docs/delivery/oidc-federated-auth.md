@@ -11,7 +11,7 @@ Every run on `main` does this before touching Azure:
 
 1. The job asks GitHub's OIDC provider for a signed JWT describing itself:
    which repository, which ref, which run.
-2. [`azure/login@v2`](../../.github/workflows/cd.yml) presents that JWT to
+2. The [`azure/login`](../../.github/workflows/cd.yml) action presents that JWT to
    Microsoft Entra ID.
 3. Entra checks the JWT's claims against a federated credential registered
    against the deploy identity.
