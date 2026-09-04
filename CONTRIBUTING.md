@@ -3,11 +3,6 @@
 This document covers the conventions this repository is built on: commit and
 PR format, branching, and what "done" means before review.
 
-> Note on reuse: this repository does not carry an open-source license, because
-> it is jointly authored and I hold copyright only in my own contributions. See
-> [License and reuse](README.md#license-and-reuse). Contributions and issues are
-> still welcome — that restriction is about redistribution, not participation.
-
 ## Getting set up
 
 ```bash
