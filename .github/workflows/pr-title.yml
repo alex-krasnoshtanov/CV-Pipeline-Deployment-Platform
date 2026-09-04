@@ -7,6 +7,11 @@ on:
 
 jobs:
   check-title:
+    # Dependabot writes its own titles ("Bump the frontend-minor-patch group in
+    # /apps/frontend with 11 updates") and cannot be told to use conventional
+    # commits. Without this exemption every bot PR fails a check it has no way
+    # to pass, which trains everyone to ignore a red X on dependency updates.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title follows conventional commits

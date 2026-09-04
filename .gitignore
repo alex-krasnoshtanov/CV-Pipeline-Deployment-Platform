@@ -10,6 +10,12 @@ azure-credentials*
 configs/env/*
 !configs/env/*.example
 
+# Build artefacts. The cloud image builds and the Azure submit scripts expect
+# a freshly built cv-pipeline wheel beside them; three stale copies used to be
+# committed, which meant the image could be built from a wheel that no longer
+# matched the source in the same commit.
+infra/cloud/**/*.whl
+
 # --- Python ---
 __pycache__/
 *.py[cod]
