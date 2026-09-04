@@ -1,0 +1,626 @@
+name: CD
+
+# Build, scan, deploy, verify -- the pipeline as it ran against the group
+# project's infrastructure.
+#
+# The two deploy jobs are gated on the ENABLE_DEPLOY repository variable and
+# stay skipped here, because the Portainer host and the Azure subscription they
+# targeted belonged to the university and are gone. Everything before them is
+# live on every push: three images built and pushed to GHCR, then scanned with
+# Trivy. Captured output from a real end-to-end run, deploy included, is in
+# docs/evidence/, and docs/delivery/ documents each gate.
+#
+# images.yml handles pull requests and version tags; see the note there.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# We always want the latest commit to win, not race the previous one.
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      # Expose the 7-char SHA so the deploy job can reference it without
+      # recomputing. Both jobs see the same GITHUB_SHA but being explicit
+      # here avoids any risk of the value differing between job environments.
+      short_sha: ${{ steps.short_sha.outputs.value }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set lowercase repo name
+        run: echo "REPO_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Set short SHA
+        id: short_sha
+        run: echo "value=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for backend
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ env.REPO_LC }}/backend
+          tags: |
+            type=sha,prefix=sha-
+            type=raw,value=latest
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend,mode=auto
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ env.REPO_LC }}/frontend:sha-${{ steps.short_sha.outputs.value }}
+            ghcr.io/${{ env.REPO_LC }}/frontend:latest
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend,mode=max
+
+      - name: Build and push prometheus
+        # Templated Prometheus image (infra/monitoring/prometheus): one image for
+        # on-prem and cloud, with the scrape target set via env vars at deploy
+        # time. Built last so a problem here cannot block the backend/frontend
+        # pushes above. Portainer's compose pins :latest -> :sha on deploy.
+        uses: docker/build-push-action@v7
+        with:
+          context: infra/monitoring/prometheus
+          file: infra/monitoring/prometheus/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ env.REPO_LC }}/prometheus:sha-${{ steps.short_sha.outputs.value }}
+            ghcr.io/${{ env.REPO_LC }}/prometheus:latest
+          cache-from: type=gha,scope=prometheus
+          cache-to: type=gha,scope=prometheus,mode=max
+
+  scan-images:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Set lowercase repo name
+        run: echo "REPO_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Scan backend
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1   # v0.35.0
+        env:
+          GODEBUG: http2client=0
+        with:
+          image-ref: ghcr.io/${{ env.REPO_LC }}/backend:sha-${{ env.SHORT_SHA }}
+          format: sarif
+          output: trivy-backend.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+
+      - name: Upload Trivy backend results
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: trivy-backend-sarif
+          path: trivy-backend.sarif
+          retention-days: 30
+
+  deploy-portainer:
+    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
+    needs: build-and-push
+    # Runs on the self-hosted runner on the lab workstation, which can reach Portainer
+    # on the campus network, which public GitHub runners cannot reach.
+    runs-on: [self-hosted, lambda0]
+    env:
+      SHORT_SHA: ${{ needs.build-and-push.outputs.short_sha }}
+      PORTAINER_URL: ${{ vars.PORTAINER_URL }}
+      STACK_ID: ${{ vars.PORTAINER_STACK_ID }}
+      ENDPOINT_ID: ${{ vars.PORTAINER_ENDPOINT_ID }}
+
+    steps:
+      # Checkout the repo so we can read the compose file from git.
+      # This is what makes compose changes (port mappings, env vars,
+      # new services) deploy automatically - no manual Portainer edits.
+      - uses: actions/checkout@v7
+
+      - name: Deploy stack from repo compose file
+        env:
+          PORTAINER_TOKEN: ${{ secrets.PORTAINER_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # ---- 1. Read the compose file from the repo ----
+          # Source of truth is git, not Portainer. Any structural change
+          # (ports, env vars, new services) is picked up automatically.
+          COMPOSE=$(cat infra/server/docker-compose.portainer.yml)
+
+          # ---- 2. Pin :latest tags to the current SHA ----
+          # Only replaces :latest on lines containing ghcr.io, so
+          # postgres:16 and other third-party images are untouched.
+          UPDATED=$(echo "$COMPOSE" | sed "/ghcr\.io/s|:latest|:sha-$SHORT_SHA|g")
+
+          echo "Deploying compose from repo with images pinned to sha-$SHORT_SHA"
+
+          # ---- 3. Fetch the current env vars so they are preserved ----
+          # Portainer stores the stack env vars (POSTGRES_PASSWORD, JWT_SIGNING_KEY,
+          # etc.) separately from the compose file. The PUT endpoint requires them
+          # to be passed back or they are cleared.
+          STACK_ENV=$(curl -sf \
+            -H "X-API-Key: $PORTAINER_TOKEN" \
+            "$PORTAINER_URL/api/stacks/$STACK_ID" | jq '.Env // []')
+
+          # ---- 4. PUT the updated stack ----
+          # pullImage: true forces Docker to pull the new sha-tagged layers
+          # from GHCR even if Docker has a cached manifest for a previous tag.
+          # prune: false keeps any containers not in the compose file running
+          # (there are none here, but false is the safe default).
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X PUT \
+            -H "X-API-Key: $PORTAINER_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$PORTAINER_URL/api/stacks/$STACK_ID?endpointId=$ENDPOINT_ID" \
+            -d "{
+              \"stackFileContent\": $(echo "$UPDATED" | jq -Rs .),
+              \"env\": $STACK_ENV,
+              \"prune\": false,
+              \"pullImage\": true
+            }")
+
+          echo "Portainer API response: HTTP $HTTP"
+
+          if ! echo "$HTTP" | grep -q "^2"; then
+            echo "Portainer stack update failed with HTTP $HTTP"
+            exit 1
+          fi
+
+          echo "Stack updated to sha-$SHORT_SHA from repo compose file."
+
+  smoke-test:
+    needs: deploy-portainer
+    # Runs on the same self-hosted runner as deploy-portainer so it has
+    # network reach to the deploy host. Public runners cannot reach it.
+    runs-on: [self-hosted, lambda0]
+    env:
+      BACKEND_URL: ${{ vars.DEPLOY_BACKEND_URL }}
+      FRONTEND_URL: ${{ vars.DEPLOY_FRONTEND_URL }}
+
+    steps:
+      # Wait for containers to come up after the Portainer deploy.
+      # backend has start_period: 120s in its healthcheck because the
+      # FastAPI app downloads model weights at startup before /health
+      # returns 200. Be patient or smoke test fails on cold cache.
+      - name: Wait for backend to be ready
+        run: |
+          set -e
+          for i in $(seq 1 30); do
+            if curl -sf --max-time 5 "${BACKEND_URL}/health" > /dev/null; then
+              echo "Backend healthy after ${i} attempts."
+              exit 0
+            fi
+            echo "Attempt ${i}/30: backend not ready yet, sleeping 10s..."
+            sleep 10
+          done
+          echo "Backend did not become healthy within 5 minutes."
+          curl -v "${BACKEND_URL}/health" || true
+          exit 1
+
+      - name: Smoke test backend /health
+        run: |
+          set -e
+          HTTP=$(curl -s -o /tmp/health.json -w "%{http_code}" --max-time 10 "${BACKEND_URL}/health")
+          echo "GET ${BACKEND_URL}/health -> HTTP ${HTTP}"
+          cat /tmp/health.json
+          echo ""
+          if [ "${HTTP}" != "200" ]; then
+            echo "Backend health check failed (expected 200)."
+            exit 1
+          fi
+          # Verify response body has model_loaded: true
+          if ! grep -q '"model_loaded":true' /tmp/health.json; then
+            echo "Backend reports model_loaded != true."
+            exit 1
+          fi
+          echo "Backend smoke test passed."
+
+      - name: Smoke test frontend root
+        run: |
+          set -e
+          # Frontend may return 200 (rendered home), 302 (redirect to /login),
+          # or 307 (Next.js redirect). Any 2xx/3xx is healthy.
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "${FRONTEND_URL}/")
+          echo "GET ${FRONTEND_URL}/ -> HTTP ${HTTP}"
+          if ! echo "${HTTP}" | grep -qE "^(2|3)"; then
+            echo "Frontend smoke test failed (expected 2xx/3xx, got ${HTTP})."
+            exit 1
+          fi
+          echo "Frontend smoke test passed."
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "::notice::Smoke tests complete for sha-${{ needs.build-and-push.outputs.short_sha }}"
+
+  azure-auth-test:
+    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
+    # Verifies OIDC federated credential setup works end-to-end without
+    # actually deploying anything. Acts as the foundation for future
+    # Azure Container Apps deploy jobs. Pinned to main so the
+    # branch claim in the GitHub-issued JWT matches the federated
+    # credential registered for this repository.
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    # NOTE: no `environment:` binding. The shared deploy identity's
+    # federated credential (gh-cv7-main) trusts subject
+    # repo:<owner>/<repo>:ref:refs/heads/main. Binding a job to a
+    # GitHub Environment rewrites the OIDC subject to ...:environment:<name>,
+    # which matches no registered credential and breaks azure/login.
+    # OIDC requires id-token: write so the runner can request a
+    # short-lived JWT from GitHub Actions OIDC provider. Without
+    # this scope, azure/login fails with an opaque AADSTS70016 error.
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      RG: ${{ vars.AZURE_RESOURCE_GROUP }}
+
+    steps:
+      - name: Azure login via OIDC
+        # Federated credential trades a per-run JWT for an Azure
+        # access token. No long-lived secret is stored in the repo.
+        # The three AZURE_* values are identifiers, not secrets,
+        # which is why they live in vars not secrets.
+        uses: azure/login@v2
+        with:
+          client-id:       ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id:       ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Verify subscription access
+        run: |
+          set -e
+          echo "=== Subscription context ==="
+          az account show --output table
+
+      - name: Probe shared resource group
+        # The deploy identity has Contributor on the target resource group per
+        # a one-time setup. A successful list proves the role binding
+        # is active, not just that the JWT exchange worked.
+        run: |
+          set -e
+          echo "=== Resource group $RG ==="
+          az group show --name "$RG" --output table
+
+      - name: Probe Container Apps environment
+        # Confirms the Container Apps extension and the deploy
+        # identity can enumerate Container App resources. Does
+        # not depend on our group's apps existing yet - that is
+        # the Container Apps deploy job below.
+        run: |
+          set -e
+          az extension add --name containerapp --upgrade --yes 2>/dev/null || true
+          echo "=== Container App environments in $RG ==="
+          az containerapp env list --resource-group "$RG" --output table || echo "List failed (may indicate scoping issue)"
+          echo ""
+          echo "=== Our group apps (if pre-created) ==="
+          az containerapp list --resource-group "$RG" --query "[].{name:name, status:properties.runningStatus}" --output table || echo "No apps yet (expected before the environment is provisioned)"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "::notice::OIDC authentication verified for sha-${{ needs.build-and-push.outputs.short_sha }}"
+
+  deploy-azure:
+    # Deploys both backend and frontend Container Apps by pointing them
+    # at the freshly built sha-tagged images from build-and-push. The
+    # frontend changes image only. The backend ALSO sets its feedback
+    # storage config (blob backend + connection-string secret) on every
+    # deploy, so cloud config stays in sync with git. Ingress and other
+    # one-time settings still persist from app creation.
+    needs: [build-and-push, azure-auth-test]
+    runs-on: ubuntu-latest
+    # No `environment:` binding (see azure-auth-test note): the OIDC
+    # subject must stay the main-branch form to match gh-cv7-main.
+    # The manual approval gate was dropped for now; to reinstate it,
+    # have an instructor add a federated credential with subject
+    # ...:environment:production, then restore `environment: production`.
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      RG: ${{ vars.AZURE_RESOURCE_GROUP }}
+    strategy:
+      # Run backend and frontend in parallel - they are independent.
+      # fail-fast: false so a transient frontend failure does not abort
+      # a successful backend deploy.
+      fail-fast: false
+      matrix:
+        include:
+          - app: ${{ vars.AZURE_BACKEND_APP }}
+            image_path: backend
+          - app: ${{ vars.AZURE_FRONTEND_APP }}
+            image_path: frontend
+
+    steps:
+      # Checkout so the smoke test can POST the committed sample image.
+      - uses: actions/checkout@v7
+
+      - name: Set lowercase repo name
+        run: echo "REPO_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Azure login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id:       ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id:       ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Ensure containerapp extension is present
+        run: az extension add --name containerapp --upgrade --yes 2>/dev/null || true
+
+      - name: Enable multiple-revision mode (idempotent)
+        run: |
+          az containerapp revision set-mode \
+            --mode multiple \
+            --name "${{ matrix.app }}" \
+            --resource-group "$RG" \
+            --output none || true
+
+      - name: Update Container App image
+        env:
+          SHORT_SHA: ${{ needs.build-and-push.outputs.short_sha }}
+          # Backend-only; empty on the frontend leg, which never reads it.
+          # GitHub masks this value in logs automatically.
+          FEEDBACK_BLOB_CONNECTION_STRING: ${{ secrets.FEEDBACK_BLOB_CONNECTION_STRING }}
+        run: |
+          set -e
+          IMAGE="ghcr.io/${REPO_LC}/${{ matrix.image_path }}:sha-${SHORT_SHA}"
+          echo "Updating ${{ matrix.app }} to image ${IMAGE}"
+
+          # `update --image` only works if the app already exists.
+          # First-time bootstrap (az containerapp create with full env
+          # vars, secrets, and ingress) is tracked separately in
+          # docs/cloud-setup.md. If you see "ResourceNotFoundError" here,
+          # the app has not been created in the resource group yet.
+          if ! az containerapp show \
+                --name "${{ matrix.app }}" \
+                --resource-group "$RG" \
+                --output none 2>/dev/null; then
+            echo "::error::Container App '${{ matrix.app }}' does not exist in RG $RG."
+            echo "::error::Create it once with 'az containerapp create' (see docs/cloud-setup.md) before re-running."
+            exit 1
+          fi
+
+          # Feedback storage is backend-only and set on every deploy so the
+          # app's config tracks git. The secret must exist before an env var
+          # can reference it, so set it first, then fold the env vars into the
+          # SAME update call as the image -> one new revision with both, which
+          # keeps the blue-green rollback target (PREV) on the last stable one.
+          EXTRA_ARGS=()
+          if [ "${{ matrix.image_path }}" = "backend" ]; then
+            if [ -z "${FEEDBACK_BLOB_CONNECTION_STRING}" ]; then
+              echo "::error::FEEDBACK_BLOB_CONNECTION_STRING secret is empty. Add it under repo Settings > Secrets and variables > Actions."
+              exit 1
+            fi
+            az containerapp secret set \
+              --name "${{ matrix.app }}" \
+              --resource-group "$RG" \
+              --secrets feedback-blob-conn="${FEEDBACK_BLOB_CONNECTION_STRING}" \
+              --output none
+            EXTRA_ARGS=(--set-env-vars
+              "FEEDBACK_STORAGE_BACKEND=blob"
+              "FEEDBACK_STORAGE_BLOB_CONTAINER=${{ vars.FEEDBACK_BLOB_CONTAINER }}"
+              "FEEDBACK_STORAGE_BLOB_CONNECTION_STRING=secretref:feedback-blob-conn")
+          fi
+
+          az containerapp update \
+            --name "${{ matrix.app }}" \
+            --resource-group "$RG" \
+            --image "${IMAGE}" \
+            "${EXTRA_ARGS[@]}" \
+            --output table
+
+      - name: Promote new revision (blue-green) with smoke test
+        env:
+          IMAGE_PATH: ${{ matrix.image_path }}
+          # Hard gate on the /infer smoke test. The backend reaches the model
+          # through the public NGROK tunnel (MODEL_ENDPOINT_URL) with a Bearer
+          # key, so the request path IS verifiable in CI. "true" => a failing
+          # /infer rolls the deploy back. Set "false" only as a temporary escape
+          # hatch when the tunnel is known-down and you must ship other changes;
+          # a persistently "false" value gives false confidence, since the
+          # inference step would pass regardless of whether NGROK is reachable.
+          #
+          # SCOPE: this asserts HTTP 200 plus a well-formed result body -- the
+          # request path, auth, model load and serialisation. It deliberately
+          # does NOT assert landmark_count > 0, because the only image this repo
+          # may redistribute (docs/source/_static/sample_plate.png) is a
+          # web-downscaled copy of a proprietary plate, and unet-v1 is
+          # scale-sensitive: it correctly returns an empty mask at that
+          # resolution. See the "Visual example" section of
+          # docs/source/tutorials/quickstart.md. Asserting a non-zero
+          # landmark count here would fail every deploy. To gate on real
+          # segmentation quality, add a native-resolution fixture that is
+          # licensed for redistribution, then tighten the grep below.
+          INFER_SMOKE_FATAL: "true"
+        run: |
+          set -euo pipefail
+          APP="${{ matrix.app }}"
+
+          FQDN=$(az containerapp show -n "$APP" -g "$RG" \
+            --query properties.configuration.ingress.fqdn -o tsv)
+          BASE="https://$FQDN"
+
+          # Newest active revision is the one we just deployed; previous is
+          # the current stable one we roll back to if the new one fails.
+          NEWEST=$(az containerapp revision list -n "$APP" -g "$RG" \
+            --query "sort_by([?properties.active], &properties.createdTime)[-1].name" -o tsv)
+          PREV=$(az containerapp revision list -n "$APP" -g "$RG" \
+            --query "sort_by([?properties.active], &properties.createdTime)[-2].name" -o tsv || true)
+          echo "New revision: $NEWEST   Previous: ${PREV:-<none>}"
+
+          # Cut 100% to the new revision, then verify. The rollback below
+          # restores $PREV on any failure, so the unverified-code window is
+          # only as long as the checks take. (A label-based test-before-cut
+          # avoids even that window but adds az-version-sensitive plumbing;
+          # for this project the rollback gate is the simpler, robust choice.)
+          az containerapp ingress traffic set -n "$APP" -g "$RG" \
+            --revision-weight "$NEWEST=100" --output none
+
+          rollback() {
+            if [ -n "${PREV:-}" ]; then
+              echo "::error::Smoke test failed on $NEWEST; rolling back to $PREV."
+              az containerapp ingress traffic set -n "$APP" -g "$RG" \
+                --revision-weight "$PREV=100" --output none || true
+            else
+              echo "::error::Smoke test failed on $NEWEST and there is no previous revision to roll back to."
+            fi
+            exit 1
+          }
+
+          # Wait for the new revision to become ready. The readiness probe is
+          # per-app: the backend exposes /health (JSON including model_loaded),
+          # but the Next.js frontend has no /health route, so we probe / -- the
+          # same path the frontend's own Docker healthcheck uses. Polling the
+          # wrong path is what made the frontend roll back on every deploy.
+          if [ "$IMAGE_PATH" = "backend" ]; then PROBE="/health"; else PROBE="/"; fi
+          ok=""
+          for i in $(seq 1 30); do
+            if curl -sf --max-time 5 "$BASE$PROBE" >/tmp/probe.out 2>/dev/null; then ok=1; break; fi
+            echo "Attempt $i/30: $PROBE not ready, sleeping 10s..."; sleep 10
+          done
+          # The in-loop probe is quiet (2>/dev/null) so a normal slow start
+          # does not spam 30 connection errors. If it never comes up, emit one
+          # verbose attempt before rolling back so a stuck deploy is debuggable.
+          if [ -z "$ok" ]; then
+            echo "Readiness probe $PROBE never succeeded; verbose final attempt:"
+            curl -v --max-time 5 "$BASE$PROBE" || true
+            rollback
+          fi
+          echo "Readiness probe $PROBE OK."; head -c 400 /tmp/probe.out 2>/dev/null; echo
+
+          if [ "$IMAGE_PATH" = "backend" ]; then
+            # Hard gate: the backend must report the model layer is ready.
+            grep -q '"model_loaded":true' /tmp/probe.out || rollback
+            # Real inference: POST the sample image to the backend, which calls
+            # the model through the NGROK tunnel (MODEL_ENDPOINT_URL + Bearer
+            # key). /infer allows anonymous callers, so no API key is needed here.
+            # `|| true` so a curl-level failure (timeout/connection refused,
+            # exit 28 etc.) does not trip `set -e` before the branch below
+            # decides. CODE stays empty on such failures.
+            CODE=$(curl -s -o /tmp/infer.json -w "%{http_code}" --max-time 60 \
+              -X POST "$BASE/infer" -F "image=@docs/source/_static/sample_plate.png" || true)
+            echo "POST /infer -> HTTP ${CODE:-<no response>}"; cat /tmp/infer.json 2>/dev/null || true; echo
+            if [ "$CODE" = "200" ] && grep -q '"landmark_count"' /tmp/infer.json 2>/dev/null; then
+              echo "Backend inference smoke test passed."
+            elif [ "$INFER_SMOKE_FATAL" = "true" ]; then
+              rollback
+            else
+              # Escape-hatch path (INFER_SMOKE_FATAL=false): /health passed and
+              # the new image is promoted, but /infer did not return a valid
+              # result. Warn instead of rolling back -- used only when the NGROK
+              # tunnel is knowingly down. Normally this is a hard gate.
+              echo "::warning::/infer returned HTTP ${CODE:-<no response>} (expected 200 + landmark_count). NON-FATAL because INFER_SMOKE_FATAL=false. Check the NGROK tunnel (MODEL_ENDPOINT_URL) and the endpoint key; new revision promoted on /health only."
+            fi
+          else
+            # Frontend readiness was already confirmed by the GET / probe above.
+            echo "Frontend smoke test passed (GET / returned 2xx/3xx)."
+          fi
+
+          # New revision verified and serving 100%. Retire the old one.
+          if [ -n "${PREV:-}" ]; then
+            az containerapp revision deactivate -n "$APP" -g "$RG" --revision "$PREV" --output none || true
+          fi
+          echo "::notice::$APP promoted: $NEWEST at 100%, ${PREV:-<none>} deactivated."
+
+      - name: Show running revisions
+        run: |
+          az containerapp revision list \
+            --name "${{ matrix.app }}" \
+            --resource-group "$RG" \
+            --query "[?properties.active].{revision:name, traffic:properties.trafficWeight, created:properties.createdTime, image:properties.template.containers[0].image}" \
+            --output table
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "::notice::deploy-azure for ${{ matrix.app }} on sha-${{ needs.build-and-push.outputs.short_sha }}"
+  endpoint-contract-check:
+    # Detects when the Azure ML scoring contract (score.py, conda, Dockerfile,
+    # cv_pipeline source) changed since the last endpoint deploy. The endpoint
+    # is expensive to redeploy, so this NEVER deploys and NEVER fails CD -- it
+    # only warns that a manual run of the "Deploy Endpoint" workflow is due.
+    # Stdlib-only check script: no pip install, no Azure auth, runs in seconds.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Compare scoring contract to last deploy
+        run: |
+          set +e
+          OUT=$(python3 scripts/azure/endpoint_contract.py check)
+          CODE=$?
+          echo "$OUT"
+          {
+            echo "## Azure ML endpoint scoring contract"
+            echo ""
+            echo '```'
+            echo "$OUT"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$CODE" = "0" ]; then
+            echo "Contract matches the last deploy -- no endpoint action needed."
+            exit 0
+          fi
+
+          # Non-blocking: surface the change but never fail CD. env_changed=false
+          # means only score.py moved, so the fast (no image rebuild) path works.
+          REBUILD="true"
+          echo "$OUT" | grep -q "env_changed=false" && REBUILD="false"
+          echo "::warning title=Endpoint redeploy due::Scoring contract changed since last deploy. Run the 'Deploy Endpoint' workflow (rebuild_env=$REBUILD)."
+          {
+            echo ""
+            echo "**Action:** the scoring endpoint is out of date. Run the **Deploy Endpoint** workflow manually:"
+            echo ""
+            echo '```'
+            echo "gh workflow run deploy-endpoint.yml -f model_version=<N> -f rebuild_env=$REBUILD"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0

@@ -62,6 +62,10 @@ infra/airflow/plugins/
 # ...but training logs under models/ are deliberate artefacts. Without this
 # negation the *.log rule above swallows them silently.
 !models/**/training.log
+# Same for the captured pipeline and training runs under docs/evidence/. These
+# are the documentation's evidence, referenced by name from docs/delivery/, so
+# the *.log rule dropping them would leave dead links in a published repo.
+!docs/evidence/**/*.log
 
 # --- Smoke-test images: 102 MB across 10 files, never tracked upstream.
 # Ship downsampled crops or a Release asset, not this.

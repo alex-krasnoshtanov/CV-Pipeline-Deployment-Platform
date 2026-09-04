@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml)
 [![Docs](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml)
+[![CD](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml)
 [![Images](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
@@ -396,15 +397,27 @@ triggers the retraining DAG.
 | Workflow | Trigger | Does |
 |---|---|---|
 | `ci.yml` | push / PR to main | Ruff lint + format check, pytest with 85% coverage gate, frontend lint/test/build |
+| `cd.yml` | push to main | Builds and pushes three images, Trivy scan, on-premise deploy, smoke test, OIDC auth check, Container Apps rollout |
+| `images.yml` | PR / version tag | Proves all three Dockerfiles still build; publishes semver-tagged images from a tag |
+| `deploy-endpoint.yml` | manual | Redeploys the Azure ML scoring endpoint |
 | `docs.yml` | docs or source changes | Generates OpenAPI markdown, builds Sphinx, uploads the site |
-| `images.yml` | push / PR / tag | Builds backend, frontend and Prometheus images, publishes to GHCR |
 | `pr-title.yml` | PR | Enforces conventional-commit PR titles |
 
-`images.yml` authenticates with the built-in `GITHUB_TOKEN` — GHCR was chosen
-over Docker Hub specifically so the pipeline needs no repository secrets.
+Image publishing authenticates with the built-in `GITHUB_TOKEN`. GHCR was
+chosen over Docker Hub specifically so that half of the pipeline needs no
+repository secrets, and the cloud half needs none either because it
+authenticates through OIDC federated credentials rather than a stored client
+secret.
 
-There is deliberately no deploy job. The cloud tier is documented but not
-provisioned, and the on-premise tier pulls published images by hand.
+**The two deploy chains are gated and currently skipped.** They targeted a
+Portainer host on the university campus network and the university's Azure
+subscription, and neither exists now, so both sit behind an `ENABLE_DEPLOY`
+repository variable. Everything before them runs on every push.
+
+They did run. [`docs/delivery/`](docs/delivery/) documents each gate and
+[`docs/evidence/`](docs/evidence/) holds captured output, including a
+4,086-line transcript of one full run and a health capture showing the cloud
+apps on their nineteenth revision, serving, with the model loaded.
 
 ---
 
@@ -422,6 +435,11 @@ Currently **426 unit tests, 92.6% line coverage** across `cv_pipeline` and
 ---
 
 ## Documentation
+
+[`docs/delivery/`](docs/delivery/) is the pipeline: federated cloud auth,
+approval gates, the post-deploy smoke test, the Container Apps rollout, and
+metrics. [`docs/evidence/`](docs/evidence/) holds the captured runs behind it.
+[`docs/cost-analysis.md`](docs/cost-analysis.md) prices the cloud tier.
 
 Sphinx sources in [`docs/source/`](docs/source/), organised on the
 [Diátaxis](https://diataxis.fr/) split — tutorials, how-to guides, reference,

@@ -1,0 +1,122 @@
+name: Deploy Endpoint
+
+# Manual, semi-automatic redeploy of the Azure ML scoring endpoint.
+#
+# Why manual: re-registering the inference environment triggers an ACR image
+# build and the Kubernetes deployment is re-provisioned -- minutes per run.
+# Doing that on every push to main would be wasteful and risky (it could re-roll
+# the live endpoint mid-demo). Instead, CD's `endpoint-contract-check` job tells
+# you WHEN a redeploy is due and whether `rebuild_env` should be true; you then
+# trigger this workflow. This is the only thing that mutates the live endpoint.
+on:
+  workflow_dispatch:
+    inputs:
+      model_version:
+        description: "Registered hades-unet model version to deploy (e.g. 6)."
+        required: true
+        type: string
+      traffic:
+        description: "Traffic percent for this deployment (100 = all traffic)."
+        required: false
+        default: "100"
+        type: string
+      rebuild_env:
+        description: "Rebuild the inference image (needed if conda/Dockerfile/cv_pipeline changed)."
+        required: false
+        default: true
+        type: boolean
+
+# Never run two endpoint deploys at once; a half-applied traffic split is worse
+# than waiting.
+concurrency:
+  group: deploy-endpoint
+  cancel-in-progress: false
+
+jobs:
+  deploy-endpoint:
+    runs-on: ubuntu-latest
+    # OIDC subject must stay the main-branch form to match the gh-cv7-main
+    # federated credential (same constraint documented in cd.yml's deploy-azure
+    # job). Dispatching from main keeps the subject correct; do NOT add an
+    # `environment:` here or azure/login will fail with AADSTS70021.
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      # deploy_endpoint.py and register_inference_env.py read these three.
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_WORKSPACE_NAME: ${{ vars.AZURE_WORKSPACE_NAME }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10
+
+      - name: Build cv-pipeline wheel into the endpoint build context
+        # The inference image installs the wheel from infra/cloud/endpoint/.
+        # Rebuilding from source guarantees the deployed image carries the
+        # current cv_pipeline (including the explain mode), not the possibly
+        # stale wheel committed in the repo. The filename is pinned to match
+        # the COPY line in infra/cloud/endpoint/Dockerfile.
+        run: |
+          set -e
+          uv build --wheel packages/cv-pipeline --out-dir /tmp/wheel
+          ls -la /tmp/wheel
+          cp /tmp/wheel/cv_pipeline-*.whl \
+            infra/cloud/endpoint/cv_pipeline-0.1.0-py3-none-any.whl
+          ls -la infra/cloud/endpoint/cv_pipeline-0.1.0-py3-none-any.whl
+
+      - name: Install Azure SDK deps
+        run: uv pip install --system azure-ai-ml azure-identity python-dotenv
+
+      - name: Azure login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Re-register inference environment (rebuild image)
+        if: ${{ inputs.rebuild_env }}
+        run: python scripts/azure/register_inference_env.py
+
+      - name: Deploy endpoint
+        run: |
+          python scripts/azure/deploy_endpoint.py \
+            --model-version "${{ inputs.model_version }}" \
+            --traffic "${{ inputs.traffic }}"
+
+      - name: Record deployed contract
+        # Runs only if the deploy above succeeded, so the sentinel always
+        # reflects what is actually live. Commit the printed/uploaded file to
+        # turn CD's drift warning green.
+        run: |
+          python scripts/azure/endpoint_contract.py write \
+            --model-version "${{ inputs.model_version }}" \
+            --git-sha "${GITHUB_SHA::7}"
+          {
+            echo "## Deployed contract -- commit this file"
+            echo ""
+            echo "Add \`infra/cloud/endpoint/.deployed-contract.json\` to the repo"
+            echo "(open a normal PR) so CD's drift check goes green."
+            echo ""
+            echo '```json'
+            cat infra/cloud/endpoint/.deployed-contract.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload updated sentinel
+        uses: actions/upload-artifact@v5
+        with:
+          name: deployed-contract
+          path: infra/cloud/endpoint/.deployed-contract.json
+          # The sentinel is a dot-file; upload-artifact skips hidden files
+          # unless this is set (that is what caused "No files were found").
+          include-hidden-files: true
+          retention-days: 7

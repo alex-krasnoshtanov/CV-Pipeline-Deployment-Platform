@@ -1,0 +1,23 @@
+# Live deployment health — captured 2026-06-08 (ILO 9.5)
+# Resource group: buas-y2 | subscription: Azure subscription 1
+# Commands and their REAL output are shown below. No values fabricated.
+
+## 1. az containerapp show — backend
+$ az containerapp show -n y2d-2026-suicidesquad7-backend -g buas-y2 --query "{state:properties.runningStatus, fqdn:properties.configuration.ingress.fqdn, latestRevision:properties.latestRevisionName}" -o json
+{
+  "fqdn": "y2d-2026-suicidesquad7-backend.yellowfield-557666ae.northeurope.azurecontainerapps.io",
+  "latestRevision": "y2d-2026-suicidesquad7-backend--0000019",
+  "state": "Running"
+}
+
+## 2. az containerapp show — frontend
+$ az containerapp show -n y2d-2026-suicidesquad7-frontend -g buas-y2 --query "{state:properties.runningStatus, fqdn:properties.configuration.ingress.fqdn, latestRevision:properties.latestRevisionName}" -o json
+{
+  "fqdn": "y2d-2026-suicidesquad7-frontend.yellowfield-557666ae.northeurope.azurecontainerapps.io",
+  "latestRevision": "y2d-2026-suicidesquad7-frontend--0000018",
+  "state": "Running"
+}
+
+## 3. Live backend /health (API-key-exempt endpoint)
+$ curl -sf https://y2d-2026-suicidesquad7-backend.yellowfield-557666ae.northeurope.azurecontainerapps.io/health
+{"status":"ok","model_loaded":true,"model_version":"unknown","pipeline_version":"0.1.0","serving_mode":"azure_ml","timestamp":"2026-06-08T14:56:18.617432Z"}

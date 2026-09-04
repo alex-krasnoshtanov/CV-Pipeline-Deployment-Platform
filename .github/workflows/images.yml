@@ -1,18 +1,19 @@
 name: Images
 
-# Builds and publishes the backend, frontend and Prometheus images to this
-# repository's own GitHub Container Registry namespace.
+# Release and pull-request image builds.
 #
-# This replaces the group repository's deploy pipeline. There is deliberately
-# no deployment step: the cloud tier is documented but never provisioned, and
-# the on-premise tier pulls these images through Portainer by hand.
+# Division of labour with cd.yml: CD owns pushes to main, where it builds
+# sha-tagged and :latest images and then scans and deploys them. This workflow
+# owns the other two cases CD does not cover -- proving on a pull request that
+# all three Dockerfiles still build, and publishing semver-tagged images from a
+# version tag. Both workflows pushing :latest on the same commit would race for
+# the tag, so main is deliberately absent from the triggers below.
 #
 # Authentication uses the built-in GITHUB_TOKEN. No repository secrets are
 # required, which is the main reason GHCR was chosen over Docker Hub.
 
 on:
   push:
-    branches: [main]
     tags: ["v*"]
   pull_request:
     branches: [main]
@@ -75,13 +76,14 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ steps.name.outputs.value }}
+          # No branch or :latest rules here: main is CD's, and a tag push
+          # is not on the default branch so enable={{is_default_branch}}
+          # would evaluate false anyway.
           tags: |
-            type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
-            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v4
