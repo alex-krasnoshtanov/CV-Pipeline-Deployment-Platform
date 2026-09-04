@@ -519,7 +519,7 @@ build-and-push	Set up Docker Buildx	2026-06-08T14:06:26.7533093Z ##[endgroup]
 build-and-push	Log in to GHCR	﻿2026-06-08T14:06:26.7658265Z ##[group]Run docker/login-action@v3
 build-and-push	Log in to GHCR	2026-06-08T14:06:26.7658566Z with:
 build-and-push	Log in to GHCR	2026-06-08T14:06:26.7658760Z   registry: ghcr.io
-build-and-push	Log in to GHCR	2026-06-08T14:06:26.7659001Z   username: FilippLotsmanov240843
+build-and-push	Log in to GHCR	2026-06-08T14:06:26.7659001Z   username: <teammate-handle>
 build-and-push	Log in to GHCR	2026-06-08T14:06:26.7662549Z   password: ***
 build-and-push	Log in to GHCR	2026-06-08T14:06:26.7662787Z   logout: true
 build-and-push	Log in to GHCR	2026-06-08T14:06:26.7662994Z env:
@@ -544,7 +544,7 @@ build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6760762Z sha: cc
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6761498Z ref: refs/heads/main
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6761902Z workflow: CD
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6762320Z action: meta
-build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6762704Z actor: FilippLotsmanov240843
+build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6762704Z actor: <teammate-handle>
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6763154Z runNumber: 63
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6763519Z runId: 27143277518
 build-and-push	Extract metadata for backend	2026-06-08T14:06:28.6764187Z commitDate: Mon Jun 08 2026 14:06:02 GMT+0000 (Coordinated Universal Time)
@@ -1071,7 +1071,7 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2147014Z         },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2147334Z         "compatibilityVersion": 20
 build-and-push	Build and push backend	2026-06-08T14:06:44.2147600Z       },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2147790Z       "environment": {
-build-and-push	Build and push backend	2026-06-08T14:06:44.2148049Z         "github_actor": "FilippLotsmanov240843",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2148049Z         "github_actor": "<teammate-handle>",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2148354Z         "github_actor_id": "180267402",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2148623Z         "github_event_name": "push",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2148892Z         "github_event_payload": {
@@ -1083,12 +1083,12 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2151165Z             {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2151541Z               "author": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2151947Z                 "email": "240843@buas.nl",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2152419Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2152933Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2152933Z                 "username": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2153421Z               },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2153761Z               "committer": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2154151Z                 "email": "240843@buas.nl",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2154612Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2155122Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2155122Z                 "username": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2155828Z               },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2156176Z               "distinct": false,
 build-and-push	Build and push backend	2026-06-08T14:06:44.2156665Z               "id": "d2b2ca78cb070c0d9516b8cca3773cd41f3d5ee3",
@@ -1100,8 +1100,8 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2161148Z             }
 build-and-push	Build and push backend	2026-06-08T14:06:44.2161491Z             {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2161848Z               "author": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2162294Z                 "email": "240843@buas.nl",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2162812Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2163362Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2162812Z                 "name": "<teammate-handle>",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2163362Z                 "username": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2163912Z               },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2164278Z               "committer": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2164736Z                 "email": "noreply@github.com",
@@ -1118,8 +1118,8 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2172939Z             }
 build-and-push	Build and push backend	2026-06-08T14:06:44.2173328Z             {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2173709Z               "author": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2174189Z                 "email": "240843@buas.nl",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2174757Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2175372Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2174757Z                 "name": "<teammate-handle>",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2175372Z                 "username": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2175974Z               },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2176376Z               "committer": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2176898Z                 "email": "noreply@github.com",
@@ -1153,8 +1153,8 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2197243Z           "fo
 build-and-push	Build and push backend	2026-06-08T14:06:44.2197584Z           "head_commit": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2197917Z             "author": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2198263Z               "email": "240843@buas.nl",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2200703Z               "name": "FilippLotsmanov240843",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2201252Z               "username": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2200703Z               "name": "<teammate-handle>",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2201252Z               "username": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2201698Z             },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2201909Z             "committer": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2202163Z               "email": "noreply@github.com",
@@ -1184,7 +1184,7 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2219543Z             "
 build-and-push	Build and push backend	2026-06-08T14:06:44.2220500Z           },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2220833Z           "pusher": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2221218Z             "email": "240843@buas.nl",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2221695Z             "name": "FilippLotsmanov240843"
+build-and-push	Build and push backend	2026-06-08T14:06:44.2221695Z             "name": "<teammate-handle>"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2222160Z           },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2222499Z           "ref": "refs/heads/main",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2222936Z           "repository": {
@@ -1298,23 +1298,23 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2300670Z             "
 build-and-push	Build and push backend	2026-06-08T14:06:44.2300967Z           },
 build-and-push	Build and push backend	2026-06-08T14:06:44.2301164Z           "sender": {
 build-and-push	Build and push backend	2026-06-08T14:06:44.2301513Z             "avatar_url": "https://avatars.githubusercontent.com/u/180267402?v=4",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2302092Z             "events_url": "https://api.github.com/users/FilippLotsmanov240843/events{/privacy}",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2302670Z             "followers_url": "https://api.github.com/users/FilippLotsmanov240843/followers",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2303278Z             "following_url": "https://api.github.com/users/FilippLotsmanov240843/following{/other_user}",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2303877Z             "gists_url": "https://api.github.com/users/FilippLotsmanov240843/gists{/gist_id}",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2302092Z             "events_url": "https://api.github.com/users/<teammate-handle>/events{/privacy}",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2302670Z             "followers_url": "https://api.github.com/users/<teammate-handle>/followers",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2303278Z             "following_url": "https://api.github.com/users/<teammate-handle>/following{/other_user}",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2303877Z             "gists_url": "https://api.github.com/users/<teammate-handle>/gists{/gist_id}",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2304292Z             "gravatar_id": "",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2304606Z             "html_url": "https://github.com/FilippLotsmanov240843",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2304606Z             "html_url": "https://github.com/<teammate-handle>",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2305119Z             "id": 180267402,
-build-and-push	Build and push backend	2026-06-08T14:06:44.2305373Z             "login": "FilippLotsmanov240843",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2305373Z             "login": "<teammate-handle>",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2305661Z             "node_id": "U_kgDOCr6pig",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2306065Z             "organizations_url": "https://api.github.com/users/FilippLotsmanov240843/orgs",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2306658Z             "received_events_url": "https://api.github.com/users/FilippLotsmanov240843/received_events",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2307228Z             "repos_url": "https://api.github.com/users/FilippLotsmanov240843/repos",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2306065Z             "organizations_url": "https://api.github.com/users/<teammate-handle>/orgs",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2306658Z             "received_events_url": "https://api.github.com/users/<teammate-handle>/received_events",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2307228Z             "repos_url": "https://api.github.com/users/<teammate-handle>/repos",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2307612Z             "site_admin": false,
-build-and-push	Build and push backend	2026-06-08T14:06:44.2308037Z             "starred_url": "https://api.github.com/users/FilippLotsmanov240843/starred{/owner}{/repo}",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2308655Z             "subscriptions_url": "https://api.github.com/users/FilippLotsmanov240843/subscriptions",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2308037Z             "starred_url": "https://api.github.com/users/<teammate-handle>/starred{/owner}{/repo}",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2308655Z             "subscriptions_url": "https://api.github.com/users/<teammate-handle>/subscriptions",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2309097Z             "type": "User",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2309407Z             "url": "https://api.github.com/users/FilippLotsmanov240843",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2309407Z             "url": "https://api.github.com/users/<teammate-handle>",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2309763Z             "user_view_type": "public"
 build-and-push	Build and push backend	2026-06-08T14:06:44.2310330Z           }
 build-and-push	Build and push backend	2026-06-08T14:06:44.2310524Z         },
@@ -1338,7 +1338,7 @@ build-and-push	Build and push backend	2026-06-08T14:06:44.2315824Z         "gith
 build-and-push	Build and push backend	2026-06-08T14:06:44.2316135Z         "github_runner_os": "Linux",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2316511Z         "github_runner_tracking_id": "github_35a1fe58-06d0-497c-b9ac-93b2b995042a",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2316937Z         "github_server_url": "https://github.com",
-build-and-push	Build and push backend	2026-06-08T14:06:44.2317287Z         "github_triggering_actor": "FilippLotsmanov240843",
+build-and-push	Build and push backend	2026-06-08T14:06:44.2317287Z         "github_triggering_actor": "<teammate-handle>",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2317609Z         "github_workflow": "CD",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2318188Z         "github_workflow_ref": "BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7/.github/workflows/cd.yml@refs/heads/main",
 build-and-push	Build and push backend	2026-06-08T14:06:44.2318874Z         "github_workflow_sha": "ccee772b9d28602f7be018bebe4359c4eb7786cb",
@@ -1709,7 +1709,7 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5744824Z         },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5745035Z         "compatibilityVersion": 20
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5745288Z       },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5745474Z       "environment": {
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5745727Z         "github_actor": "FilippLotsmanov240843",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5745727Z         "github_actor": "<teammate-handle>",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5746041Z         "github_actor_id": "180267402",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5746311Z         "github_event_name": "push",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5746798Z         "github_event_payload": {
@@ -1721,12 +1721,12 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5748225Z             
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5748417Z               "author": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5748650Z                 "email": "240843@buas.nl",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5748925Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5749230Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5749230Z                 "username": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5749510Z               },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5749709Z               "committer": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5750394Z                 "email": "240843@buas.nl",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5756768Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5757319Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5757319Z                 "username": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5757686Z               },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5757922Z               "distinct": false,
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5758227Z               "id": "d2b2ca78cb070c0d9516b8cca3773cd41f3d5ee3",
@@ -1738,8 +1738,8 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5761756Z             
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5762083Z             {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5762413Z               "author": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5762810Z                 "email": "240843@buas.nl",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5763309Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5763850Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5763309Z                 "name": "<teammate-handle>",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5763850Z                 "username": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5764338Z               },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5764703Z               "committer": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5765135Z                 "email": "noreply@github.com",
@@ -1756,8 +1756,8 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5771809Z             
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5772127Z             {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5772462Z               "author": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5772858Z                 "email": "240843@buas.nl",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5773359Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5786399Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5773359Z                 "name": "<teammate-handle>",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5786399Z                 "username": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5786924Z               },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5787279Z               "committer": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5787690Z                 "email": "noreply@github.com",
@@ -1791,8 +1791,8 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5806316Z           "f
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5806546Z           "head_commit": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5806779Z             "author": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5807009Z               "email": "240843@buas.nl",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5807304Z               "name": "FilippLotsmanov240843",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5807616Z               "username": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5807304Z               "name": "<teammate-handle>",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5807616Z               "username": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5807908Z             },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5808107Z             "committer": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5808350Z               "email": "noreply@github.com",
@@ -1822,7 +1822,7 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5819351Z             
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5819686Z           },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5819881Z           "pusher": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5820511Z             "email": "240843@buas.nl",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5820851Z             "name": "FilippLotsmanov240843"
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5820851Z             "name": "<teammate-handle>"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5821130Z           },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5821333Z           "ref": "refs/heads/main",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5821618Z           "repository": {
@@ -1936,23 +1936,23 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5881473Z             
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5881758Z           },
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5881951Z           "sender": {
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5882285Z             "avatar_url": "https://avatars.githubusercontent.com/u/180267402?v=4",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5882855Z             "events_url": "https://api.github.com/users/FilippLotsmanov240843/events{/privacy}",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5883436Z             "followers_url": "https://api.github.com/users/FilippLotsmanov240843/followers",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5884041Z             "following_url": "https://api.github.com/users/FilippLotsmanov240843/following{/other_user}",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5884643Z             "gists_url": "https://api.github.com/users/FilippLotsmanov240843/gists{/gist_id}",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5882855Z             "events_url": "https://api.github.com/users/<teammate-handle>/events{/privacy}",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5883436Z             "followers_url": "https://api.github.com/users/<teammate-handle>/followers",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5884041Z             "following_url": "https://api.github.com/users/<teammate-handle>/following{/other_user}",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5884643Z             "gists_url": "https://api.github.com/users/<teammate-handle>/gists{/gist_id}",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5885064Z             "gravatar_id": "",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5885383Z             "html_url": "https://github.com/FilippLotsmanov240843",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5885383Z             "html_url": "https://github.com/<teammate-handle>",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5885730Z             "id": 180267402,
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5885988Z             "login": "FilippLotsmanov240843",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5885988Z             "login": "<teammate-handle>",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5886408Z             "node_id": "U_kgDOCr6pig",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5886826Z             "organizations_url": "https://api.github.com/users/FilippLotsmanov240843/orgs",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5887433Z             "received_events_url": "https://api.github.com/users/FilippLotsmanov240843/received_events",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5888014Z             "repos_url": "https://api.github.com/users/FilippLotsmanov240843/repos",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5886826Z             "organizations_url": "https://api.github.com/users/<teammate-handle>/orgs",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5887433Z             "received_events_url": "https://api.github.com/users/<teammate-handle>/received_events",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5888014Z             "repos_url": "https://api.github.com/users/<teammate-handle>/repos",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5888407Z             "site_admin": false,
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5888836Z             "starred_url": "https://api.github.com/users/FilippLotsmanov240843/starred{/owner}{/repo}",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5889460Z             "subscriptions_url": "https://api.github.com/users/FilippLotsmanov240843/subscriptions",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5888836Z             "starred_url": "https://api.github.com/users/<teammate-handle>/starred{/owner}{/repo}",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5889460Z             "subscriptions_url": "https://api.github.com/users/<teammate-handle>/subscriptions",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5890115Z             "type": "User",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5890472Z             "url": "https://api.github.com/users/FilippLotsmanov240843",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5890472Z             "url": "https://api.github.com/users/<teammate-handle>",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5890875Z             "user_view_type": "public"
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5891129Z           }
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5891319Z         },
@@ -1976,7 +1976,7 @@ build-and-push	Build and push frontend	2026-06-08T14:06:52.5896545Z         "git
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5896854Z         "github_runner_os": "Linux",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5897236Z         "github_runner_tracking_id": "github_35a1fe58-06d0-497c-b9ac-93b2b995042a",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5897662Z         "github_server_url": "https://github.com",
-build-and-push	Build and push frontend	2026-06-08T14:06:52.5898009Z         "github_triggering_actor": "FilippLotsmanov240843",
+build-and-push	Build and push frontend	2026-06-08T14:06:52.5898009Z         "github_triggering_actor": "<teammate-handle>",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5898337Z         "github_workflow": "CD",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5898913Z         "github_workflow_ref": "BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7/.github/workflows/cd.yml@refs/heads/main",
 build-and-push	Build and push frontend	2026-06-08T14:06:52.5899762Z         "github_workflow_sha": "ccee772b9d28602f7be018bebe4359c4eb7786cb",
@@ -2310,7 +2310,7 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9229165Z         "c
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9229622Z       },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9230282Z       "environment": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9230754Z         "dockerfileVersion": "1.24.0",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9231312Z         "github_actor": "FilippLotsmanov240843",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9231312Z         "github_actor": "<teammate-handle>",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9231852Z         "github_actor_id": "180267402",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9232371Z         "github_event_name": "push",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9232849Z         "github_event_payload": {
@@ -2322,12 +2322,12 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9235451Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9235808Z               "author": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9236222Z                 "email": "240843@buas.nl",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9236716Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9237288Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9237288Z                 "username": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9237811Z               },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9238181Z               "committer": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9238613Z                 "email": "240843@buas.nl",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9239143Z                 "name": "Filipp Lotsmanov",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9239753Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9239753Z                 "username": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9240505Z               },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9240890Z               "distinct": false,
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9241376Z               "id": "d2b2ca78cb070c0d9516b8cca3773cd41f3d5ee3",
@@ -2339,8 +2339,8 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9245440Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9245845Z             {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9246265Z               "author": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9246741Z                 "email": "240843@buas.nl",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9247568Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9248381Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9247568Z                 "name": "<teammate-handle>",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9248381Z                 "username": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9248943Z               },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9249340Z               "committer": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9249845Z                 "email": "noreply@github.com",
@@ -2357,8 +2357,8 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9257756Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9258190Z             {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9258658Z               "author": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9259184Z                 "email": "240843@buas.nl",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9259887Z                 "name": "FilippLotsmanov240843",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9260792Z                 "username": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9259887Z                 "name": "<teammate-handle>",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9260792Z                 "username": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9261311Z               },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9261668Z               "committer": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9262129Z                 "email": "noreply@github.com",
@@ -2392,8 +2392,8 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9280526Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9280929Z           "head_commit": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9281310Z             "author": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9281900Z               "email": "240843@buas.nl",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9282533Z               "name": "FilippLotsmanov240843",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9283067Z               "username": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9282533Z               "name": "<teammate-handle>",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9283067Z               "username": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9283546Z             },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9283881Z             "committer": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9284291Z               "email": "noreply@github.com",
@@ -2423,7 +2423,7 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9302212Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9302779Z           },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9303029Z           "pusher": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9303259Z             "email": "240843@buas.nl",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9303533Z             "name": "FilippLotsmanov240843"
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9303533Z             "name": "<teammate-handle>"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9303804Z           },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9304006Z           "ref": "refs/heads/main",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9304262Z           "repository": {
@@ -2537,23 +2537,23 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9366639Z           
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9366916Z           },
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9367105Z           "sender": {
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9367440Z             "avatar_url": "https://avatars.githubusercontent.com/u/180267402?v=4",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9367986Z             "events_url": "https://api.github.com/users/FilippLotsmanov240843/events{/privacy}",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9368562Z             "followers_url": "https://api.github.com/users/FilippLotsmanov240843/followers",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9369159Z             "following_url": "https://api.github.com/users/FilippLotsmanov240843/following{/other_user}",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9369752Z             "gists_url": "https://api.github.com/users/FilippLotsmanov240843/gists{/gist_id}",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9367986Z             "events_url": "https://api.github.com/users/<teammate-handle>/events{/privacy}",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9368562Z             "followers_url": "https://api.github.com/users/<teammate-handle>/followers",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9369159Z             "following_url": "https://api.github.com/users/<teammate-handle>/following{/other_user}",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9369752Z             "gists_url": "https://api.github.com/users/<teammate-handle>/gists{/gist_id}",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9370489Z             "gravatar_id": "",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9370811Z             "html_url": "https://github.com/FilippLotsmanov240843",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9370811Z             "html_url": "https://github.com/<teammate-handle>",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9371145Z             "id": 180267402,
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9371395Z             "login": "FilippLotsmanov240843",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9371395Z             "login": "<teammate-handle>",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9371684Z             "node_id": "U_kgDOCr6pig",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9372099Z             "organizations_url": "https://api.github.com/users/FilippLotsmanov240843/orgs",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9372694Z             "received_events_url": "https://api.github.com/users/FilippLotsmanov240843/received_events",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9373263Z             "repos_url": "https://api.github.com/users/FilippLotsmanov240843/repos",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9372099Z             "organizations_url": "https://api.github.com/users/<teammate-handle>/orgs",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9372694Z             "received_events_url": "https://api.github.com/users/<teammate-handle>/received_events",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9373263Z             "repos_url": "https://api.github.com/users/<teammate-handle>/repos",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9373654Z             "site_admin": false,
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9374074Z             "starred_url": "https://api.github.com/users/FilippLotsmanov240843/starred{/owner}{/repo}",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9374851Z             "subscriptions_url": "https://api.github.com/users/FilippLotsmanov240843/subscriptions",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9374074Z             "starred_url": "https://api.github.com/users/<teammate-handle>/starred{/owner}{/repo}",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9374851Z             "subscriptions_url": "https://api.github.com/users/<teammate-handle>/subscriptions",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9375391Z             "type": "User",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9375699Z             "url": "https://api.github.com/users/FilippLotsmanov240843",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9375699Z             "url": "https://api.github.com/users/<teammate-handle>",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9376051Z             "user_view_type": "public"
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9376302Z           }
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9376486Z         },
@@ -2577,7 +2577,7 @@ build-and-push	Build and push prometheus	2026-06-08T14:07:00.9381942Z         "g
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9382250Z         "github_runner_os": "Linux",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9382622Z         "github_runner_tracking_id": "github_35a1fe58-06d0-497c-b9ac-93b2b995042a",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9383063Z         "github_server_url": "https://github.com",
-build-and-push	Build and push prometheus	2026-06-08T14:07:00.9383419Z         "github_triggering_actor": "FilippLotsmanov240843",
+build-and-push	Build and push prometheus	2026-06-08T14:07:00.9383419Z         "github_triggering_actor": "<teammate-handle>",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9383752Z         "github_workflow": "CD",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9384327Z         "github_workflow_ref": "BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7/.github/workflows/cd.yml@refs/heads/main",
 build-and-push	Build and push prometheus	2026-06-08T14:07:00.9385013Z         "github_workflow_sha": "ccee772b9d28602f7be018bebe4359c4eb7786cb",
@@ -2696,7 +2696,7 @@ deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9261285Z   submodul
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9261777Z   set-safe-directory: true
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9262644Z env:
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9263264Z   SHORT_SHA: ccee772
-deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9263820Z   PORTAINER_URL: http://194.171.191.226:3085
+deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9263820Z   PORTAINER_URL: http://<deploy-host>:3085
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9264436Z   STACK_ID: 1756
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9264897Z   ENDPOINT_ID: 2
 deploy-portainer	Run actions/checkout@v4	2026-06-08T14:00:09.9265414Z ##[endgroup]
@@ -2815,7 +2815,7 @@ deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8166369
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8198728Z shell: /usr/bin/bash -e {0}
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8199252Z env:
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8199616Z   SHORT_SHA: ccee772
-deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8200103Z   PORTAINER_URL: http://194.171.191.226:3085
+deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8200103Z   PORTAINER_URL: http://<deploy-host>:3085
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8200646Z   STACK_ID: 1756
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8201355Z   ENDPOINT_ID: 2
 deploy-portainer	Deploy stack from repo compose file	2026-06-08T14:00:10.8202212Z   PORTAINER_TOKEN: ***
@@ -2872,9 +2872,9 @@ azure-auth-test	Set up job	2026-06-08T14:07:10.5614308Z Download action reposito
 azure-auth-test	Set up job	2026-06-08T14:07:10.8465495Z Complete job name: azure-auth-test
 azure-auth-test	Azure login via OIDC	﻿2026-06-08T14:07:10.9378925Z ##[group]Run azure/login@v2
 azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9379854Z with:
-azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9380376Z   client-id: d691a651-0d34-453b-9ce2-02852555c546
-azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9381053Z   tenant-id: 0a33589b-0036-4fe8-a829-3ed0926af886
-azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9381790Z   subscription-id: 0a94de80-6d3b-49f2-b3e9-ec5818862801
+azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9380376Z   client-id: <client-id>
+azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9381053Z   tenant-id: <tenant-id>
+azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9381790Z   subscription-id: <subscription-id>
 azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9382439Z   enable-AzPSSession: false
 azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9382954Z   environment: azurecloud
 azure-auth-test	Azure login via OIDC	2026-06-08T14:07:10.9383469Z   allow-no-subscriptions: false
@@ -2901,7 +2901,7 @@ azure-auth-test	Verify subscription access	2026-06-08T14:07:15.1606222Z ##[endgr
 azure-auth-test	Verify subscription access	2026-06-08T14:07:15.1728344Z === Subscription context ===
 azure-auth-test	Verify subscription access	2026-06-08T14:07:15.5188759Z EnvironmentName    HomeTenantId                          IsDefault    Name                  State    TenantId
 azure-auth-test	Verify subscription access	2026-06-08T14:07:15.5190718Z -----------------  ------------------------------------  -----------  --------------------  -------  ------------------------------------
-azure-auth-test	Verify subscription access	2026-06-08T14:07:15.5193159Z AzureCloud         0a33589b-0036-4fe8-a829-3ed0926af886  True         Azure subscription 1  Enabled  0a33589b-0036-4fe8-a829-3ed0926af886
+azure-auth-test	Verify subscription access	2026-06-08T14:07:15.5193159Z AzureCloud         <tenant-id>  True         Azure subscription 1  Enabled  <tenant-id>
 azure-auth-test	Probe shared resource group	﻿2026-06-08T14:07:15.5936575Z ##[group]Run set -e
 azure-auth-test	Probe shared resource group	2026-06-08T14:07:15.5937741Z ^[[36;1mset -e^[[0m
 azure-auth-test	Probe shared resource group	2026-06-08T14:07:15.5938311Z ^[[36;1mecho "=== Resource group buas-y2 ==="^[[0m
@@ -3008,7 +3008,7 @@ scan-images	Set lowercase repo name	2026-06-08T14:07:15.1919235Z ##[endgroup]
 scan-images	Log in to GHCR	﻿2026-06-08T14:07:15.2217602Z ##[group]Run docker/login-action@v3
 scan-images	Log in to GHCR	2026-06-08T14:07:15.2217992Z with:
 scan-images	Log in to GHCR	2026-06-08T14:07:15.2218200Z   registry: ghcr.io
-scan-images	Log in to GHCR	2026-06-08T14:07:15.2218477Z   username: FilippLotsmanov240843
+scan-images	Log in to GHCR	2026-06-08T14:07:15.2218477Z   username: <teammate-handle>
 scan-images	Log in to GHCR	2026-06-08T14:07:15.2222159Z   password: ***
 scan-images	Log in to GHCR	2026-06-08T14:07:15.2222435Z   logout: true
 scan-images	Log in to GHCR	2026-06-08T14:07:15.2222637Z env:
@@ -3335,8 +3335,8 @@ smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8314990Z ^[[36;1mcur
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8315746Z ^[[36;1mexit 1^[[0m
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8348004Z shell: /usr/bin/bash -e {0}
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8349048Z env:
-smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8349787Z   BACKEND_URL: http://194.171.191.226:2026
-smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8350721Z   FRONTEND_URL: http://194.171.191.226:2027
+smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8349787Z   BACKEND_URL: http://<deploy-host>:2026
+smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8350721Z   FRONTEND_URL: http://<deploy-host>:2027
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8351487Z ##[endgroup]
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:34.8641423Z Attempt 1/30: backend not ready yet, sleeping 10s...
 smoke-test	Wait for backend to be ready	2026-06-08T14:00:44.8944850Z Backend healthy after 2 attempts.
@@ -3358,10 +3358,10 @@ smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9061324Z ^[[36;1mfi^[[
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9061636Z ^[[36;1mecho "Backend smoke test passed."^[[0m
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9081986Z shell: /usr/bin/bash -e {0}
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9082317Z env:
-smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9082642Z   BACKEND_URL: http://194.171.191.226:2026
-smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9083031Z   FRONTEND_URL: http://194.171.191.226:2027
+smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9082642Z   BACKEND_URL: http://<deploy-host>:2026
+smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9083031Z   FRONTEND_URL: http://<deploy-host>:2027
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9083397Z ##[endgroup]
-smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9237803Z GET http://194.171.191.226:2026/health -> HTTP 200
+smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9237803Z GET http://<deploy-host>:2026/health -> HTTP 200
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9250596Z {"status":"ok","model_loaded":true,"model_version":"unet-v1","pipeline_version":"0.1.0","serving_mode":"local","timestamp":"2026-06-08T14:00:44.921742Z"}
 smoke-test	Smoke test backend /health	2026-06-08T14:00:44.9267617Z Backend smoke test passed.
 smoke-test	Smoke test frontend root	﻿2026-06-08T14:00:44.9312242Z ##[group]Run set -e
@@ -3377,17 +3377,17 @@ smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9316448Z ^[[36;1mfi^[[0m
 smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9316729Z ^[[36;1mecho "Frontend smoke test passed."^[[0m
 smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9338230Z shell: /usr/bin/bash -e {0}
 smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9338570Z env:
-smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9338886Z   BACKEND_URL: http://194.171.191.226:2026
-smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9339317Z   FRONTEND_URL: http://194.171.191.226:2027
+smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9338886Z   BACKEND_URL: http://<deploy-host>:2026
+smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9339317Z   FRONTEND_URL: http://<deploy-host>:2027
 smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9339659Z ##[endgroup]
-smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9498898Z GET http://194.171.191.226:2027/ -> HTTP 200
+smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9498898Z GET http://<deploy-host>:2027/ -> HTTP 200
 smoke-test	Smoke test frontend root	2026-06-08T14:00:44.9516945Z Frontend smoke test passed.
 smoke-test	Summary	﻿2026-06-08T14:00:44.9605825Z ##[group]Run echo "::notice::Smoke tests complete for sha-"
 smoke-test	Summary	2026-06-08T14:00:44.9606434Z ^[[36;1mecho "::notice::Smoke tests complete for sha-"^[[0m
 smoke-test	Summary	2026-06-08T14:00:44.9627396Z shell: /usr/bin/bash -e {0}
 smoke-test	Summary	2026-06-08T14:00:44.9627728Z env:
-smoke-test	Summary	2026-06-08T14:00:44.9628021Z   BACKEND_URL: http://194.171.191.226:2026
-smoke-test	Summary	2026-06-08T14:00:44.9628404Z   FRONTEND_URL: http://194.171.191.226:2027
+smoke-test	Summary	2026-06-08T14:00:44.9628021Z   BACKEND_URL: http://<deploy-host>:2026
+smoke-test	Summary	2026-06-08T14:00:44.9628404Z   FRONTEND_URL: http://<deploy-host>:2027
 smoke-test	Summary	2026-06-08T14:00:44.9628753Z ##[endgroup]
 smoke-test	Summary	2026-06-08T14:00:44.9698730Z ##[notice]Smoke tests complete for sha-
 smoke-test	Complete job	﻿2026-06-08T14:00:44.9772611Z Cleaning up orphan processes
@@ -3500,9 +3500,9 @@ deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Set lowercase repo name
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Set lowercase repo name	2026-06-08T14:07:51.7405680Z ##[endgroup]
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	﻿2026-06-08T14:07:51.7641225Z ##[group]Run azure/login@v2
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7642150Z with:
-deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7642967Z   client-id: d691a651-0d34-453b-9ce2-02852555c546
-deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7643995Z   tenant-id: 0a33589b-0036-4fe8-a829-3ed0926af886
-deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7645051Z   subscription-id: 0a94de80-6d3b-49f2-b3e9-ec5818862801
+deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7642967Z   client-id: <client-id>
+deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7643995Z   tenant-id: <tenant-id>
+deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7645051Z   subscription-id: <subscription-id>
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7646060Z   enable-AzPSSession: false
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7646906Z   environment: azurecloud
 deploy-azure (y2d-2026-suicidesquad7-frontend, frontend)	Azure login via OIDC	2026-06-08T14:07:51.7647743Z   allow-no-subscriptions: false
@@ -3841,9 +3841,9 @@ deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Set lowercase repo name	2
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Set lowercase repo name	2026-06-08T14:07:52.0655922Z ##[endgroup]
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	﻿2026-06-08T14:07:52.0934149Z ##[group]Run azure/login@v2
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0935202Z with:
-deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0936127Z   client-id: d691a651-0d34-453b-9ce2-02852555c546
-deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0937513Z   tenant-id: 0a33589b-0036-4fe8-a829-3ed0926af886
-deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0939186Z   subscription-id: 0a94de80-6d3b-49f2-b3e9-ec5818862801
+deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0936127Z   client-id: <client-id>
+deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0937513Z   tenant-id: <tenant-id>
+deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0939186Z   subscription-id: <subscription-id>
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0940676Z   enable-AzPSSession: false
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0941713Z   environment: azurecloud
 deploy-azure (y2d-2026-suicidesquad7-backend, backend)	Azure login via OIDC	2026-06-08T14:07:52.0942747Z   allow-no-subscriptions: false

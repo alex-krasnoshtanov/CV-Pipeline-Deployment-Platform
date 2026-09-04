@@ -3,12 +3,21 @@
 Captured output from runs that actually happened, kept because a pipeline
 described is not a pipeline demonstrated.
 
-**These files are unedited.** They still contain the university's resource group
-name, the Container App names and their FQDNs, and one reference to a course
-learning outcome in a header comment. The hostnames stopped resolving when the
-subscription was decommissioned. Editing a log to tidy it up would defeat the
-only reason to keep one, so the prose in [`../delivery/`](../delivery/) carries
-the placeholders and these captures stay verbatim.
+**These files are verbatim except for five identifiers**, replaced everywhere
+they appear:
+
+| Replaced with | Was |
+|---|---|
+| `<teammate-handle>` | a teammate's university account handle, which embeds their student number |
+| `<deploy-host>` | the campus IP of the on-premise deploy host |
+| `<tenant-id>`, `<subscription-id>`, `<client-id>` | the university's Azure identifiers |
+
+Nothing else is touched. The resource group name, the Container App names and
+their FQDNs are still in there; those hostnames stopped resolving when the
+subscription was decommissioned. So is one reference to a course learning
+outcome in a header comment. Editing a log further would defeat the only reason
+to keep one, so the prose in [`../delivery/`](../delivery/) carries placeholders
+throughout and these captures carry only the five above.
 
 ## `cd-run-27143277518.log`
 
