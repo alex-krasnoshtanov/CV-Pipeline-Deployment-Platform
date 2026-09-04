@@ -1,7 +1,7 @@
 # CV Pipeline — Plant Phenotyping Platform
 
 [![CI](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/ci.yml)
-[![Docs](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml)
+[![Docs](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/docs.yml/badge.svg)](https://alex-krasnoshtanov.github.io/CV-Pipeline-Deployment-Platform/)
 [![CD](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/cd.yml)
 [![Images](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml/badge.svg)](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/actions/workflows/images.yml)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
@@ -440,6 +440,10 @@ Currently **430 unit tests, 92.6% line coverage** across `cv_pipeline` and
 ---
 
 ## Documentation
+
+**The documentation site is at [alex-krasnoshtanov.github.io/CV-Pipeline-Deployment-Platform](https://alex-krasnoshtanov.github.io/CV-Pipeline-Deployment-Platform/)**
+— tutorials, how-to guides, the API reference generated from the OpenAPI
+schema, and autoapi across both packages.
 
 [`docs/delivery/`](docs/delivery/) is the pipeline: federated cloud auth,
 approval gates, the post-deploy smoke test, the Container Apps rollout, and
