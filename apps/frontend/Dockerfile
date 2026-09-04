@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
 # ---- Stage 1: build ----
-FROM node:20-alpine AS builder
+FROM node:26-alpine AS builder
 WORKDIR /app
 
 COPY apps/frontend/package.json apps/frontend/package-lock.json ./
@@ -11,7 +11,7 @@ COPY apps/frontend/ ./
 RUN npm run build
 
 # ---- Stage 2: production ----
-FROM node:20-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
