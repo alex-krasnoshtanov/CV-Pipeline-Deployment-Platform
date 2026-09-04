@@ -2,7 +2,7 @@
 
 Handles petri dish detection and image cropping before the image
 reaches the segmentation model. The core logic is adapted from
-the Block B petri_detection module.
+the team's earlier petri_detection prototype.
 """
 
 from __future__ import annotations

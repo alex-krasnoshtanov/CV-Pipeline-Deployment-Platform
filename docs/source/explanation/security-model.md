@@ -91,7 +91,7 @@ instead of sharing one.
 
 ## Threat model (explicit)
 
-Out of scope for Block D:
+Deliberately out of scope:
 - Rate limiting — relies on ingress (nginx / Azure Front Door) later.
 - HTTPS termination — handled by Traefik/Portainer on-prem, by
   Azure Container Apps ingress in cloud.

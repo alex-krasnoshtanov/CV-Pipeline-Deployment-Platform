@@ -17,7 +17,7 @@ Design decisions:
   Alternative considered: per-version URL in an env var - rejected
   because it defers the "what models does this package support" answer
   to deployment config, which is the wrong layer.
-- Downloads stream in 1 MB chunks so a 50 MB weight file does not blow
+- Downloads stream in 1 MB chunks so a 98 MB weight file does not blow
   up memory. We write to a temp file and rename on success so an
   interrupted download cannot leave a corrupt file in the cache.
 - A registry entry may pin the file's SHA-256. When it does, a

@@ -11,7 +11,10 @@ from pathlib import Path
 # ---------------------------------------------------------------------
 
 project = "CV Pipeline"
-author = "Oleksii Krasnoshtanov, Filipp Lotsmanov, Danil Sysenko, Marin Chiosa"
+author = (
+    "Oleksii Krasnoshtanov, Filipp Lotsmanov, Danil Sysenko, "
+    "Maksym Steshkin, Marin Chiosa"
+)
 copyright = "2026, the CV Pipeline contributors"
 
 _root = Path(__file__).resolve().parents[2]
@@ -156,6 +159,17 @@ myst_heading_anchors = 3
 # ---------------------------------------------------------------------
 # HTML output
 # ---------------------------------------------------------------------
+
+# -- linkcheck ---------------------------------------------------------------
+# The tutorials tell you to start the stack and then open these, so they are
+# unreachable by definition from a build machine. Without this, `make
+# linkcheck` reports two failures every run and stops being worth running.
+linkcheck_ignore = [
+    r"^https?://localhost(:\d+)?",
+    r"^https?://127\.0\.0\.1(:\d+)?",
+]
+linkcheck_timeout = 15
+linkcheck_retries = 2
 
 html_theme = "furo"
 html_title = f"CV Pipeline {release}"

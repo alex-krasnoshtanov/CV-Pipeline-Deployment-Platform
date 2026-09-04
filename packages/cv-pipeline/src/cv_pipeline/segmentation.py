@@ -14,7 +14,9 @@ import torch
 
 logger = logging.getLogger(__name__)
 
-# Default inference settings matching the Block B training configuration.
+# Default inference settings matching the configuration the released
+# unet-v1 checkpoint was trained with. Changing either silently degrades
+# results against that checkpoint.
 _DEFAULT_PATCH_SIZE: int = 256
 _DEFAULT_OVERLAP: float = 0.5
 _DEFAULT_BATCH_SIZE: int = 16

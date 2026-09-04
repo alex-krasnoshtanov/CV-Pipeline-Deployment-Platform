@@ -37,9 +37,11 @@ runs are cached and take under 10 seconds.
 
 ## Step 2 - Get the model weights
 
-The trained U-Net checkpoint is not stored in the repo (it's 180 MB).
-The pipeline downloads it automatically the first time you run
-inference. To trigger the download explicitly:
+The trained U-Net checkpoint is not stored in the repo (it's 98 MB).
+The pipeline downloads it from the
+[weights-v1](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/releases/tag/weights-v1)
+release automatically the first time you run inference. To trigger the
+download explicitly:
 
 ```python
 from cv_pipeline.weights import get_weights
@@ -50,6 +52,11 @@ get_weights("unet-v1")
 The file is cached under `~/.cache/cv-pipeline/models/` (override
 with the `CV_PIPELINE_CACHE_DIR` environment variable). Subsequent
 runs reuse the cached file - no re-download.
+
+The download is checked against the SHA-256 pinned in the registry. A
+file whose digest does not match is deleted and the call fails, so a
+corrupted transfer surfaces as an error rather than as a model that
+loads and quietly predicts nonsense.
 
 ## Step 3 - Run your first inference
 

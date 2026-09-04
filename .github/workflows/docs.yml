@@ -1,12 +1,11 @@
 name: Docs
 
-# Builds the Sphinx documentation on every change that could affect it.
+# Builds the Sphinx documentation on every change that could affect it, and
+# publishes it to GitHub Pages from main.
 #
-# The GitHub Pages deploy job from the group repository is deliberately not
-# carried over: Pages on a private repository needs a paid plan, so the job
-# would fail on every run. Re-enable it after this repository goes public by
-# turning on Pages in the settings and restoring a deploy job that consumes the
-# artefact uploaded below.
+# Pull requests build only. A PR cannot deploy, both because deploy-pages needs
+# an id-token this workflow only grants on main and because publishing an
+# unreviewed branch over the live site is the wrong default.
 
 on:
   push:
@@ -29,8 +28,16 @@ on:
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
+# Read is enough to build. The deploy job widens this for itself; keeping the
+# default narrow means the build job cannot publish even by accident.
 permissions:
   contents: read
+
+# One deploy at a time, and never cancel one in flight: an interrupted
+# deploy-pages can leave the site serving a half-uploaded artefact.
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -57,9 +64,34 @@ jobs:
         working-directory: docs
         run: make html
 
-      - name: Upload built site
+      # Two uploads, on purpose. The Pages artefact is what deploy consumes;
+      # the plain artefact is what you download to inspect a PR build, which
+      # is never published anywhere.
+      - name: Upload the Pages artefact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/build/html
+
+      - name: Upload built site for inspection
+        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v5
         with:
           name: docs-html
           path: docs/build/html
           retention-days: 7
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

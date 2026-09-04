@@ -219,11 +219,16 @@ version string to a download URL and caches the result under
 the release endpoint streams raw bytes and needs no credentials on a public
 repository.
 
-> **Current status:** no public weights release exists yet. Until one is
-> published, point `MODEL_PATH` at your own checkpoint, or run the backend in
-> remote mode with `MODEL_ENDPOINT_URL`. See
-> [add a new model version](docs/source/how-to/add-a-new-model-version.md) for
-> the publishing flow.
+The `unet-v1` checkpoint is published as the
+[weights-v1](https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/releases/tag/weights-v1)
+release, 97.9 MB, and its SHA-256 is pinned in the registry, so a corrupted or
+substituted download fails instead of loading a model that predicts nonsense.
+Nothing needs configuring: the first call downloads and caches it.
+
+To use a checkpoint of your own instead, point `MODEL_PATH` at it, or run the
+backend against a remote endpoint with `MODEL_ENDPOINT_URL`. See
+[add a new model version](docs/source/how-to/add-a-new-model-version.md) for the
+publishing flow.
 
 To train on your own data, arrange it as:
 

@@ -4,7 +4,7 @@ Separates individual plants from a segmentation mask, finds the
 bottommost point (root tip) of each plant, and returns pixel-space
 coordinates with per-landmark confidence scores.
 
-Adapted from the Block B root_tip_detection module.
+Adapted from the team's earlier root_tip_detection prototype.
 """
 
 from __future__ import annotations

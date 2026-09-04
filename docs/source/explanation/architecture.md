@@ -68,7 +68,7 @@ connections is the textbook match:
 
 - Handles pixel-level precision (landmark detection requires
   sub-millimetre accuracy in the mask).
-- Small enough to run on a consumer GPU (batch size 1, ~180 MB
+- Small enough to run on a consumer GPU (batch size 1, 98 MB of
   weights) - the target servers have limited GPU memory.
 - Well-studied for biomedical imagery - any later improvement work has
   plenty of priors to draw on.
