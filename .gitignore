@@ -86,6 +86,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Output of scripts/attribution.py; the README carries the numbers already.
+attribution.json
+
 # --- Scratch ---
 response.json
 tmp_*/

@@ -461,37 +461,72 @@ cd docs && make html
 
 ## Attribution
 
-This is group work. The table below is derived from the original repository's
-git history — files touched and lines attributed per component.
+This is group work by five people. The numbers below are **surviving lines**:
+`git blame -w` over the final tree of the original repository, so each row
+answers "whose lines are in the code that shipped" rather than "who typed the
+most at some point". Rewrites, reverts and churn do not inflate it.
 
-| Component | Files | Lines | My share | Dominant other author |
-|---|---:|---:|---:|---|
-| `infra/monitoring` | 3 | 75 | **100%** | — |
-| `infra/server` | 1 | 88 | **97%** | — |
-| `.github/workflows` | 5 | 900 | **61%** | Danil 221 |
-| `scripts/azure` | 12 | 1,789 | **57%** | Filipp 641 |
-| `apps/frontend` | 40 | 6,201 | **47%** | Maksym 2,318; Danil 981 |
-| `apps/backend` | 97 | 12,456 | **43%** | Filipp 4,831; Danil 1,809 |
-| `infra/airflow` | 19 | 4,413 | **31%** | Filipp 3,014 (68%) |
-| `infra/cloud` | 8 | 458 | **26%** | Filipp 341 (74%) |
-| `packages/cv-pipeline` | 24 | 6,838 | **21%** | Filipp 5,146 (75%) |
+Generated and captured files are excluded. Lockfiles alone are 18,744 lines,
+and counting them would credit whoever last ran `npm install` with 8,533.
 
-**In plain terms:** I led the deployment and operations surface — CI/CD,
+| Component | Lines | Oleksii | Filipp | Danil | Maksym | Marin |
+|---|---:|---:|---:|---:|---:|---:|
+| `packages/cv-pipeline` | 6,841 | 21% | **76%** | 3% | — | — |
+| `apps/backend` | 12,672 | **42%** | 40% | 18% | — | — |
+| `apps/frontend` | 6,391 | **45%** | — | 15% | 39% | — |
+| `infra/airflow` | 4,413 | 31% | **68%** | <1% | — | — |
+| `infra/cloud` | 502 | 32% | **68%** | — | — | — |
+| `infra/monitoring` | 130 | **100%** | — | — | — | — |
+| `infra/server` | 103 | **97%** | 3% | — | — | — |
+| `scripts/azure` | 1,789 | **57%** | 36% | 8% | — | — |
+| `.github/workflows` | 900 | **61%** | 3% | 33% | 2% | <1% |
+| **All code** | **33,741** | **39%** | **42%** | **12%** | **7%** | **<1%** |
+
+Rows are rounded and may not total exactly 100%; a further 72 lines across the
+tree came from a GitHub Copilot agent.
+
+**Marin's contribution is not in that table.** It is in documentation: of the
+original repository's 7,912 documentation lines, Danil wrote 41%, Oleksii 31%,
+Filipp 14% and Marin 13%. The docs in *this* repository are substantially
+rewritten, so those lines mostly do not appear here.
+
+**In plain terms:** I led the delivery and operations surface — CI/CD,
 container images, the on-premise and monitoring stacks, and the Azure
-provisioning scripts — and was the largest single contributor to the backend
-API and the frontend. The `cv-pipeline` package itself, the Airflow DAGs and
-the Azure ML training layer were predominantly Filipp's work; I contributed to
-all three but did not lead them.
+provisioning scripts. On the backend and the frontend I am the largest single
+contributor, but narrowly: 42% against Filipp's 40%, and 45% against Maksym's
+39%. The `cv-pipeline` package, the Airflow DAGs and the Azure ML layer were
+predominantly Filipp's; I worked in all three and led none of them. Across all
+code the split between the two of us is 42/39 in his favour.
 
 Original team: Oleksii Krasnoshtanov, Filipp Lotsmanov, Danil Sysenko,
 Maksym Steshkin, Marin Chiosa.
 
-Two notes on how to read the table. Line counts are a poor proxy for
-contribution — they reward whoever typed the boilerplate — so treat the
-percentages as a rough shape, not a scoreboard. And commit counts are worse:
-Maksym's frontend work landed in four large commits, which is why a
-commit-ranked list would have understated it badly. A small number of the
-original repository's commits were also authored by a GitHub Copilot agent.
+### How to read this, and how not to
+
+Lines are a poor proxy for contribution. They reward whoever wrote the verbose
+parts, and a table like this cannot see design decisions, review, or the
+debugging that leaves no lines behind. Treat it as a rough shape.
+
+Commits tell a different story, and the disagreement is the useful part. Across
+449 commits I authored 249, opened 59 pull requests of which all 59 merged, and
+reviewed 43 of other people's. But on `packages/cv-pipeline` the commit counts
+are near-level — Filipp 14 to my 13 — while the lines are 76% to 21%. He wrote
+the large modules; I made many small changes to them. Neither number alone says
+that, which is why both are here.
+
+Every figure above comes from
+[`scripts/attribution.py`](scripts/attribution.py), which is in the repository
+so the table can be checked rather than taken on trust. Point it at a clone of
+the group repository and it prints the same numbers:
+
+```bash
+python scripts/attribution.py path/to/group-repo
+```
+
+That repository is private and lives on a university account, so the script
+cannot run in CI, and the
+[original history](https://github.com/BredaUniversityADSAI/2025-26d-fai2-adsai-group-suicidesquad7)
+with every pull request and review is not publicly readable.
 
 ---
 
