@@ -20,25 +20,54 @@ Design decisions:
 - Downloads stream in 1 MB chunks so a 50 MB weight file does not blow
   up memory. We write to a temp file and rename on success so an
   interrupted download cannot leave a corrupt file in the cache.
+- A registry entry may pin the file's SHA-256. When it does, a
+  downloaded file whose digest differs is deleted and the call fails,
+  which turns a corrupted or substituted download into an error rather
+  than a model that silently predicts nonsense. Verification runs after
+  download and not on a cache hit: re-hashing 98 MB on every process
+  start costs more than it protects, and the temp-file rename already
+  rules out a truncated cache entry. Delete the cached file to force a
+  fresh download and a fresh check.
 """
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
+from dataclasses import dataclass
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# Version string -> download URL. Add a new entry per new model.
+
+@dataclass(frozen=True, slots=True)
+class WeightSpec:
+    """Where a checkpoint lives and what it should hash to."""
+
+    #: Direct download URL returning raw bytes.
+    url: str
+
+    #: Expected SHA-256 hex digest. None disables the check, which should
+    #: only be the case for a version whose digest has not been recorded.
+    sha256: str | None = None
+
+
+# Version string -> where to get it. Add a new entry per new model.
 # URLs must return the raw binary, so weights are published as GitHub
 # Release assets: the download endpoint streams octet-stream directly
 # and needs no credentials for a public repository. If a host returns
 # HTML instead, the download fails loudly - see _download below.
-REGISTRY: dict[str, str] = {
-    "unet-v1": (
-        "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform/"
-        "releases/download/weights%2Funet-v1/unet-v1.pth"
+#
+# A bare string is still accepted in place of a WeightSpec, for a local
+# or throwaway URL that has no digest to pin.
+REGISTRY: dict[str, WeightSpec | str] = {
+    "unet-v1": WeightSpec(
+        url=(
+            "https://github.com/alex-krasnoshtanov/CV-Pipeline-Deployment-Platform"
+            "/releases/download/weights-v1/unet-v1.pth"
+        ),
+        sha256="36908fab40c9388f6834cbd0a2278f2ad173cd1597d889cf477b6d31fc747f71",
     ),
 }
 
@@ -93,11 +122,45 @@ def get_weights(version: str) -> Path:
         logger.info("Using cached weights at '%s'.", target)
         return target
 
-    url = REGISTRY[version]
-    logger.info("Downloading weights for '%s' from %s.", version, url)
-    _download(url, target)
+    spec = _spec(version)
+    logger.info("Downloading weights for '%s' from %s.", version, spec.url)
+    _download(spec.url, target)
+    if spec.sha256:
+        _verify(target, spec.sha256)
     logger.info("Weights saved to '%s'.", target)
     return target
+
+
+def _spec(version: str) -> WeightSpec:
+    """Return REGISTRY[version] as a WeightSpec, wrapping a bare URL."""
+    entry = REGISTRY[version]
+    return entry if isinstance(entry, WeightSpec) else WeightSpec(url=entry)
+
+
+def _verify(path: Path, expected: str) -> None:
+    """Check a downloaded file's SHA-256 and delete it if it does not match.
+
+    Deleting matters: leaving the bad file in place would make the next
+    call a cache hit, so one corrupted download would poison every run
+    that followed.
+
+    Raises:
+        RuntimeError: If the digest differs from expected.
+    """
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            digest.update(chunk)
+    actual = digest.hexdigest()
+    if actual != expected:
+        path.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"Checksum mismatch for '{path.name}': expected {expected}, "
+            f"got {actual}. The download was corrupted or the release asset "
+            f"was replaced. The bad file has been deleted; retry, and if it "
+            f"persists check the digest pinned in cv_pipeline/weights.py."
+        )
+    logger.debug("Checksum verified for '%s'.", path.name)
 
 
 def _download(url: str, target: Path) -> None:

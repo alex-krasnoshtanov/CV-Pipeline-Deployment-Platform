@@ -429,7 +429,7 @@ uv run ruff check . && uv run ruff format --check .
 cd apps/frontend && npm run test:ci      # vitest
 ```
 
-Currently **426 unit tests, 92.6% line coverage** across `cv_pipeline` and
+Currently **430 unit tests, 92.6% line coverage** across `cv_pipeline` and
 `api`, with CI failing below 85%.
 
 ---
@@ -489,17 +489,18 @@ original repository's commits were also authored by a GitHub Copilot agent.
 
 ---
 
-## License and reuse
+## Licence
 
-**No open-source license is offered, deliberately.**
+[MIT](LICENSE).
 
-This repository is jointly authored. I hold copyright only in my own
-contributions, and I have not obtained my collaborators' consent to relicense
-theirs — so attaching an MIT or Apache header would misrepresent rights I do
-not hold. The code is published for review and discussion, not for reuse.
+The work is jointly authored by five people. A co-author has published the same
+codebase under MIT at
+[filipp-lotsmanov/root-inoculation-mlops](https://github.com/filipp-lotsmanov/root-inoculation-mlops),
+so this repository matches that rather than offering a different set of terms
+for the same code.
 
-If you want to build on something here, open an issue and I will sort out
-permission properly.
+The NPEC *Arabidopsis* plate dataset is not covered by the licence and is not
+included here.
 
 ---
 

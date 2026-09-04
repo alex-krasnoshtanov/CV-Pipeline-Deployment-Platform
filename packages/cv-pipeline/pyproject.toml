@@ -6,7 +6,13 @@ build-backend = "hatchling.build"
 name = "cv-pipeline"
 version = "0.1.0"
 description = "NPEC plant organ segmentation and root tip detection pipeline"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
 dependencies = [
     "torch>=2.0.0",
     "torchvision>=0.15.0",
