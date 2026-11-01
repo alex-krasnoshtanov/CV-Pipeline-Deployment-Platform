@@ -11,21 +11,21 @@
     "test:ci": "vitest run --reporter=verbose"
   },
   "dependencies": {
-    "next": "16.3.4",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.6",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^6.1.1",
+    "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^9",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.4.3",
     "eslint-plugin-jsdoc": "^64.3.4",
     "jsdom": "^29.1.1",
     "typescript": "^5",
