@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.11"
 
 [[package]]
@@ -22,7 +22,7 @@ wheels = [
 
 [[package]]
 name = "azure-ai-ml"
-version = "1.34.1"
+version = "1.35.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-core" },
@@ -42,9 +42,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d2/09/d656f53ae688081cbe1ea96e27adfba6ebb2c77aac80298334b52bc77e4a/azure_ai_ml-1.34.1.tar.gz", hash = "sha256:c09938aa07094b393ff7775fa2c81c446f6d77639c8136195233446e1a5ea9c9", size = 8637852, upload-time = "2026-07-14T20:46:54.852Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/5a/5e74a5d5151dd2d4efa8ba18703a45d128a0e9697ce0a986f7a1aeb359fe/azure_ai_ml-1.35.2.tar.gz", hash = "sha256:fdb0b51755b70819628792f198e9895af82c9efb4721d731eb7e6119f4c8ff1d", size = 2749696, upload-time = "2026-10-12T16:43:57.202Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/67/67/70668ff5433080a260bdf29f1de69129150289a68eac987162a687013abc/azure_ai_ml-1.34.1-py3-none-any.whl", hash = "sha256:f1bfb239314f73e2426be247fc16d1a9a687d24d3443139432cb17efe9506978", size = 11396696, upload-time = "2026-07-14T20:46:58.171Z" },
+    { url = "https://files.pythonhosted.org/packages/51/13/cabe826d2aa3b625f017278cf7e381944d1c3ee8b234c16bd7dd2e9de4f9/azure_ai_ml-1.35.2-py3-none-any.whl", hash = "sha256:a2dceea2a491ddd0e714f97d0a506c1150de5b65023f3d25a3e5b5ddd81a45f8", size = 2722115, upload-time = "2026-10-12T16:43:59.531Z" },
 ]
 
 [[package]]
@@ -75,7 +75,7 @@ wheels = [
 
 [[package]]
 name = "azure-identity"
-version = "1.25.3"
+version = "1.27.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-core" },
@@ -84,9 +84,9 @@ dependencies = [
     { name = "msal-extensions" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/0e/3a63efb48aa4a5ae2cfca61ee152fbcb668092134d3eb8bfda472dd5c617/azure_identity-1.25.3.tar.gz", hash = "sha256:ab23c0d63015f50b630ef6c6cf395e7262f439ce06e5d07a64e874c724f8d9e6", size = 286304, upload-time = "2026-03-13T01:12:20.892Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/33/0b881d0093d64c965bb20fcf71b806c7097881b544a2a55d519cdcf3bab9/azure_identity-1.27.0.tar.gz", hash = "sha256:6a4c50e25e8e9a47b324a95ad024897e56cb3c6241e0094e93b126a2bf71edc5", size = 331360, upload-time = "2026-10-26T21:17:39.095Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/9a/417b3a533e01953a7c618884df2cb05a71e7b68bdbce4fbdb62349d2a2e8/azure_identity-1.25.3-py3-none-any.whl", hash = "sha256:f4d0b956a8146f30333e071374171f3cfa7bdb8073adb8c3814b65567aa7447c", size = 192138, upload-time = "2026-03-13T01:12:22.951Z" },
+    { url = "https://files.pythonhosted.org/packages/29/1e/6a2fe486576f41884a120ef7b2c3774f334f9143402fb73650c67db94ddd/azure_identity-1.27.0-py3-none-any.whl", hash = "sha256:92fd2a93c0d2f777dac6c04e5fd7d5734f6643582b983544ef66b4575844e46d", size = 203474, upload-time = "2026-10-26T21:17:40.92Z" },
 ]
 
 [[package]]
@@ -201,11 +201,11 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "azure-ai-ml", specifier = ">=1.34.1" },
-    { name = "azure-identity", specifier = ">=1.25.3" },
+    { name = "azure-ai-ml", specifier = ">=1.35.2" },
+    { name = "azure-identity", specifier = ">=1.27.0" },
     { name = "numpy", specifier = ">=1.26" },
     { name = "opencv-python-headless", specifier = ">=4.13.0.92" },
-    { name = "python-dotenv", specifier = ">=1.2.3" },
+    { name = "python-dotenv", specifier = ">=1.2.4" },
 ]
 
 [[package]]
@@ -515,16 +515,16 @@ wheels = [
 
 [[package]]
 name = "msal"
-version = "1.37.0"
+version = "1.39.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
     { name = "pyjwt", extra = ["crypto"] },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9a/99/d840198ecf6e8057bbc937f129ae940404485d736cda73253bbff9537f01/msal-1.37.0.tar.gz", hash = "sha256:1b1672a33ee467c1d70b341bb16cafd51bb3c817147a95b93263794b03971bec", size = 182444, upload-time = "2026-05-29T19:49:05.561Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bb/85/747d28986a44b715cc51cf57aa021c8fd94e9614064261ceec77320e8b0b/msal-1.39.0.tar.gz", hash = "sha256:6ab7de335e6d7f5717e2c7e1dbf86e4dda2f6acf3c56773b78dc53ebc6395b5f", size = 205360, upload-time = "2026-09-17T16:07:45.1Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/94/b0/d807279f4b55d16d1f120d5ac4344c6e39b56732e2a224d40bded7fd67ad/msal-1.37.0-py3-none-any.whl", hash = "sha256:dd17e95a7c71bce75e8108113438ba7c4a086b3bcad4f57a8c09b7af3d753c2d", size = 123725, upload-time = "2026-05-29T19:49:04.335Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/32/178457385925ce301c7b3232bd85665d4df57da39568b62dcfc74031873f/msal-1.39.0-py3-none-any.whl", hash = "sha256:2d2577886906cd7293850dffa2da29119966c213bfc6ec0cecf8bf7621e1ca77", size = 131629, upload-time = "2026-09-17T16:07:46.722Z" },
 ]
 
 [[package]]
@@ -991,11 +991,11 @@ wheels = [
 
 [[package]]
 name = "python-dotenv"
-version = "1.2.3"
+version = "1.2.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6a/53/ed9d74092561d4b01a2ef1349d52cdbc135e526c245f366b089cfca6de49/python_dotenv-1.2.3.tar.gz", hash = "sha256:a20a594dabeaa385725aa239d5244871c143ecb356add8a20fcf23773a6c3a35", size = 58945, upload-time = "2026-08-16T16:54:54.067Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/26/2fbeedb218a787a5eea551c7532cac4e009f83d689dd2faa0d0353473f86/python_dotenv-1.2.4.tar.gz", hash = "sha256:f0d53e69935a851c0dcc78f3ab7aaccd8cabef0b92382b576b824212902873c0", size = 60824, upload-time = "2026-10-01T05:36:10Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/17/c5c6b53ddc18f297992099b3d9ec16c855c0ccc83263a21fe4d1c625ec6c/python_dotenv-1.2.3-py3-none-any.whl", hash = "sha256:904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9", size = 22780, upload-time = "2026-08-16T16:54:52.473Z" },
+    { url = "https://files.pythonhosted.org/packages/60/d1/38f3a3405989a89ac18390803e70c6ad7c7760da4f9b83cbeca0c44a0c72/python_dotenv-1.2.4-py3-none-any.whl", hash = "sha256:42269a8a5b3fd54ffa6f3d84b18abed50064717576b4ecf03dc4a55d8aa04fdc", size = 23266, upload-time = "2026-10-01T05:36:08.633Z" },
 ]
 
 [[package]]
